@@ -1,0 +1,167 @@
+# theme
+general.import = [
+  # dark
+  # "C:/Users/ThinkPad/AppData/Roaming/alacritty/themes/gruvbox_material_medium_dark.toml",
+  # "C:/Users/ThinkPad/AppData/Roaming/alacritty/themes/catppuccin_macchiato.toml",
+  # "C:/Users/ThinkPad/AppData/Roaming/alacritty/themes/catppuccin_mocha.toml",
+  # "C:/Users/ThinkPad/AppData/Roaming/alacritty/themes/afterglow.toml",
+  # "C:/Users/ThinkPad/AppData/Roaming/alacritty/themes/gruvbox_dark.toml",
+  # "C:/Users/ThinkPad/AppData/Roaming/alacritty/themes/everforest_dark.toml",
+  # "C:/Users/ThinkPad/AppData/Roaming/alacritty/themes/nightfox.toml",
+  # "C:/Users/ThinkPad/AppData/Roaming/alacritty/themes/tokyo-night-storm.toml",
+  # "C:/Users/ThinkPad/AppData/Roaming/alacritty/themes/dracula.toml",
+  # "C:/Users/ThinkPad/AppData/Roaming/alacritty/themes/solarized_dark.toml",
+  # "C:/Users/ThinkPad/AppData/Roaming/alacritty/themes/base16_default_dark.toml",
+  # "C:/Users/ThinkPad/AppData/Roaming/alacritty/themes/deep_space.toml",
+
+  # "C:/Users/ThinkPad/AppData/Roaming/alacritty/themes/github_dark_dimmed.toml",
+  # "C:/Users/ThinkPad/AppData/Roaming/alacritty/themes/kanagawa_dragon.toml",
+  # "C:/Users/ThinkPad/AppData/Roaming/alacritty/themes/zenburn.toml",
+  # "C:/Users/ThinkPad/AppData/Roaming/alacritty/themes/catppuccin_mocha.toml",
+  # "C:/Users/ThinkPad/AppData/Roaming/alacritty/themes/catppuccin_frappe.toml",
+
+  # light
+  # "C:/Users/ThinkPad/AppData/Roaming/alacritty/themes/github_light.toml",
+  # "C:/Users/ThinkPad/AppData/Roaming/alacritty/themes/rose-pine-dawn.toml",
+  # "C:/Users/ThinkPad/AppData/Roaming/alacritty/themes/papercolor_light.toml",
+  # "C:/Users/ThinkPad/AppData/Roaming/alacritty/themes/ayu_light.toml",
+  "C:/Users/ThinkPad/AppData/Roaming/alacritty/themes/catppuccin_latte.toml",
+]
+
+general.live_config_reload = true
+general.working_directory  = "C:/Users/ThinkPad/Desktop/"
+
+[env]
+TERM = "alacritty"
+COLORTERM = "truecolor"
+
+[terminal.shell]
+program = 'C:\Program Files\PowerShell\7\pwsh.exe'
+
+[window]
+opacity         = 1.00
+startup_mode    = "Windowed" # Windowed Fullscreen Maximized
+decorations     = "Transparent" # Full None Transparent Buttonless
+dynamic_padding = false
+dynamic_title   = true
+padding         = { x = 2, y = 2 }
+blur            = true
+
+# center_window when font size is 16.0
+# position        = { x = 132, y = 50 }
+# dimensions      = { columns = 110, lines = 32 }
+
+# center_window when font size is 13.0
+position        = { x = 190, y = 90 }
+dimensions      = { columns = 128, lines = 36 }
+
+[font]
+# size                = 16.0
+size                = 13.0
+normal              = { family = "Delugia Mono", style = "Regular" }
+bold                = { family = "Delugia Mono", style = "Bold" }
+italic              = { family = "Delugia Mono", style = "Italic" }
+bold_italic         = { family = "Delugia Mono", style = "Bold Italic" }
+glyph_offset        = { x = 0, y = 0 }
+offset              = { x = 0, y = 0 }
+builtin_box_drawing = true
+
+[cursor]
+style = { shape = "Block", blinking = "Off" } # Block Beam Underline
+unfocused_hollow = true
+thickness = 0.15
+
+[scrolling]
+history    = 10000
+multiplier = 3
+
+[bell]
+animation = "EaseOutExpo"
+duration  = 0
+
+[colors]
+draw_bold_text_with_bright_colors = true
+transparent_background_colors     = true
+cursor  = { cursor = '#6c6f85' } # 光标颜色 (Latte)
+
+[colors.primary]
+background = '#eeeeee' # 背景颜色 (Latte)
+
+[colors.normal]
+black   = '#0C0C0C'   # black
+red     = '#C50F1F'   # red
+green   = '#13A10E'   # green
+yellow  = '#C19C00'   # yellow
+blue    = '#0037DA'   # blue
+magenta = '#881798'   # purple
+cyan    = '#3A96DD'   # cyan
+white   = '#CCCCCC'   # white
+
+[colors.bright]
+black   = '#767676'  # black
+red     = '#E74856'  # red
+green   = '#16C60C'  # green
+yellow  = '#ff7a00'  # yellow
+blue    = '#3B78FF'  # blue
+magenta = '#B4009E'  # purple
+cyan    = '#61D6D6'  # cyan
+white   = '#F2F2F2'  # white
+
+[colors.search]
+focused_match = { foreground = "#44475A", background = "#d94453" }
+matches       = { foreground = "#44475A", background = "#50FA7B" }
+
+[selection]
+semantic_escape_chars = ",│`|:\"' ()[]{}<>"
+
+[mouse]
+hide_when_typing = true
+
+[keyboard]
+bindings = [
+# scroll
+  {key = "K", mods = "Control|Shift", mode = "~Alt", action = "ScrollLineUp"},
+  {key = "J", mods = "Control|Shift", mode = "~Alt", action = "ScrollLineDown"},
+# move - alt:h,j,k,l
+  {key = "K", mods = "ALT", chars = "\u001B[A"},
+  {key = "J", mods = "ALT", chars = "\u001B[B"},
+  {key = "H", mods = "ALT", chars = "\u001B[D"},
+  {key = "L", mods = "ALT", chars = "\u001B[C"},
+# delete word
+  {key = "Back", mods = "Control", chars = "\u0017"},
+# new terminal
+  # {key = "N", mods = "Control|Shift", action = "SpawnNewInstance"},
+  {key = "N", mods = "Control|Shift", action = "CreateNewWindow"},
+# paste copy
+  {key = "V", mods = "Control|Shift", action = "Paste"},
+  {key = "C", mods = "Control|Shift", action = "Copy"},
+
+# Control+Return
+  {key = "Return", mods = "Control", chars = "\u001B[13;5u"},
+# Shift + Return
+  {key = "Return", mods = "Shift", chars = "\u001B[13;2u"},
+# Control+Space
+  {key = "Space", mods = "Control", chars = "\u001B[32;5u"},
+# Shift + Space
+  {key = "Space", mods = "Shift", chars = "\u001B[32;2u"},
+
+# https://stackoverflow.com/a/42461580
+# https://github.com/oryband/dotfiles/blob/af4d45734e7eca30457f5025567221b91ed7f208/.config/alacritty/alacritty.yml#L21
+
+]
+
+
+
+
+
+
+
+# alacritty映射特性：
+# 映射ALT-J为F10,a  映射ALT-K为F10,b
+# - { key: J, mods: ALT, chars: "\x1b[21~a" } # F10,a
+# - { key: K, mods: ALT, chars: "\x1b[21~b" } # F10,b
+# 映射PSReadline的HistorySearchForward为F10,a
+# 映射PSReadline的HistorySearchBackward为F10,b
+# Set-PSReadLineKeyHandler -Chord 'F10,a' -Function HistorySearchForward
+# Set-PSReadLineKeyHandler -Chord 'F10,b' -Function HistorySearchBackward
+# 最终实现：ALT-J为HistorySearchForward, ALT-K为HistorySearchBackward
