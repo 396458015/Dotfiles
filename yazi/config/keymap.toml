@@ -153,6 +153,7 @@ keymap = [
 	{ on = [ "g", "<Space>" ], run = "cd --interactive", desc = "Go to a directory interactively" },
 
 	{ on = [ "g", "d" ], run = "cd 'C:/Users/ThinkPad/Desktop'", desc = "Desktop" },
+	{ on = [ "g", "D" ], run = "cd 'D:/Dotfiles'", desc = "Dotfiles" },
 	{ on = [ "g", "p" ], run = "cd 'C:/Users/ThinkPad/Documents/PowerShell'", desc = "powershell config" },
 	{ on = [ "g", "a" ], run = "cd 'C:/Users/ThinkPad/AppData/Roaming/alacritty'", desc = "alacritty config" },
 	{ on = [ "g", "w" ], run = "cd 'C:/Users/ThinkPad/.config/wezterm'", desc = "wezterm config" },
