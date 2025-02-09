@@ -1,7 +1,7 @@
-yazi/state
+yazi/state/*
 
 nvim/nvim-data/*
-
+nvim/nvim/lazy-lock.json
 
 vscode/User/globalStorage/*
 vscode/User/History/*
