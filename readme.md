@@ -1,7 +1,7 @@
 ## 配置文件链接
 
 ### neovim
-mklink /D C:\Users\ThinkPad\AppData\Local\nvim D:\Dotfiles\nvim\nvim
+mklink /D C:\Users\ThinkPad\AppData\Local\nvim D:\Dotfiles\nvim\nvim  
 mklink /D C:\Users\ThinkPad\AppData\Local\nvim-data D:\Dotfiles\nvim\nvim-data
 
 ### yazi
