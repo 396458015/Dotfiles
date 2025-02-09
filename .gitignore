@@ -1,0 +1,10 @@
+yazi/state
+
+nvim/nvim-data/*
+
+
+vscode/User/globalStorage/*
+vscode/User/History/*
+vscode/User/profiles/*
+vscode/User/workspaceStorage/*
+vscode/User/locale.json

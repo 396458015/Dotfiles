@@ -2,11 +2,6 @@ lastupdatecheck: 1700925132
 recentrepos:
     - D:\Dotfiles
     - C:\Users\ThinkPad\AppData\Roaming\typst\packages\local
-    - C:\Users\ThinkPad\AppData\Roaming\yazi\config
-    - C:\Users\ThinkPad\AppData\Local\nvim
-    - C:\Users\ThinkPad\Documents\PowerShell
-    - C:\Users\ThinkPad\AppData\Roaming\Code\User
-    - C:\Users\ThinkPad\.config\winfetch
 startuppopupversion: 5
 lastversion: 0.45.2
 customcommandshistory:
