@@ -1,0 +1,12 @@
+# vim:fileencoding=utf-8:foldmethod=marker
+
+[flavor]
+# use = "catppuccin-latte"  #light
+# use = "catppuccin-frappe"  #dark
+
+light = "catppuccin-latte"  #light
+dark = "catppuccin-frappe"  #dark
+
+
+# dark  = "catppuccin-latte"  #light
+# light = "catppuccin-frappe"  #dark
