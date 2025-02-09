@@ -26,7 +26,7 @@ mklink /D C:\Users\ThinkPad\.config\winfetch D:\Dotfiles\winfetch
 mklink /D C:\Users\ThinkPad\AppData\Roaming\Code\User D:\Dotfiles\vscode\User
 
 ### goneovim
-mklink /D C:\Users\ThinkPad\AppData\Roaming\.goneovim D:\Dotfiles\.goneovim
+'mklink /D C:\Users\ThinkPad\AppData\Roaming\.goneovim D:\Dotfiles\.goneovim'
 
 
 
