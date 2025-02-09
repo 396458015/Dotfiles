@@ -1,0 +1,39 @@
+[Editor]
+Transparent = 0.97 
+BorderlessWindow = true
+HideTitlebar = true
+StartFullscreen = false
+
+FontFamily = "Delugia Mono"
+FontSize = 12
+
+IgnoreFirstMouseClickWhenAppInactivated = true
+RestoreWindowGeometry = true
+IndentGuide = true
+Gap = 2
+
+Clipboard = true
+CachedDrawing = true
+
+HideMouseWhenTyping = false
+LineToScroll = 5
+MouseScrollingUnit = "smart"
+
+SmoothScroll = false
+DisableHorizontalScroll = true
+
+[Cursor]
+SmoothMove = false
+Duration = 100
+
+[MiniMap]
+Visible = false
+
+[Palette]
+Transparent = 0
+
+[Message]
+Transparent = 0
+
+
+
