@@ -73,6 +73,9 @@ Set-Alias gg LazyGit
 Set-Alias ipy ipython
 Set-Alias rename Rename-Item
 
+# Git bash
+Set-Alias gitbash "D:\Program Files\Git\bin\bash.exe"
+
 # 打开子系统,路径为~
 function ww {
     wsl --cd /home/thinkpad
