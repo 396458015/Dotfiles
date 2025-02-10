@@ -39,9 +39,9 @@ count_copied   = { fg = "#eeeeee", bg = "#df8e1d" }
 count_cut      = { fg = "#eeeeee", bg = "lightred" }
 
 # Border
-border_symbol = " "
-# border_symbol = "│"
-# border_style  = { fg = "#3b3e4d" }
+# border_symbol = " "
+border_symbol = "│"
+border_style  = { fg = "#3b3e4d" }
 
 # Highlighting
 # syntect_theme = "C:/Users/ThinkPad/AppData/Roaming/yazi/config/bat-themes/Catppuccin Latte.tmTheme"
@@ -50,15 +50,22 @@ border_symbol = " "
 
 # : Status {{{
 
+[mode]
+normal_main = { fg = "#4e49ee", bg = "#eff1f5", bold = true }
+normal_alt  = { fg = "#1e66f5", bg = "#eff1f5" }
+
+# Select mode
+select_main = { fg = "lightgreen", bg = "#eff1f5", bold = true }
+select_alt  = { fg = "red", bg = "#eff1f5" }
+
+# Unset mode
+unset_main = { fg = "lightmagenta", bg = "#eff1f5", bold = true }
+unset_alt  = { fg = "red", bg = "#eff1f5" }
+
 [status]
 separator_open  = ""
 separator_close = ""
 separator_style = { fg = "darkgray", bg = "#7287fd" }  # Latte
-
-# Mode
-mode_normal = { fg = "#89a0c3", bg = "#eff1f5", bold = true }  # Latte
-mode_select = { fg = "lightgreen", bg = "#eff1f5", bold = true }  # Latte
-mode_unset  = { fg = "lightmagenta", bg = "#eff1f5", bold = true }  # Latte
 
 # Progress
 progress_label  = { bold = true }
@@ -129,6 +136,19 @@ separator_style = { fg = "darkgray" }
 
 # : }}}
 
+# : Confirmation {{{
+
+[confirm]
+border     = { fg = "#8caaee" }
+title      = { fg = "#8caaee" }
+content    = {}
+list       = {}
+btn_yes    = { reversed = true }
+btn_no     = {}
+btn_labels = [ "  [Y]es  ", "  (N)o  " ]
+
+# : }}}
+
 # : Help {{{
 
 [help]
@@ -191,6 +211,9 @@ rules = [
 	{ mime = "application/x-mobipocket-ebook", fg = "#c5cc43", bold = true },
     { mime = "application/pdf",                fg = "#b30b00", bold = true },
 
+    { name = "*.toml", fg = "#e37933", bold = true },
+    { name = "*.json", fg = "#cbcb41", bold = true },
+
     # exts
     { name = "*.docx", fg = "#185abd", bold = true },
     { name = "*.doc",  fg = "#185abd", bold = true },
@@ -220,6 +243,8 @@ rules = [
     { name = "*.rar",  fg = "#f71490", bold = true },
     { name = "*.vim",  fg = "#019833", bold = true },
     { name = "*.ahk",  fg = "#7ac673", bold = true },
+    { name = "*.lua",  fg = "#8839ef", bold = true },
+    { name = "*.py",   fg = "#FFBC03", bold = true },
 
 	# Documents
     # { mime = "application/{pdf,doc,rtf,vnd.*}", fg = "cyan" },
@@ -374,12 +399,12 @@ exts = [
     { name = "fish",          text = "", fg = "#4d5a5e" },
     { name = "swift",         text = "", fg = "#e37933" },
     { name = "vim",           text = "", fg = "#019833" },
-    { name = "lua",           text = "", fg = "#51a0cf" },
+    { name = "lua",           text = "", fg = "#8839ef" },
     { name = "html",          text = "", fg = "#e34c26" },
     { name = "css",           text = "", fg = "#61afef" },
     { name = "scss",          text = "", fg = "#f55385" },
     { name = "json",          text = "", fg = "#6d8086" },
-    { name = "toml",          text = "", fg = "#6d8086" },
+    { name = "toml",          text = "󱄽", fg = "#fab387" },
     { name = "yml",           text = "", fg = "#6d8086" },
     { name = "yaml",          text = "", fg = "#6d8086" },
     { name = "ini",           text = "", fg = "#6d8086" },

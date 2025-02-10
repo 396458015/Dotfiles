@@ -1,4 +1,6 @@
-## 配置文件链接
+My personal dotfiles: neovim, powershell, alacritty, wezterm, vscode, etc.
+
+## Links to configuration files
 
 ### neovim
 `mklink /D C:\Users\ThinkPad\AppData\Local\nvim D:\Dotfiles\nvim\nvim`  

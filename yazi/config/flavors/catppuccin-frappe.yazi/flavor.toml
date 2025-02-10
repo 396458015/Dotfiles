@@ -220,7 +220,7 @@ rules = [
 	{ mime = "application/x-mobipocket-ebook", fg = "#c5cc43", bold = true },
     { mime = "application/pdf",                fg = "#b30b00", bold = true },
 
-    { name = "*.toml", fg = "#fab387", bold = true },
+    { name = "*.toml", fg = "#e37933", bold = true },
     { name = "*.json", fg = "#cbcb41", bold = true },
 
     # exts
@@ -414,7 +414,7 @@ exts = [
     { name = "css",           text = "", fg = "#61afef" },
     { name = "scss",          text = "", fg = "#f55385" },
     { name = "json",          text = "", fg = "#cbcb41" },
-    { name = "toml",          text = "󱄽", fg = "#fab387" },
+    { name = "toml",          text = "󱄽", fg = "#e37933" },
     { name = "yml",           text = "", fg = "#abb2bf" },
     { name = "yaml",          text = "", fg = "#abb2bf" },
     { name = "ini",           text = "", fg = "#abb2bf" },

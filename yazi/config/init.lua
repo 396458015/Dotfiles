@@ -2,6 +2,7 @@
 -- starship.yazi
 require("starship"):setup()
 
+
 -- searchjump.yazi
 require("searchjump"):setup {
 	unmatch_fg = "#9ca0b0",
@@ -18,11 +19,26 @@ require("searchjump"):setup {
     search_patterns = {}  -- demo:{"%.e%d+","s%d+e%d+"}
 }
 
+
 -- git.yazi
 THEME.git = THEME.git or {}
 THEME.git.modified = ui.Style():fg("#26deff")
 THEME.git.added = ui.Style():fg("#a6d189")
 require("git"):setup()
 
--- mine-preview.yazi
-require("mime-preview"):setup()
+
+-- mime-ext.yazi
+require("mime-ext"):setup {
+	-- Expand the existing filename database (lowercase), for example:
+	with_files = {
+		makefile = "text/makefile",
+	},
+	with_exts = {
+        m    = "text/m",
+        org  = "text/plain",
+        norg = "text/plain",
+	},
+	fallback_file1 = false,
+}
+
+

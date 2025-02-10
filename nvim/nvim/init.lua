@@ -95,6 +95,22 @@ neomap('n', '<S-up>', ':resize -3<CR>', key_opts_ns)
 neomap('n', '<S-down>', ':resize +3<CR>', key_opts_ns)
 neomap('n', '<S-left>', ':vertical resize +3<CR>', key_opts_ns)
 neomap('n', '<S-right>', ':vertical resize -3<CR>', key_opts_ns)
+-------------------- Quickfix list --------------------
+function toggle_quickfix()
+    local qf_exists = false
+    for _, win in pairs(vim.fn.getwininfo()) do
+        if win["quickfix"] == 1 then
+            qf_exists = true
+            break
+        end
+    end
+    if qf_exists then
+        vim.cmd("cclose")
+    else
+        vim.cmd("copen")
+    end
+end
+neomap('n', '<localleader>q', '<cmd>lua toggle_quickfix()<CR>', { desc = 'Quickfix list toggle' })
 -------------------- 标签页 --------------------
 -- 将新的空白缓冲区替换当前页
 neomap('n', '<c-w>e', ':enew<cr>', key_opts_ns)
@@ -777,6 +793,7 @@ require("lazy").setup({
         { "<leader>fr", mode = { "n" }, "<cmd>Leaderf mru<cr>", desc = "[R]ecently Files" },
         { "<localleader>r", mode = { "n" }, "<cmd>Leaderf mru<cr>", desc = "[R]ecently Files" },
         { "<leader>fb", mode = { "n" }, "<cmd>Leaderf buffer<cr>", desc = "[B]uffer" },
+        { "<leader>fq", mode = { "n" }, "<cmd>Leaderf quickfix<cr>", desc = "[Q]uickfix list" },
     },
     init = function()
     vim.g.Lf_ShortcutF = ""
@@ -826,8 +843,9 @@ require("lazy").setup({
     -- 使用:LeaderfRg 路径不全时, 默认搜索该文件目录下的文件
     vim.cmd([[command! -bar -nargs=? -complete=dir LeaderfRg Leaderf! rg "" <q-args>]])
 
-    -- 修改预览窗口移动,默认为<C-Up>和<C-Down>,修改为<C-b>和<C-f>
-    vim.g.Lf_CommandMap = { ['<C-Up>'] = { '<C-b>' }, ['<C-Down>'] = { '<C-f>' } }
+    -- 修改预览窗口移动,默认为<C-Up>和<C-Down>,修改为<C-b>和<C-f>,竖直分屏打开文件由<C-]>修改为<C-\>.
+    -- 水平分屏打开文件为<C-x>,tab打开文件为<C-t>.
+    vim.g.Lf_CommandMap = { ['<C-Up>'] = { '<C-b>' }, ['<C-Down>'] = { '<C-f>' }, ['<C-]>'] = { '<C-\\>' } }
 
     -- Bottom mode & Change statusline color (not popup mode)
     vim.g.Lf_WindowPosition = 'bottom'
@@ -963,31 +981,24 @@ require("lazy").setup({
   {
     "mikavilpas/yazi.nvim",
     keys = {
-    -- 👇 in this section, choose your own keymappings!
-        -- { "<leader>-", function() require("yazi").yazi() end, desc = "Open the file manager" },
-    -- Open in the current working directory
         { "<A-f>", function() require("yazi").yazi(nil, vim.fn.getcwd()) end, desc = "Open the file manager in nvim's working directory" },
-    -- NOTE: requires a version of yazi that includes
-    -- https://github.com/sxyazi/yazi/pull/1305 from 2024-07-18
-        -- { '<c-up>', function() require('yazi').toggle() end, desc = "Resume the last yazi session" },
     },
     opts = {
-        -- if you want to open yazi instead of netrw, see below for more info
-        open_for_directories = false,
-        -- enable these if you are using the latest version of yazi
-        -- use_ya_for_events_reading = true,
-        -- use_yazi_client_id_flag = true,
-        floating_window_scaling_factor = 0.94,
-        keymaps = {
-            show_help = '<f1>',
-            open_file_in_vertical_split = '<c-v>',
-            open_file_in_horizontal_split = '<c-x>',
-            -- open_file_in_tab = '<c-t>',
-            open_file_in_tab = '<cr>',
-            grep_in_directory = '<nop>',
-            replace_in_directory = '<nop>',
-            cycle_open_buffers = '<nop>',
-            copy_relative_path_to_selected_files = '<nop>',
+         open_multiple_tabs = false,
+         open_for_directories = false,
+         floating_window_scaling_factor = 0.94,
+         keymaps = {
+             show_help = '<f8>',
+             -- 前置快捷键
+             open_file_in_vertical_split = '<c-\\>',
+             open_file_in_horizontal_split = '<c-x>',
+             open_file_in_tab = '<c-t>',
+             send_to_quickfix_list = '<c-q>',
+             grep_in_directory = false,
+             replace_in_directory = false,
+             cycle_open_buffers = false,
+             copy_relative_path_to_selected_files = false,
+             change_working_directory = false,
         },
     },
   },

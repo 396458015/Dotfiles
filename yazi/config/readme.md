@@ -57,7 +57,7 @@ bat的catppuccin主题链接'https://github.com/catppuccin/bat'
 - g <space>    目录跳转  
 
 ---
-- cd   copy parent directory  
+- cd       copy parent directory  
 - <C-b>    预览上移动  
 - <C-f>    预览下移动  
 
@@ -67,10 +67,9 @@ bat的catppuccin主题链接'https://github.com/catppuccin/bat'
 - Z  fzf模糊搜索  
 
 ---
-- o        在文件浏览器中打开  
+- o        打开  
 - Enter    打开  
 - O        选择打开方式  
-- C-Enter  选择打开方式
 
 ---
 - ca         压缩文件  
