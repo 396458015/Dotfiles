@@ -2,8 +2,6 @@
 
 [flavor]
 
-# dark = "catppuccin-latte"  #light
+light = "catppuccin-latte"  #light
 dark = "catppuccin-frappe"  #dark
 
-# light  = "catppuccin-latte"  #light
-# dark = "catppuccin-frappe"  #dark

@@ -66,6 +66,7 @@ unset_alt  = { fg = "red", bg = "#eff1f5" }
 separator_open  = ""
 separator_close = ""
 separator_style = { fg = "darkgray", bg = "#7287fd" }  # Latte
+overall = { fg = "#2e3436", bg = "#eeeeee" }
 
 # Progress
 progress_label  = { bold = true }

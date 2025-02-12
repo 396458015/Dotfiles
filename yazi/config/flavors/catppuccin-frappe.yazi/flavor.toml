@@ -73,6 +73,7 @@ unset_alt  = { fg = "red", bg = "#dddddd" }
 separator_open  = ""
 separator_close = ""
 separator_style = { fg = "darkgray", bg = "#2e3436" }  # Frappe
+overall = { fg = "#dddddd", bg = "#1e1e2e" }
 
 # Progress
 progress_label  = { bold = true }
