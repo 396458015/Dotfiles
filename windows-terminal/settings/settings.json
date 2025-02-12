@@ -1,0 +1,644 @@
+{
+    "$help": "https://aka.ms/terminal-documentation",
+    "$schema": "https://aka.ms/terminal-profiles-schema",
+    "actions": 
+    [
+        {
+            "command": 
+            {
+                "action": "adjustOpacity",
+                "opacity": 25,
+                "relative": true
+            },
+            "id": "User.adjustOpacity.D08B71C0"
+        },
+        {
+            "command": 
+            {
+                "action": "sendInput",
+                "input": "\u001b[D"
+            },
+            "id": "User.sendInput.5AD15B74"
+        },
+        {
+            "command": 
+            {
+                "action": "sendInput",
+                "input": "\u001b[C"
+            },
+            "id": "User.sendInput.86D5A3"
+        },
+        {
+            "command": 
+            {
+                "action": "sendInput",
+                "input": "\u001b[B"
+            },
+            "id": "User.sendInput.42123734"
+        },
+        {
+            "command": 
+            {
+                "action": "sendInput",
+                "input": "\u001b[A"
+            },
+            "id": "User.sendInput.4B548C6C"
+        },
+        {
+            "command": 
+            {
+                "action": "adjustOpacity",
+                "opacity": -25,
+                "relative": true
+            },
+            "id": "User.adjustOpacity.6DBF98E3"
+        },
+        {
+            "command": 
+            {
+                "action": "adjustOpacity",
+                "opacity": 0,
+                "relative": false
+            },
+            "id": "User.adjustOpacity.E90BBAB2"
+        },
+        {
+            "command": 
+            {
+                "action": "splitPane"
+            },
+            "id": "User.splitPane.91AB55B1"
+        }
+    ],
+    "copyFormatting": "none",
+    "copyOnSelect": false,
+    "defaultProfile": "{574e775e-4f2a-5b96-ac1e-a2962a402336}",
+    "keybindings": 
+    [
+        {
+            "id": "User.sendInput.86D5A3",
+            "keys": "alt+l"
+        },
+        {
+            "id": "Terminal.ToggleFocusMode",
+            "keys": "f11"
+        },
+        {
+            "id": null,
+            "keys": "ctrl+numpad0"
+        },
+        {
+            "id": null,
+            "keys": "ctrl+shift+pgdn"
+        },
+        {
+            "id": null,
+            "keys": "ctrl+shift+pgup"
+        },
+        {
+            "id": "Terminal.SwitchToTab3",
+            "keys": "alt+4"
+        },
+        {
+            "id": null,
+            "keys": "ctrl+shift+2"
+        },
+        {
+            "id": null,
+            "keys": "ctrl+shift+5"
+        },
+        {
+            "id": "User.sendInput.5AD15B74",
+            "keys": "alt+h"
+        },
+        {
+            "id": null,
+            "keys": "ctrl+shift+comma"
+        },
+        {
+            "id": "Terminal.ResizePaneUp",
+            "keys": "alt+up"
+        },
+        {
+            "id": null,
+            "keys": "ctrl+shift+a"
+        },
+        {
+            "id": "User.sendInput.42123734",
+            "keys": "alt+j"
+        },
+        {
+            "id": null,
+            "keys": "ctrl+alt+1"
+        },
+        {
+            "id": null,
+            "keys": "alt+shift+left"
+        },
+        {
+            "id": "User.adjustOpacity.D08B71C0",
+            "keys": "ctrl+shift+plus"
+        },
+        {
+            "id": null,
+            "keys": "alt+shift+down"
+        },
+        {
+            "id": null,
+            "keys": "ctrl+tab"
+        },
+        {
+            "id": null,
+            "keys": "ctrl+shift+d"
+        },
+        {
+            "id": "Terminal.CopyToClipboard",
+            "keys": "ctrl+c"
+        },
+        {
+            "id": "Terminal.MoveFocusUp",
+            "keys": "ctrl+shift+k"
+        },
+        {
+            "id": null,
+            "keys": "ctrl+shift+tab"
+        },
+        {
+            "id": null,
+            "keys": "alt+f"
+        },
+        {
+            "id": null,
+            "keys": "alt+f4"
+        },
+        {
+            "id": null,
+            "keys": "ctrl+shift+w"
+        },
+        {
+            "id": null,
+            "keys": "ctrl+shift+6"
+        },
+        {
+            "id": null,
+            "keys": "ctrl+insert"
+        },
+        {
+            "id": null,
+            "keys": "enter"
+        },
+        {
+            "id": null,
+            "keys": "ctrl+shift+3"
+        },
+        {
+            "id": "Terminal.DuplicatePaneAuto",
+            "keys": "alt+shift+d"
+        },
+        {
+            "id": null,
+            "keys": "ctrl+alt+left"
+        },
+        {
+            "id": null,
+            "keys": "ctrl+shift+4"
+        },
+        {
+            "id": null,
+            "keys": "ctrl+shift+t"
+        },
+        {
+            "id": null,
+            "keys": "ctrl+shift+1"
+        },
+        {
+            "id": null,
+            "keys": "ctrl+shift+up"
+        },
+        {
+            "id": null,
+            "keys": "ctrl+shift+down"
+        },
+        {
+            "id": null,
+            "keys": "ctrl+shift+space"
+        },
+        {
+            "id": null,
+            "keys": "alt+shift+plus"
+        },
+        {
+            "id": null,
+            "keys": "alt+space"
+        },
+        {
+            "id": "Terminal.PasteFromClipboard",
+            "keys": "ctrl+v"
+        },
+        {
+            "id": null,
+            "keys": "ctrl+comma"
+        },
+        {
+            "id": null,
+            "keys": "ctrl+alt+comma"
+        },
+        {
+            "id": null,
+            "keys": "alt+shift+minus"
+        },
+        {
+            "id": null,
+            "keys": "shift+insert"
+        },
+        {
+            "id": null,
+            "keys": "ctrl+shift+end"
+        },
+        {
+            "id": null,
+            "keys": "ctrl+shift+7"
+        },
+        {
+            "id": null,
+            "keys": "ctrl+shift+home"
+        },
+        {
+            "id": null,
+            "keys": "alt+shift+up"
+        },
+        {
+            "id": null,
+            "keys": "ctrl+alt+5"
+        },
+        {
+            "id": null,
+            "keys": "alt+shift+right"
+        },
+        {
+            "id": null,
+            "keys": "ctrl+shift+8"
+        },
+        {
+            "id": null,
+            "keys": "ctrl+shift+9"
+        },
+        {
+            "id": null,
+            "keys": "win+sc(41)"
+        },
+        {
+            "id": null,
+            "keys": "ctrl+numpad_minus"
+        },
+        {
+            "id": "User.sendInput.4B548C6C",
+            "keys": "alt+k"
+        },
+        {
+            "id": null,
+            "keys": "ctrl+numpad_plus"
+        },
+        {
+            "id": null,
+            "keys": "ctrl+alt+2"
+        },
+        {
+            "id": null,
+            "keys": "ctrl+alt+9"
+        },
+        {
+            "id": null,
+            "keys": "ctrl+alt+3"
+        },
+        {
+            "id": "User.adjustOpacity.6DBF98E3",
+            "keys": "ctrl+shift+minus"
+        },
+        {
+            "id": null,
+            "keys": "ctrl+alt+7"
+        },
+        {
+            "id": null,
+            "keys": "ctrl+alt+4"
+        },
+        {
+            "id": null,
+            "keys": "ctrl+alt+6"
+        },
+        {
+            "id": null,
+            "keys": "ctrl+alt+8"
+        },
+        {
+            "id": "Terminal.SwitchToTab7",
+            "keys": "alt+8"
+        },
+        {
+            "id": "Terminal.SwitchToTab2",
+            "keys": "alt+3"
+        },
+        {
+            "id": "Terminal.ResizePaneLeft",
+            "keys": "alt+left"
+        },
+        {
+            "id": "Terminal.FindText",
+            "keys": "ctrl+shift+f"
+        },
+        {
+            "id": "Terminal.ScrollDown",
+            "keys": "ctrl+shift+u"
+        },
+        {
+            "id": "Terminal.ScrollUp",
+            "keys": "ctrl+shift+i"
+        },
+        {
+            "id": "User.adjustOpacity.E90BBAB2",
+            "keys": "ctrl+shift+backspace"
+        },
+        {
+            "id": "User.splitPane.91AB55B1",
+            "keys": "alt+\\"
+        },
+        {
+            "id": "Terminal.ResizePaneDown",
+            "keys": "alt+down"
+        },
+        {
+            "id": "Terminal.ResizePaneRight",
+            "keys": "alt+right"
+        },
+        {
+            "id": "Terminal.OpenNewTab",
+            "keys": "ctrl+shift+n"
+        },
+        {
+            "id": "Terminal.MoveFocusLeft",
+            "keys": "ctrl+shift+h"
+        },
+        {
+            "id": "Terminal.MoveFocusRight",
+            "keys": "ctrl+shift+l"
+        },
+        {
+            "id": "Terminal.MoveFocusDown",
+            "keys": "ctrl+shift+j"
+        },
+        {
+            "id": "Terminal.SwitchToTab0",
+            "keys": "alt+1"
+        },
+        {
+            "id": "Terminal.SwitchToTab1",
+            "keys": "alt+2"
+        },
+        {
+            "id": "Terminal.SwitchToTab4",
+            "keys": "alt+5"
+        },
+        {
+            "id": "Terminal.SwitchToTab5",
+            "keys": "alt+6"
+        },
+        {
+            "id": "Terminal.SwitchToTab6",
+            "keys": "alt+7"
+        }
+    ],
+    "newTabMenu": 
+    [
+        {
+            "type": "remainingProfiles"
+        }
+    ],
+    "profiles": 
+    {
+        "defaults": 
+        {
+            "cursorShape": "vintage",
+            "environment": 
+            {
+                "TERM": "wt"
+            }
+        },
+        "list": 
+        [
+            {
+                "colorScheme": "catppuccin-latte",
+                "font": 
+                {
+                    "face": "Delugia Mono",
+                    "size": 13
+                },
+                "guid": "{574e775e-4f2a-5b96-ac1e-a2962a402336}",
+                "hidden": false,
+                "name": "PowerShell",
+                "source": "Windows.Terminal.PowershellCore"
+            }
+        ]
+    },
+    "schemes": 
+    [
+        {
+            "background": "#EFF1F5",
+            "black": "#5C5F77",
+            "blue": "#1E66F5",
+            "brightBlack": "#ACB0BE",
+            "brightBlue": "#1E66F5",
+            "brightCyan": "#179299",
+            "brightGreen": "#40A02B",
+            "brightPurple": "#EA76CB",
+            "brightRed": "#D20F39",
+            "brightWhite": "#BCC0CC",
+            "brightYellow": "#DF8E1D",
+            "cursorColor": "#DC8A78",
+            "cyan": "#179299",
+            "foreground": "#4C4F69",
+            "green": "#40A02B",
+            "name": "Catppuccin Latte",
+            "purple": "#EA76CB",
+            "red": "#D20F39",
+            "selectionBackground": "#ACB0BE",
+            "white": "#ACB0BE",
+            "yellow": "#DF8E1D"
+        },
+        {
+            "background": "#101216",
+            "black": "#000000",
+            "blue": "#6CA4F8",
+            "brightBlack": "#4D4D4D",
+            "brightBlue": "#6CA4F8",
+            "brightCyan": "#2B7489",
+            "brightGreen": "#56D364",
+            "brightPurple": "#DB61A2",
+            "brightRed": "#F78166",
+            "brightWhite": "#FFFFFF",
+            "brightYellow": "#E3B341",
+            "cursorColor": "#C9D1D9",
+            "cyan": "#2B7489",
+            "foreground": "#8B949E",
+            "green": "#56D364",
+            "name": "GitHub Dark",
+            "purple": "#DB61A2",
+            "red": "#F78166",
+            "selectionBackground": "#3B5070",
+            "white": "#FFFFFF",
+            "yellow": "#E3B341"
+        },
+        {
+            "background": "#1B1B1B",
+            "black": "#1B1B1B",
+            "blue": "#458588",
+            "brightBlack": "#928374",
+            "brightBlue": "#83A598",
+            "brightCyan": "#8EC07C",
+            "brightGreen": "#B8BB26",
+            "brightPurple": "#D3869B",
+            "brightRed": "#FB4934",
+            "brightWhite": "#EBDBB2",
+            "brightYellow": "#FABD2F",
+            "cursorColor": "#EBDBB2",
+            "cyan": "#689D6A",
+            "foreground": "#EBDBB2",
+            "green": "#98971A",
+            "name": "GruvboxDarkHard",
+            "purple": "#B16286",
+            "red": "#CC241D",
+            "selectionBackground": "#665C54",
+            "white": "#A89984",
+            "yellow": "#D79921"
+        },
+        {
+            "background": "#CBCCD1",
+            "black": "#0F0F14",
+            "blue": "#34548A",
+            "brightBlack": "#0F0F14",
+            "brightBlue": "#34548A",
+            "brightCyan": "#0F4B6E",
+            "brightGreen": "#33635C",
+            "brightPurple": "#5A4A78",
+            "brightRed": "#8C4351",
+            "brightWhite": "#828594",
+            "brightYellow": "#8F5E15",
+            "cursorColor": "#FFFFFF",
+            "cyan": "#0F4B6E",
+            "foreground": "#4C505E",
+            "green": "#33635C",
+            "name": "TokyoNightLight",
+            "purple": "#5A4A78",
+            "red": "#8C4351",
+            "selectionBackground": "#FFFFFF",
+            "white": "#828594",
+            "yellow": "#8F5E15"
+        },
+        {
+            "background": "#FAFAFA",
+            "black": "#000000",
+            "blue": "#41A6D9",
+            "brightBlack": "#323232",
+            "brightBlue": "#73D8FF",
+            "brightCyan": "#7FF1CB",
+            "brightGreen": "#B8E532",
+            "brightPurple": "#FFA3AA",
+            "brightRed": "#FF6565",
+            "brightWhite": "#FFFFFF",
+            "brightYellow": "#FFC94A",
+            "cursorColor": "#FF6A00",
+            "cyan": "#4DBF99",
+            "foreground": "#5C6773",
+            "green": "#86B300",
+            "name": "ayu_light",
+            "purple": "#F07178",
+            "red": "#FF3333",
+            "selectionBackground": "#F0EEE4",
+            "white": "#FFFFFF",
+            "yellow": "#F29718"
+        },
+        {
+            "background": "#1F1F28",
+            "black": "#51576D",
+            "blue": "#8CAAEE",
+            "brightBlack": "#626880",
+            "brightBlue": "#8CAAEE",
+            "brightCyan": "#81C8BE",
+            "brightGreen": "#A6D189",
+            "brightPurple": "#F4B8E4",
+            "brightRed": "#E78284",
+            "brightWhite": "#A5ADCE",
+            "brightYellow": "#E5C890",
+            "cursorColor": "#F2D5CF",
+            "cyan": "#81C8BE",
+            "foreground": "#C6D0F5",
+            "green": "#A6D189",
+            "name": "catppuccin-frappe",
+            "purple": "#F4B8E4",
+            "red": "#E78284",
+            "selectionBackground": "#626880",
+            "white": "#B5BFE2",
+            "yellow": "#E5C890"
+        },
+        {
+            "background": "#EEEEEE",
+            "black": "#5C5F77",
+            "blue": "#1E66F5",
+            "brightBlack": "#6C6F85",
+            "brightBlue": "#1E66F5",
+            "brightCyan": "#179299",
+            "brightGreen": "#40A02B",
+            "brightPurple": "#EA76CB",
+            "brightRed": "#D20F39",
+            "brightWhite": "#BCC0CC",
+            "brightYellow": "#DF8E1D",
+            "cursorColor": "#6c6f85",
+            "cyan": "#179299",
+            "foreground": "#4C4F69",
+            "green": "#40A02B",
+            "name": "catppuccin-latte",
+            "purple": "#EA76CB",
+            "red": "#D20F39",
+            "selectionBackground": "#ACB0BE",
+            "white": "#ACB0BE",
+            "yellow": "#DF8E1D"
+        },
+        {
+            "background": "#1F1F28",
+            "black": "#1F1F28",
+            "blue": "#7EB3C9",
+            "brightBlack": "#3C3C51",
+            "brightBlue": "#7BC2DF",
+            "brightCyan": "#7BC2DF",
+            "brightGreen": "#9EC967",
+            "brightPurple": "#A98FD2",
+            "brightRed": "#EC818C",
+            "brightWhite": "#A8A48D",
+            "brightYellow": "#F1C982",
+            "cursorColor": "#E6E0C2",
+            "cyan": "#7EB3C9",
+            "foreground": "#DDD8BB",
+            "green": "#98BC6D",
+            "name": "kanagawabones",
+            "purple": "#957FB8",
+            "red": "#E46A78",
+            "selectionBackground": "#49473E",
+            "white": "#DDD8BB",
+            "yellow": "#E5C283"
+        }
+    ],
+    "showTabsInTitlebar": true,
+    "showTerminalTitleInTitlebar": true,
+    "themes": [],
+    "useAcrylicInTabRow": true,
+    "alwaysShowTabs": true,
+    "autoHideWindow": false,
+    "copyFormatting": "none",
+    "copyOnSelect": false,
+    "experimental.rendering.forceFullRepaint": false,
+    "experimental.rendering.software": false,
+    "initialCols": 125,
+    "initialRows": 33,
+    "launchMode": "default",
+    "minimizeToNotificationArea": false,
+}
