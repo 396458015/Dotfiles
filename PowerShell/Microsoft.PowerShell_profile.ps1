@@ -157,6 +157,12 @@ function start_wezterm {
 }
 Set-Alias -Name wezterm -Value start_wezterm
 
+function start_wt {
+    $wt_path = "C:\Users\ThinkPad\scoop\apps\windows-terminal\current\wt.exe"
+    Start-Process $wt_path
+}
+Set-Alias -Name wt -Value start_wt
+
 function sumatrapdf_start {
     $sumatrapdf_path = "C:\Users\ThinkPad\scoop\apps\SumatraPDF\current\SumatraPDF.exe"
     Start-Process $sumatrapdf_path
