@@ -1,9 +1,9 @@
 -- WezTerm Main configuration
-local Darkness = 0    -- 1: darkness, others: lightness
-local BG_pic   = 0    -- 0: without pic, others: pic
+local Darkness = 1    -- 1: darkness, others: lightness
+local BG_pic   = 1    -- 0: without pic, others: pic
 local Screen_width_ratio  = 0.85
 local Screen_height_ratio = 0.85
-local opacity_dark  = 0.90
+local opacity_dark  = 0.96
 local opacity_light = 1.00
 
 
@@ -13,9 +13,9 @@ local wezterm = require('wezterm')
 
 -- 修改深色主题对应的颜色
 if Darkness == 1 then
-    -- 光标
-    colors.cursor_bg = "#abb2bf"
-    colors.cursor_fg = "#303446"
+    -- cursor
+    -- colors.cursor_bg = "#abb2bf"
+    -- colors.cursor_fg = "#303446"
     -- tab_bar底色
     colors.tab_bar.background = "#1e1e2e"
     -- 字体颜色
@@ -69,8 +69,7 @@ local themeConfig = setupTheme()
 
 local config = {
     color_scheme = themeConfig.color_scheme,
-    animation_fps = 60,
-    max_fps = 60,
+    max_fps = 120,
     front_end = 'WebGpu',
     webgpu_power_preference = 'LowPower',  -- use an integrated GPU
     -- webgpu_power_preference = 'HighPerformance',  -- use a discrete GPU
@@ -83,6 +82,14 @@ local config = {
     show_new_tab_button_in_tab_bar = true,
     -- tab栏在底部
     tab_bar_at_bottom = false,
+
+    -- cursor
+    animation_fps = 120,
+    cursor_blink_ease_in = 'EaseOut',
+    cursor_blink_ease_out = 'EaseOut',
+    default_cursor_style = 'BlinkingBlock',
+    cursor_blink_rate = 650,
+    underline_thickness = 3,  -- cursor thickness
 
     hide_tab_bar_if_only_one_tab = false,
     use_fancy_tab_bar = false,
@@ -103,20 +110,34 @@ local config = {
     },
     inactive_pane_hsb = { saturation = 1.0, brightness = 1.0 },
     colors = colors,
+    visual_bell = {
+       fade_in_function = 'EaseIn',
+       fade_in_duration_ms = 250,
+       fade_out_function = 'EaseOut',
+       fade_out_duration_ms = 250,
+       target = 'CursorColor',
+    },
 }
 
 if BG_pic == 0 then
     config.window_background_opacity = themeConfig.opacity
 else
     local random_pic = {
-        '/backdrops/astro-jelly.jpg',
-        '/backdrops/final-showdown.jpg',
-        '/backdrops/pastel-samurai.jpg',
-        '/backdrops/punk.jpg',
-        '/backdrops/space.jpg',
-        '/backdrops/voyage.jpg',
-        '/backdrops/5-cm.jpg',
+        '/backdrops/cloudy-quasar.png',
+        -- '/backdrops/cherry-lava.jpg',
+        -- '/backdrops/space.jpg',
+        -- '/backdrops/totoro.jpeg',
+        -- '/backdrops/voyage.jpg',
+        -- '/backdrops/5-cm.jpg',
+        -- '/backdrops/astro-jelly.jpg',
+        -- '/backdrops/final-showdown.jpg',
+        -- '/backdrops/nord-space.png',
+        -- '/backdrops/pastel-samurai.jpg',
+        -- '/backdrops/punk.jpg',
+        -- '/backdrops/sunset.jpg',
+        -- '/backdrops/sword.jpg',
     }
+
     local pic = math.random(1, #random_pic)
 
     local backgroundImage = {

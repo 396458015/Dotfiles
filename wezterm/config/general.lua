@@ -1,8 +1,9 @@
 return {
    -- ENV
    set_environment_variables = {
-       wezterm = "true"
-     },
+       COLORTERM = 'truecolor',
+       MYSIGN = 'wezterm_sign',
+   },
 
    -- behaviours
    automatically_reload_config = true,
