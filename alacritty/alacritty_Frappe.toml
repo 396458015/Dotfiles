@@ -1,5 +1,6 @@
 # theme
-general.import = [
+[general]
+import = [
   # dark
   # "C:/Users/ThinkPad/AppData/Roaming/alacritty/themes/gruvbox_material_medium_dark.toml",
   # "C:/Users/ThinkPad/AppData/Roaming/alacritty/themes/catppuccin_macchiato.toml",
@@ -27,13 +28,13 @@ general.import = [
   # "C:/Users/ThinkPad/AppData/Roaming/alacritty/themes/ayu_light.toml",
   # "C:/Users/ThinkPad/AppData/Roaming/alacritty/themes/catppuccin_latte.toml",
 ]
-
-general.live_config_reload = true
-general.working_directory  = "C:/Users/ThinkPad/Desktop/"
+live_config_reload = true
+working_directory  = "C:/Users/ThinkPad/Desktop/"
 
 [env]
 TERM = "alacritty"
 COLORTERM = "truecolor"
+MYSIGN = "alacritty_sign"
 
 [terminal.shell]
 program = 'C:\Program Files\PowerShell\7\pwsh.exe'
@@ -46,6 +47,7 @@ dynamic_padding = false
 dynamic_title   = true
 padding         = { x = 2, y = 2 }
 blur            = true
+decorations_theme_variant = "Dark" # "Dark" "Light"
 
 # center_window when font size is 16.0
 # position        = { x = 132, y = 50 }
@@ -69,7 +71,7 @@ builtin_box_drawing = true
 [cursor]
 style = { shape = "Block", blinking = "Off" } # Block Beam Underline
 unfocused_hollow = true
-thickness = 0.15
+thickness = 0.3 # default is 0.15
 
 [scrolling]
 history    = 10000
@@ -82,7 +84,8 @@ duration  = 0
 [colors]
 draw_bold_text_with_bright_colors = true
 transparent_background_colors     = true
-cursor  = { cursor = '#abb2bf' } # 光标颜色 (Frappe)
+# cursor  = { text = "#303446", cursor = '#abb2bf' } # 光标颜色 (Frappe)
+cursor  = { text = "#11111b", cursor = '#f5e0dc' } # 光标颜色 (Frappe)
 vi_mode_cursor = { text = "#1e1e2e", cursor = "#b96167"}  # (Frappe)
 
 [colors.primary]
