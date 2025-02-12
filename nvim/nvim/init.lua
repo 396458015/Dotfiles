@@ -110,7 +110,7 @@ function toggle_quickfix()
         vim.cmd("copen")
     end
 end
-neomap('n', '<localleader>q', '<cmd>lua toggle_quickfix()<CR>', { desc = 'Quickfix list toggle' })
+neomap('n', '<leader>Q', '<cmd>lua toggle_quickfix()<CR>', { desc = '[Q]uickfix list toggle' })
 -------------------- 标签页 --------------------
 -- 将新的空白缓冲区替换当前页
 neomap('n', '<c-w>e', ':enew<cr>', key_opts_ns)
@@ -2626,21 +2626,21 @@ nvim_create_augroups({
 -- }}}
 
 -- {{{ colorscheme
-local is_alacritty = vim.loop.os_getenv("alacritty")
-local is_wezterm   = vim.loop.os_getenv("wezterm")
+local term_sign = vim.loop.os_getenv("MYSIGN")
 
 if vim.fn.has('gui_running') == 1 then
--- random colorscheme
     local colorscheme_list = {
-        -- 'catppuccin-latte',  -- light
-        'catppuccin-frappe',  -- dark: macchiato, mocha
+        'catppuccin-frappe',
+        -- 'catppuccin-latte',
     }
     local randomIndex_CS = math.random(1,#colorscheme_list)
     vim.cmd('colorscheme ' .. colorscheme_list[randomIndex_CS])
 else
-    if is_alacritty then
+    if term_sign == "alacritty_sign" then          -- alacritty
         vim.cmd('colorscheme catppuccin-frappe')
-    elseif is_wezterm then
+    elseif term_sign == "wezterm_sign" then        -- wezterm
+        vim.cmd('colorscheme catppuccin-frappe')
+    elseif term_sign == "wt_sign" then             -- windows-terminal
         vim.cmd('colorscheme catppuccin-latte')
     else
         vim.cmd('colorscheme catppuccin-frappe')
