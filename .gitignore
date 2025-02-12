@@ -8,3 +8,7 @@ vscode/User/History/*
 vscode/User/profiles/*
 vscode/User/workspaceStorage/*
 vscode/User/locale.json
+
+windows-terminal/settings/state.json
+
+
