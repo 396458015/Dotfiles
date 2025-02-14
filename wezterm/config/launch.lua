@@ -6,7 +6,7 @@ local options = {
 }
 
 if platform.is_win then
-   options.default_prog = { 'C:\\Program Files\\PowerShell\\7\\pwsh.exe' }
+   options.default_prog = { 'C:\\Program Files\\PowerShell\\7\\pwsh.exe', '-NoLogo' }
    -- options.default_prog = { 'wsl.exe', '-d', 'Ubuntu' }
    options.launch_menu = {
       { label = 'Ubuntu (WSL2)', args = { 'wsl.exe', '-d', 'Ubuntu' } },

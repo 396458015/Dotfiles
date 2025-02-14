@@ -1,11 +1,15 @@
 -- WezTerm Main configuration
 local Darkness = 1    -- 1: darkness, others: lightness
-local BG_pic   = 1    -- 0: without pic, others: pic
-local Screen_width_ratio  = 0.85
-local Screen_height_ratio = 0.85
-local opacity_dark  = 0.96
+
+local BG_pic   = 0    -- 0: without pic, others: pic
+
+local opacity_dark  = 0.74
 local opacity_light = 1.00
 
+local blur_behind = 'Acrylic'  -- "Disable", "Acrylic"
+
+local Screen_width_ratio  = 0.85
+local Screen_height_ratio = 0.85
 
 local theme = Darkness == 1 and "catppucchin_mocha" or "catppucchin_latte"
 local colors = require('colors.' .. theme)
@@ -13,15 +17,19 @@ local wezterm = require('wezterm')
 
 -- 修改深色主题对应的颜色
 if Darkness == 1 then
-    -- cursor
-    -- colors.cursor_bg = "#abb2bf"
-    -- colors.cursor_fg = "#303446"
-    -- tab_bar底色
-    colors.tab_bar.background = "#1e1e2e"
     -- 字体颜色
     colors.foreground = "#abb2bf"
+
+    -- 光标
+    -- colors.cursor_bg = "#abb2bf"
+    -- colors.cursor_fg = "#303446"
+
     -- 背景底色
     -- colors.background = "#1f1f28"
+
+    -- tab_bar 背景底色
+    -- colors.tab_bar.background = "#1e1e2e"
+    -- colors.tab_bar.background = 'rgba(0,0,0,0)'  -- 透明
 end
 
 -- 修改浅色主题对应的颜色
@@ -29,8 +37,10 @@ if Darkness ~= 1 then
     -- 光标
     colors.cursor_bg = "#6c6f85"
     colors.cursor_fg = "#eff1f5"
+
     -- 背景底色
     colors.background = "#eeeeee"
+
     -- tab_bar底色
     colors.tab_bar.background = "#eeeeee"
 end
@@ -69,28 +79,22 @@ local themeConfig = setupTheme()
 
 local config = {
     color_scheme = themeConfig.color_scheme,
+    win32_system_backdrop = blur_behind,  -- Acrylic blur-behind-window effect
+
     max_fps = 120,
     front_end = 'WebGpu',
-    webgpu_power_preference = 'LowPower',  -- use an integrated GPU
-    -- webgpu_power_preference = 'HighPerformance',  -- use a discrete GPU
+    webgpu_power_preference = 'LowPower',  -- use an integrated GPU; 'HighPerformance'
 
-    -- 不显示tab栏 (false, 包含tab button,date tiem, batter)
-    enable_tab_bar = true,
+    -- scrollbar
+    enable_scroll_bar = false,
+
+    -- tab bar
+    enable_tab_bar = true,  -- 显示tab栏
+    tab_bar_at_bottom = false,  -- tab栏在底部
     -- 仅不显示tab button (all false)
     show_tab_index_in_tab_bar = true,
     show_tabs_in_tab_bar = true,
     show_new_tab_button_in_tab_bar = true,
-    -- tab栏在底部
-    tab_bar_at_bottom = false,
-
-    -- cursor
-    animation_fps = 120,
-    cursor_blink_ease_in = 'EaseOut',
-    cursor_blink_ease_out = 'EaseOut',
-    default_cursor_style = 'BlinkingBlock',
-    cursor_blink_rate = 650,
-    underline_thickness = 3,  -- cursor thickness
-
     hide_tab_bar_if_only_one_tab = false,
     use_fancy_tab_bar = false,
     tab_max_width = 25,
@@ -100,23 +104,27 @@ local config = {
     integrated_title_button_color = "Auto",
     integrated_title_button_style = "Windows",
     integrated_title_buttons = { 'Hide', 'Maximize', 'Close' },
-    adjust_window_size_when_changing_font_size = false,
-    enable_scroll_bar = false,
-    window_padding = { left = 2, right = 2, top = 2, bottom = 2 },
-    window_close_confirmation = 'NeverPrompt',
+
+    -- cursor
+    animation_fps = 120,
+    cursor_blink_ease_in = 'EaseOut',
+    cursor_blink_ease_out = 'EaseOut',
+    default_cursor_style = 'BlinkingBlock',
+    cursor_blink_rate = 650,
     hide_mouse_cursor_when_typing = true,
+    underline_thickness = 3,  -- cursor thickness
+
+    -- window
+    window_padding = { left = 2, right = 2, top = 2, bottom = 2 },
+    adjust_window_size_when_changing_font_size = false,
+    window_close_confirmation = 'NeverPrompt',
     window_frame = {
         active_titlebar_bg = '#090909',
     },
     inactive_pane_hsb = { saturation = 1.0, brightness = 1.0 },
+
+    -- color scheme
     colors = colors,
-    visual_bell = {
-       fade_in_function = 'EaseIn',
-       fade_in_duration_ms = 250,
-       fade_out_function = 'EaseOut',
-       fade_out_duration_ms = 250,
-       target = 'CursorColor',
-    },
 }
 
 if BG_pic == 0 then
