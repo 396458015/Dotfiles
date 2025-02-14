@@ -1,12 +1,13 @@
 -- WezTerm Main configuration
 local Darkness = 1    -- 1: darkness, others: lightness
 
-local BG_pic   = 0    -- 0: without pic, others: pic
+local BG_pic   = 1    -- 0: without pic, others: pic
 
-local opacity_dark  = 0.74
+local opacity_dark  = 0.96
 local opacity_light = 1.00
 
-local blur_behind = 'Acrylic'  -- "Disable", "Acrylic"
+-- local opacity_dark  = 0.74
+-- local blur_behind = 'Acrylic'  -- "Disable", "Acrylic"
 
 local Screen_width_ratio  = 0.85
 local Screen_height_ratio = 0.85

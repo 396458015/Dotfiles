@@ -37,6 +37,7 @@ require("mime-ext"):setup {
         m    = "text/m",
         org  = "text/plain",
         norg = "text/plain",
+        ps1  = "text/plain",
 	},
 	fallback_file1 = false,
 }

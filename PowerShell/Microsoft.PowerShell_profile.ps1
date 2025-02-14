@@ -5,8 +5,8 @@
 # ------------------- 颜色设置 -------------------
 # 下载"https://github.com/catppuccin/powershell"主题到C:\Users\ThinkPad\Documents\PowerShell\Modules\Catppuccin
 Import-Module Catppuccin
-# $Flavor = $Catppuccin['Frappe']
-$Flavor = $Catppuccin['Latte']
+$Flavor = $Catppuccin['Frappe']
+# $Flavor = $Catppuccin['Latte']
 # Set the colours of PSReadLine
 $Colors = @{
 	# Largely based on the Code Editor style guide

@@ -412,7 +412,6 @@
             "keys": "alt+7"
         }
     ],
-    "launchMode": "default",
     "minimizeToNotificationArea": false,
     "newTabMenu": 
     [
@@ -439,7 +438,7 @@
         "list": 
         [
             {
-                "colorScheme": "catppuccin-latte",
+                "colorScheme": "catppuccin-frappe",
                 "cursorShape": "filledBox",
                 "font": 
                 {
@@ -451,7 +450,9 @@
                 "hidden": false,
                 "intenseTextStyle": "bold",
                 "name": "PowerShell",
-                "source": "Windows.Terminal.PowershellCore"
+                "opacity": 84,
+                "source": "Windows.Terminal.PowershellCore",
+                "useAcrylic": true
             }
         ]
     },

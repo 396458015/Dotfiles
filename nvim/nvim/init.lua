@@ -1599,6 +1599,7 @@ require("lazy").setup({
             },
             git_status = {
               symbols = {
+                modified  = "○",
                 untracked = "",
                 ignored   = "",
                 unstaged  = "", -- U 
@@ -2641,7 +2642,7 @@ else
     elseif term_sign == "wezterm_sign" then        -- wezterm
         vim.cmd('colorscheme catppuccin-frappe')
     elseif term_sign == "wt_sign" then             -- windows-terminal
-        vim.cmd('colorscheme catppuccin-latte')
+        vim.cmd('colorscheme catppuccin-frappe')
     else
         vim.cmd('colorscheme catppuccin-frappe')
     end
