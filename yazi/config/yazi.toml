@@ -14,8 +14,8 @@ mouse_events = []
 [preview]
 wrap            = "yes"
 tab_size        = 2
-max_width       = 600
-max_height      = 900
+max_width       = 1000
+max_height      = 1000
 cache_dir       = ""
 ueberzug_scale  = 1
 ueberzug_offset = [ 0, 0, 0, 0 ]
@@ -26,13 +26,13 @@ sixel_fraction  = 15
 
 [opener]
 nvim = [
-	{ run = 'nvim "%*"',    block = true, desc = "Neovim", for = "windows" },
+	{ run = 'nvim "%1"',    block = true, desc = "Neovim", for = "windows" },
 ]
 open = [
 	{ run = 'start "" "%1"', orphan = true, desc = "Open by default", for = "windows" },
 ]
 extract = [
-    { run = 'ouch d -y "%*"', desc = "Extract here with ouch", for = "windows" },
+    { run = 'ouch d -y "%1"', desc = "Extract here with ouch", for = "windows" },
 ]
 play = [
 	{ run = 'mpv "%1"', orphan = true, desc = "MPV", for = "windows" },

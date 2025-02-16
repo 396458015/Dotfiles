@@ -20,6 +20,12 @@ require("searchjump"):setup {
 }
 
 
+-- smart-enter.yazi
+require("smart-enter"):setup {
+	open_multi = true,
+}
+
+
 -- git.yazi
 THEME.git = THEME.git or {}
 THEME.git.modified = ui.Style():fg("#26deff")
