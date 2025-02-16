@@ -3,7 +3,7 @@ recentrepos:
     - D:\Dotfiles
     - C:\Users\ThinkPad\AppData\Roaming\typst\packages\local
 startuppopupversion: 5
-lastversion: 0.45.2
+lastversion: 0.46.0
 customcommandshistory:
     - q
 hidecommandlog: false

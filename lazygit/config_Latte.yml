@@ -1,6 +1,6 @@
 gui:
     # stuff relating to the UI
-    windowSize: 'normal' # one of 'normal' | 'half' | 'full' default is 'normal'
+    screenMode: 'normal' # one of 'normal' | 'half' | 'full' default is 'normal'
     scrollHeight: 2 # how many lines you scroll by
     scrollPastBottom: true # enable scrolling past the bottom
     sidePanelWidth: 0.3333 # number from 0 to 1
@@ -167,7 +167,7 @@ keybinding:
         # scrollDownMain-alt2: '<c-d>' # main panel scroll down (mxl comment)
         scrollUpMain-alt1: '<c-b>' # main panel scroll up (mxl add)
         scrollDownMain-alt1: '<c-f>' # main panel scroll down (mxl add)
-        executeCustomCommand: ':'
+        executeShellCommand: ':'
         createRebaseOptionsMenu: 'm'
         pushFiles: 'P'
         pullFiles: 'p'
