@@ -2147,7 +2147,7 @@ require("lazy").setup({
           end,
         },
     },
-    version = 'v0.*',
+    version = '*',
     ---@module 'blink.cmp'
     ---@type blink.cmp.Config
     opts = {
@@ -2173,11 +2173,30 @@ require("lazy").setup({
 
             -- disable a keymap from the preset
             -- ['<C-e>'] = {},
+        },
 
-            cmdline = {
+        cmdline = {
+            enabled = true,
+            keymap = {
                 ['<C-k>'] = { 'select_prev', 'fallback' },
                 ['<C-j>'] = { 'select_next', 'fallback' },
                 ['<Tab>'] = { 'accept', 'fallback' },
+            },
+            sources = function()
+                local type = vim.fn.getcmdtype()
+
+                if type == "/" or type == "?" then return { "buffer" } end
+                if type == ":" or type == "@" then
+                    return { "cmdline" }
+                end
+                return {}
+            end,
+            completion = {
+                menu = {
+                    draw = {
+                        columns = { { "kind_icon", "label", "label_description" } },
+                    },
+                },
             },
         },
 
@@ -2237,15 +2256,6 @@ require("lazy").setup({
                 -- python = { 'lsp', 'path', 'snippets' },
                 -- typst = { 'lsp', 'path', 'snippets', 'buffer' },
             },
-
-            cmdline = function()
-              local type = vim.fn.getcmdtype()
-              -- Search forward and backward
-              if type == '/' or type == '?' then return { 'buffer' } end
-              -- Commands
-              if type == ':' then return { 'cmdline' } end
-              return {}
-            end,
 
             providers = {
                 lsp = {
