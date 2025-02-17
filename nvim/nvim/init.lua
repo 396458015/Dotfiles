@@ -300,8 +300,8 @@ local vim_opts = {
     wildmode = "longest:full,full",  -- Command-line completion mode
     wrap = true,
     writebackup = false,
-    inccommand="nosplit"
-    -- shell = "C:/PROGRA~1/PowerShell/7/pwsh.exe" -- pwsh7,启动速度200+ms
+    inccommand="nosplit",
+    -- shell = "C:/PROGRA~1/PowerShell/7/pwsh.exe" -- pwsh7,启动速度200+ms, 与yazi.nvim冲突
 }
 for k, v in pairs(vim_opts) do
     vim.opt[k] = v
