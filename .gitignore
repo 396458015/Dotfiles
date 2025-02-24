@@ -1,5 +1,7 @@
 yazi/state/*
 
+lazygit/state.yml
+
 nvim/nvim-data/*
 nvim/nvim/lazy-lock.json
 
