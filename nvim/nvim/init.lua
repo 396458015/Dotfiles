@@ -725,8 +725,8 @@ require("lazy").setup({
   {
     "arecarn/vim-crunch",
     keys = {
-        { "<leader>,", mode = { "n" }, "<Plug>(crunch-operator-line)", { desc = 'Calculator' } },
-        { "<leader>,", mode = { "x" }, "<Plug>(visual-crunch-operator)", { desc = 'Calculator' } },
+        { "<leader> ", mode = { "n" }, "<Plug>(crunch-operator-line)", { desc = 'Calculator' } },
+        { "<leader> ", mode = { "x" }, "<Plug>(visual-crunch-operator)", { desc = 'Calculator' } },
     },
   },
 -- }}}
@@ -2537,7 +2537,7 @@ require("lazy").setup({
             { "<localleader>w", desc = "[W]eather Forecast",   icon = { icon = "", color = "blue" } },
 
       -- set function icon
-            { "<leader>,",      desc = "Calculator",   icon = { icon = "", color = "cyan" } }, -- bug
+            { "<leader> ",      desc = "Calculator",   icon = { icon = "", color = "cyan" } }, -- bug
             { "<leader>\\",     desc = "Smart split",  icon = { icon = "", color = "yellow" } },
             { "<leader>z",      desc = "Replace Word", icon = { icon = "", color = "red" } },
             { "<leader>b",      desc = "Columns Num",  icon = { icon = "", color = "cyan" } },
