@@ -111,19 +111,19 @@
         },
         {
             "id": null,
-            "keys": "ctrl+shift+5"
-        },
-        {
-            "id": null,
             "keys": "ctrl+shift+2"
         },
         {
             "id": null,
-            "keys": "ctrl+shift+comma"
+            "keys": "ctrl+shift+5"
         },
         {
             "id": "User.sendInput.5AD15B74",
             "keys": "alt+h"
+        },
+        {
+            "id": null,
+            "keys": "ctrl+shift+comma"
         },
         {
             "id": "Terminal.ResizePaneUp",
@@ -461,6 +461,7 @@
                 "padding": "7",
                 "scrollbarState": "hidden",
                 "source": "Windows.Terminal.PowershellCore",
+                "startingDirectory": null,
                 "useAcrylic": true
             }
         ]
