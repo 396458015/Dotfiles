@@ -2191,13 +2191,7 @@ require("lazy").setup({
                 end
                 return {}
             end,
-            completion = {
-                menu = {
-                    draw = {
-                        columns = { { "kind_icon", "label", "label_description" } },
-                    },
-                },
-            },
+            completion = { menu = { auto_show = true } },
         },
 
         enabled = function() return vim.bo.buftype ~= "prompt" and vim.b.completion ~= false end,
