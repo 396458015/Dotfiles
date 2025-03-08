@@ -63,8 +63,8 @@ unset_main = { fg = "lightmagenta", bg = "#eff1f5", bold = true }
 unset_alt  = { fg = "red", bg = "#eff1f5" }
 
 [status]
-separator_open  = ""
-separator_close = ""
+sep_left  = { open = "", close = "" }
+sep_right = { open = "", close = "" }
 separator_style = { fg = "darkgray", bg = "#7287fd" }  # Latte
 overall = { fg = "#2e3436", bg = "#eeeeee" }
 
@@ -103,7 +103,7 @@ selected = { reversed = true }
 
 # : Completion {{{
 
-[completion]
+[cmp]
 border   = { fg = "#ae6485" }
 active   = { bg = "darkgray" }
 inactive = {}
