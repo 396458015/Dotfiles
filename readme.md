@@ -34,7 +34,6 @@ My personal dotfiles: neovim, powershell, alacritty, wezterm, vscode, etc.
 `mklink /D C:\Users\ThinkPad\scoop\apps\windows-terminal\current\settings D:\Dotfiles\windows-terminal\settings`  
 `mklink /D C:\Users\ThinkPad\scoop\persist\windows-terminal\settings D:\Dotfiles\windows-terminal\settings`
 
-
-
-
-
+### Total-Commander
+`mklink "D:\Program Files\TotalCMD\WinCMD.ini" "D:\Dotfiles\Total-Commander\WinCMD.ini"`  
+`mklink /D "D:\Program Files\TotalCMD\User" "D:\Dotfiles\Total-Commander\User"`
