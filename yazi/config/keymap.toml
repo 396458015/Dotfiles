@@ -148,8 +148,9 @@ keymap = [
 	{ on = [ "g", "9" ], run = "cd 'C:/Users/ThinkPad/.config/winfetch'", desc = "winfetch config" },
 	{ on = [ "g", "8" ], run = "cd 'C:/Users/ThinkPad/AppData/Roaming/.goneovim'", desc = "goneovim config" },
 
-	{ on = [ "g", "t" ], run = "cd 'C:/Users/ThinkPad/AppData/Roaming/typst/packages/local'", desc = "typst templates" },
+	{ on = [ "g", "T" ], run = "cd 'C:/Users/ThinkPad/AppData/Roaming/typst/packages/local'", desc = "typst templates" },
 
+	{ on = [ "g", "t" ], run = "cd 'D:/Program Files/TotalCMD'", desc = "Total Commander config" },
 	{ on = [ "g", "0" ], run = "cd 'E:/Cache/ChromeDownload'", desc = "Chrome Download" },
 	{ on = [ "g", "1" ], run = "cd 'F:/NPU/mxl_nputhesis'", desc = "NPU thesis" },
 
