@@ -11,12 +11,12 @@ $Flavor = $Catppuccin['Frappe']
 $Colors = @{
 	# Largely based on the Code Editor style guide
 	# Emphasis, ListPrediction and ListPredictionSelected are inspired by the Catppuccin fzf theme
-	
+
 	# Powershell colours
 	ContinuationPrompt     = $Flavor.Teal.Foreground()
 	Emphasis               = $Flavor.Red.Foreground()
 	Selection              = $Flavor.Surface0.Background()
-	
+
 	# PSReadLine prediction colours
 	InlinePrediction       = $Flavor.Overlay0.Foreground()
 	ListPrediction         = $Flavor.Mauve.Foreground()
@@ -124,14 +124,20 @@ function .... { cd ..; cd ..; cd .. }
 function ..... { cd ..; cd ..; cd ..; cd ..}
 
 # 当前工作目录以我的电脑形式打开, o
-function OpenCurrentFolder {
-	param
-	(
-		$Path = '.'
-	)
-	Invoke-Item $Path
+# function OpenCurrentFolder {
+# 	param
+# 	(
+# 		$Path = '.'
+# 	)
+# 	Invoke-Item $Path
+# }
+# Set-Alias -Name o -Value OpenCurrentFolder
+
+# 当前工作目录以Total commander形式打开, o
+function OpenCurrentFolder_TC {
+    Start-Process "D:\Program Files\TotalCMD\TOTALCMD64.EXE" -ArgumentList "/O", "/T", "/L=`"$PWD`""
 }
-Set-Alias -Name o -Value OpenCurrentFolder
+Set-Alias -Name o -Value OpenCurrentFolder_TC
 
 function dt { cd '~/Desktop' }
 
@@ -162,6 +168,12 @@ function start_wt {
     Start-Process $wt_path
 }
 Set-Alias -Name wt -Value start_wt
+
+function start_tc {
+    $rc_path = "D:\Program Files\TotalCMD\TOTALCMD64.EXE"
+    Start-Process $rc_path
+}
+Set-Alias -Name tc -Value start_tc
 
 function sumatrapdf_start {
     $sumatrapdf_path = "C:\Users\ThinkPad\scoop\apps\SumatraPDF\current\SumatraPDF.exe"
