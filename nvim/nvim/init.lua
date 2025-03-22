@@ -2550,6 +2550,12 @@ require("lazy").setup({
 -- }}}
 
 -- {{{ autocmds
+
+-- 设置高亮: norg --> org
+vim.filetype.add({
+    extension = { norg = "org" },
+})
+
 vim.cmd[[
 " 中/英输入法切换
 " augroup input_switching
