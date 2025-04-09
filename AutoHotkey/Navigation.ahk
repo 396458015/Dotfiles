@@ -10,6 +10,9 @@
     || WinActive("ahk_exe Explorer.EXE")         ;Explorer
     || WinActive("ahk_class TTOTAL_CMD")         ;Total Commander
     || WinActive("ahk_class mpv")                ;mpv
+    || WinActive("ahk_exe zotero.exe")           ;Zotero
+    || WinActive("ahk_exe dopus.exe")            ;Directory Opus
+    || WinActive("ahk_exe speedcrunch.exe")      ;SpeedCrunch
 
 !h::Send("{Left}")
 !j::Send("{Down}")
