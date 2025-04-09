@@ -237,6 +237,7 @@ vim.g.have_nerd_font = true
 local vim_opts = {
     autochdir = true,  -- 设定文件浏览器目录为当前目录
     autoindent = true,  -- 自动对齐
+    autoread = true,  -- 自动读取
     backspace = "indent,eol,start",
     backup = false,
     backupskip = "/tmp/*,$TMPDIR/*,$TMP/*,$TEMP/*,*/shm/*,/private/var/*,.vault.vim",
@@ -2554,6 +2555,19 @@ require("lazy").setup({
 -- 设置高亮: norg --> org
 vim.filetype.add({
     extension = { norg = "org" },
+})
+
+-- 当 Neovim 重新获得焦点、进入 buffer 或停留时，检测文件是否被外部修改
+vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "CursorHold" }, {
+  pattern = "*",
+  command = "checktime",
+})
+-- 当文件被外部更改后，提示代码已修改
+vim.api.nvim_create_autocmd("FileChangedShellPost", {
+  pattern = "*",
+  callback = function()
+    vim.fn.confirm(" File changed on disk!", "OK", 1)
+  end,
 })
 
 vim.cmd[[
