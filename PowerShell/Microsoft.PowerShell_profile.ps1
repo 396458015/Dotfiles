@@ -134,10 +134,16 @@ function ..... { cd ..; cd ..; cd ..; cd ..}
 # Set-Alias -Name o -Value OpenCurrentFolder
 
 # 当前工作目录以Total commander形式打开, o
-function OpenCurrentFolder_TC {
-    Start-Process "D:\Program Files\TotalCMD\TOTALCMD64.EXE" -ArgumentList "/O", "/T", "/L=`"$PWD`""
+# function OpenCurrentFolder_TC {
+#     Start-Process "D:\Program Files\TotalCMD\TOTALCMD64.EXE" -ArgumentList "/O", "/T", "/L=`"$PWD`""
+# }
+# Set-Alias -Name o -Value OpenCurrentFolder_TC
+
+# 当前工作目录以 Directory Opus 形式打开, o
+function OpenCurrentFolder_DO {
+    Start-Process "D:\Program Files\Directory Opus\dopusrt.exe" -ArgumentList '/cmd', "Go `"$PWD`" NEWTAB"
 }
-Set-Alias -Name o -Value OpenCurrentFolder_TC
+Set-Alias -Name o -Value OpenCurrentFolder_DO
 
 function dt { cd '~/Desktop' }
 
