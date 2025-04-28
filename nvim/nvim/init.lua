@@ -2784,7 +2784,7 @@ if vim.g.neovide then-- neovide
     vim.g.neovide_refresh_rate = 60
     vim.g.neovide_cursor_antialiasing = true
     vim.g.neovide_cursor_animation_length = 0.02
-    vim.g.neovide_transparency = 0.97
+    vim.g.neovide_opacity = 0.97
     vim.g.neovide_fullscreen = false
     vim.g.neovide_remember_window_size = true
     vim.g.neovide_remember_window_position = true
@@ -2793,10 +2793,10 @@ if vim.g.neovide then-- neovide
     -- vim.g.neovide_profiler = true               -- 左上角显示帧数
     vim.g.neovide_scroll_animation_length = 0.3
     -- Adjust transparency
-    neomap('n', '<C-_>', ':let g:neovide_transparency -= 0.25<CR>:let g:neovide_transparency<CR>', {})
-    neomap('n', '<C-+>', ':let g:neovide_transparency += 0.25<CR>:let g:neovide_transparency<CR>', {})
-    neomap('i', '<C-_>', '<C-o>:let g:neovide_transparency -= 0.25<CR><C-o>:let g:neovide_transparency<CR>', {})
-    neomap('i', '<C-+>', '<C-o>:let g:neovide_transparency += 0.25<CR><C-o>:let g:neovide_transparency<CR>', {})
+    neomap('n', '<C-_>', ':let g:neovide_opacity -= 0.25<CR>:let g:neovide_opacity<CR>', {})
+    neomap('n', '<C-+>', ':let g:neovide_opacity += 0.25<CR>:let g:neovide_opacity<CR>', {})
+    neomap('i', '<C-_>', '<C-o>:let g:neovide_opacity -= 0.25<CR><C-o>:let g:neovide_opacity<CR>', {})
+    neomap('i', '<C-+>', '<C-o>:let g:neovide_opacity += 0.25<CR><C-o>:let g:neovide_opacity<CR>', {})
     -- Toggle fullscreen
     neomap("n", "<m-CR>", function()
         vim.g.neovide_fullscreen = vim.g.neovide_fullscreen == 1 and 0 or 1
