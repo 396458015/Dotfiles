@@ -27,10 +27,9 @@ require("smart-enter"):setup {
 
 
 -- git.yazi
-THEME.git = THEME.git or {}
-THEME.git.modified = ui.Style():fg("#26deff")
-THEME.git.added = ui.Style():fg("#a6d189")
-require("git"):setup()
+require("git"):setup({
+    show_branch = true
+})
 
 
 -- mime-ext.yazi

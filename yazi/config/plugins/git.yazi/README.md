@@ -1,34 +1,44 @@
 # git.yazi
+git message prompt plugin for Yazi,
 
-Show Git file changes as linemode in the file list.
+Asynchronous task loading without blocking the rendering of other components
 
-https://github.com/user-attachments/assets/34976be9-a871-4ffe-9d5a-c4cdd0bf4576
+![image](https://gitee.com/DreamMaoMao/git.yazi/assets/30348075/3a95e25a-cf0e-4f03-8d92-e7c9cc0767bb)
 
-## Installation
 
-```sh
-ya pack -a yazi-rs/plugins:git
+
+
+https://gitee.com/DreamMaoMao/git.yazi/assets/30348075/f827dd33-8e51-4f8a-9069-0affc2f7aab8
+
+
+
+# Install 
+
+### Linux
+
+```bash
+git clone https://gitee.com/DreamMaoMao/git.yazi.git ~/.config/yazi/plugins/git.yazi
 ```
 
-## Setup
+# Dependcy
+- git
 
-Add the following to your `~/.config/yazi/init.lua`:
+# Usage 
 
-```lua
-require("git"):setup {
-}
+Add this to ~/.config/yazi/init.lua
+
 ```
+require("git"):setup({
+    show_branch = true
+})
+```
+if you want listen for file changes to automatically update the status.
+Add this to ~/.config/yazi/yazi.toml, `below the exists [plugin] modules`, like this
+```
+[plugin]
 
-And register it as fetchers in your `~/.config/yazi/yazi.toml`:
-
-```toml
-[[plugin.prepend_fetchers]]
-id   = "git"
-name = "*"
-run  = "git"
-
-[[plugin.prepend_fetchers]]
-id   = "git"
-name = "*/"
-run  = "git"
+fetchers = [
+	{ id = "git", name = "*", run = "git", prio = "normal" },
+	{ id = "git", name = "*/", run = "git", prio = "normal" },
+]
 ```
