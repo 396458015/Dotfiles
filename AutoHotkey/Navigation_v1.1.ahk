@@ -17,6 +17,8 @@ IsTargetApp() {
         or WinActive("ahk_exe dopus.exe")            ; Directory Opus
         or WinActive("ahk_exe speedcrunch.exe")      ; SpeedCrunch
         or WinActive("ahk_exe MATLAB.exe")           ; Matlab
+        or WinActive("ahk_exe Listary.exe")          ; Listary
+        or WinActive("ahk_exe ABQcaeG.exe")          ; Abaqus
 }
 
 #If IsTargetApp()
