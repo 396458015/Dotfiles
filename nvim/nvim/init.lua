@@ -540,6 +540,8 @@ require("lazy").setup({
 -- {{{ nvimdev/dashboard-nvim
     {
         "nvimdev/dashboard-nvim",
+        branch = "master",
+        -- commit = "000448d",
         event = 'BufWinEnter',
         config = function()
             require('dashboard').setup {
@@ -1492,7 +1494,7 @@ require("lazy").setup({
   {
     "kyazdani42/nvim-web-devicons",
     branch = "master",
-    commit = "9697285",
+    -- commit = "9697285",
     event = { "BufReadPre", "BufNewFile" },
     config = function()
     -- 设置icon (lualine, neo-tree)
@@ -1797,9 +1799,9 @@ require("lazy").setup({
 -- }}}
 -- {{{ nvim-orgmode/orgmode
   {
-    "nvim-orgmode/orgmode",
+    "nvim-orgmode/orgmode",  -- orgmode 会自动安装org parser,无需设置nvim-treesitter安装org 
     ft = "org",
-    commit = "de02a0c",
+    -- commit = "de02a0c",
     dependencies = {
         {
           "akinsho/org-bullets.nvim",
@@ -1909,7 +1911,7 @@ require("lazy").setup({
         "hiphish/rainbow-delimiters.nvim",
     },
     opts = {
-      ensure_installed = { "bash", "python", "fortran", "c", "vim", "vimdoc", "query", "lua", "bibtex", "markdown", "org", "matlab", "json", "toml", "yaml", "typst", "ini", "bibtex", "latex" },
+      ensure_installed = { "bash", "python", "fortran", "c", "vim", "vimdoc", "query", "lua", "bibtex", "markdown", "matlab", "json", "toml", "yaml", "typst", "ini", "bibtex", "latex" },
       auto_install = true,
       highlight = {
         enable = true,
@@ -1933,13 +1935,14 @@ require("lazy").setup({
     dependencies = {
         { 'saghen/blink.cmp' },
         {
-          "williamboman/mason.nvim",
+          "mason-org/mason.nvim",
           build = ":MasonUpdate",
           config = function()
           require("mason").setup()
           end,
         },
-        { "williamboman/mason-lspconfig.nvim" },
+        -- { "WhoIsSethDaniel/mason-tool-installer.nvim" },
+        { "mason-org/mason-lspconfig.nvim" },
     },
     config = function()
       vim.api.nvim_create_autocmd('LspAttach', {
@@ -2148,7 +2151,9 @@ require("lazy").setup({
           end,
         },
     },
-    version = '*',
+    version = '1.*', 
+    branch = "main",
+    -- commit = "cb5e346",  -- 对应v1.1.1版本; v1.2.0版本报错
     ---@module 'blink.cmp'
     ---@type blink.cmp.Config
     opts = {
@@ -2408,6 +2413,8 @@ require("lazy").setup({
 -- {{{ lewis6991/gitsigns.nvim
   {
 	"lewis6991/gitsigns.nvim",
+    -- branch = "main",
+    -- commit = "6668f37",  -- 对应v1.0.1版本; v1.0.2版本软件不生效
     event = "BufRead",
     keys = {
         { "<leader>gp", mode = { "n" }, "<cmd>Gitsigns preview_hunk<cr>", desc = "[P]review Hunk" },
@@ -2437,6 +2444,15 @@ require("lazy").setup({
 				changedelete = { text = ' ' },-- ▐
 				untracked    = { text = ' ' },-- ★  
 			},
+            signs_staged = {
+              add          = { text = ' ' },
+              change       = { text = ' ' },
+              delete       = { text = ' ' },
+              topdelete    = { text = ' ' },
+              changedelete = { text = ' ' },
+              untracked    = { text = ' ' },
+            },
+            signs_staged_enable = true,
 			signcolumn     = true,  -- Toggle with `:Gitsigns toggle_signs`
 			linehl         = false, -- Toggle with `:Gitsigns toggle_linehl`
 			numhl          = false, -- Toggle with `:Gitsigns toggle_nunhl`
