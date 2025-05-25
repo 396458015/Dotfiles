@@ -110,20 +110,20 @@
             "keys": "alt+4"
         },
         {
-            "id": null,
-            "keys": "ctrl+shift+comma"
-        },
-        {
             "id": "User.sendInput.5AD15B74",
             "keys": "alt+h"
         },
         {
             "id": null,
-            "keys": "ctrl+shift+2"
+            "keys": "ctrl+shift+comma"
         },
         {
             "id": null,
             "keys": "ctrl+shift+5"
+        },
+        {
+            "id": null,
+            "keys": "ctrl+shift+2"
         },
         {
             "id": "Terminal.ResizePaneUp",
