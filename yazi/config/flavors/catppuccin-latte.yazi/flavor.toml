@@ -10,7 +10,7 @@
 
 # : Manager {{{
 
-[manager]
+[mgr]
 cwd = { fg = "#b00000" }  # 左上角路径颜色 (Latte)
 
 # Hovered 选项条颜色
@@ -28,11 +28,6 @@ marker_copied   = { fg = "#df8e1d", bg = "#df8e1d" }
 marker_cut      = { fg = "lightred",    bg = "lightred" }
 marker_marked   = { fg = "#89a0c3",     bg = "#89a0c3" }
 
-# Tab
-tab_active   = { fg = "#eff1f5", bg = "#1e66f5" }
-tab_inactive = { fg = "#4c4f69", bg = "#bcc0cc" }
-tab_width    = 1
-
 # Count
 count_selected = { fg = "#eeeeee", bg = "lightgreen" }
 count_copied   = { fg = "#eeeeee", bg = "#df8e1d" }
@@ -49,6 +44,10 @@ border_style  = { fg = "#3b3e4d" }
 # : }}}
 
 # : Status {{{
+
+[tabs]
+active   = { fg = "#eff1f5", bg = "#1e66f5", bold = true }
+inactive = { fg = "#4c4f69", bg = "#bcc0cc" }
 
 [mode]
 normal_main = { fg = "#4e49ee", bg = "#eff1f5", bold = true }
