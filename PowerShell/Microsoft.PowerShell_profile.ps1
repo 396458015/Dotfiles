@@ -141,7 +141,7 @@ function ..... { cd ..; cd ..; cd ..; cd ..}
 
 # 当前工作目录以 Directory Opus 形式打开, o
 function OpenCurrentFolder_DO {
-    Start-Process "D:\Program Files\Directory Opus\dopusrt.exe" -ArgumentList '/cmd', "Go `"$PWD`" NEWTAB"
+    Start-Process "D:\Program Files\Directory Opus Pro\dopusrt.exe" -ArgumentList '/cmd', "Go `"$PWD`" NEWTAB"
 }
 Set-Alias -Name o -Value OpenCurrentFolder_DO
 
