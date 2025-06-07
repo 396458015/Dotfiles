@@ -6,6 +6,7 @@ CapsLock::Ctrl               ; 将 CapsLock 映射为 Ctrl
 IsTargetApp() {
     return WinActive("ahk_class OpusApp")            ; Word
         or WinActive("ahk_class PPTFrameClass")      ; PPT
+        or WinActive("ahk_exe POWERPNT.EXE")         ; PPT 演讲者模式标注栏
         or WinActive("ahk_class XLMAIN")             ; Excel
         or WinActive("ahk_class Chrome_WidgetWin_1") ; Chrome
         or WinActive("ahk_class WeChatMainWndForPC") ; 微信
