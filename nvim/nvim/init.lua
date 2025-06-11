@@ -1,5 +1,5 @@
 -- Last Modified Date: 2023.04.24
--- Desc              : NEOVIM 0.10.0(support Python, Lua)
+-- Desc              : NEOVIM 0.11.2(support Python, Lua)
 --                          __
 --  __  ____   __   __  __ /\_\    ___ ___     ____   ____
 -- |  \/  \ \ / /  /\ \/\ \\/\ \ /'' __` _`\  |  _ \ / ___|
@@ -337,6 +337,87 @@ vim.g.python3_host_prog = 'C:/Python/Python311/python.exe'
 vim.cmd([[ let $PYTHONUNBUFFERED=1 ]]) -- 禁用python stdout缓冲 ]
 -- Return to last edit position when opening files (You want this!)
 vim.cmd([[ au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif ]])
+-- }}}
+
+-- {{{ autocmds
+
+-- 文件类型设置
+-- 设置高亮: norg --> org, rpy --> python
+vim.filetype.add({
+    extension = {
+        rpy = "python",
+        norg = "org",
+    },
+})
+
+-- nvim_create_augroups(autocmds)
+local function nvim_create_augroups(definitions)
+    for group_name, definition in pairs(definitions) do
+        vim.api.nvim_command("augroup " .. group_name)
+        vim.api.nvim_command("autocmd!")
+        for _, def in ipairs(definition) do
+            local command = table.concat(vim.tbl_flatten { "autocmd", def }, " ")
+            vim.api.nvim_command(command)
+        end
+        vim.api.nvim_command "augroup END"
+    end
+end
+
+nvim_create_augroups({
+    file_options = {
+        { "BufNewFile,BufRead", "*.py", "set fileformat=unix" },
+        { "BufNewFile,BufRead", "*.m", "set fileencoding=cp936" },  -- matlab中文乱码
+        { "BufRead", "*.md", "set conceallevel=2" },
+    },
+    autosave_shada = {
+        { "VimLeave", "*", "wshada!" },
+    },  -- save marks
+    textwidth_by_filetype = {
+        { "FileType", "tex", "setlocal textwidth=72" },
+        { "FileType", "markdown", "setlocal textwidth=80" },
+    },
+    highlight_column_limit = {
+    -- 下划线显示第80个字符
+        {
+          "BufRead,BufNewFile",
+          "*.asm,*.c,*.cpp,*.java,*.cs,*.sh,*.lua,*.pl,*.pm,*.py,*.rb,*.hs,*.vim,*.md",
+          [[2match Underlined /.\%81v/]],
+        },
+    -- 下划线显示第72个字符(遵循Fortran77固定格式)
+        {
+          "BufRead,BufNewFile",
+          "*.for",
+          [[2match Underlined /.\%73v/]],
+        },
+    },
+})
+
+-- 当 Neovim 重新获得焦点、进入 buffer 或停留时，检测文件是否被外部修改
+vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "CursorHold" }, {
+  pattern = "*",
+  command = "checktime",
+})
+-- 当文件被外部更改后，提示代码已修改
+vim.api.nvim_create_autocmd("FileChangedShellPost", {
+  pattern = "*",
+  callback = function()
+    vim.fn.confirm(" File changed on disk!", "OK", 1)
+  end,
+})
+
+-- 复制时高亮显示文本
+vim.api.nvim_set_hl(0, "MyYankHighlight", { fg = "#000000", bg = "#8fc1cc", bold = true })  -- #c34043
+vim.api.nvim_create_autocmd('TextYankPost', {
+    desc = 'Highlight when yanking (copying) text',
+    group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
+    callback = function()
+        vim.hl.on_yank({
+            higroup = 'MyYankHighlight',
+            timeout = 200,
+        })
+    end,
+})
+
 -- }}}
 
 -- {{{ Lazy.nvim
@@ -1067,8 +1148,23 @@ require("lazy").setup({
     end,
   },
 -- }}}
--- {{{ dhruvasagar/vim-table-mode
-  { "dhruvasagar/vim-table-mode", ft = {"markdown", "org"} },
+-- {{{ Kicamon/markdown-table-mode.nvim
+  {
+    "Kicamon/markdown-table-mode.nvim",
+    -- 运行 :Mtm 开启table mode后激活插件
+    ft = { "markdown", "org" },
+    config = function()
+        require("markdown-table-mode").setup({
+            filetype = {
+                "*.md",
+            },
+            options = {
+                insert = true, -- when typeing "|"
+                insert_leave = true, -- when leaveing insert
+            },
+        })
+    end,
+  },
 -- }}}
 -- {{{ lervag/vimtex
   { "lervag/vimtex",
@@ -1799,7 +1895,7 @@ require("lazy").setup({
 -- }}}
 -- {{{ nvim-orgmode/orgmode
   {
-    "nvim-orgmode/orgmode",  -- orgmode 会自动安装org parser,无需设置nvim-treesitter安装org 
+    "nvim-orgmode/orgmode",  -- orgmode 会自动安装org parser,无需设置nvim-treesitter安装org
     ft = "org",
     -- commit = "de02a0c",
     dependencies = {
@@ -2151,7 +2247,7 @@ require("lazy").setup({
           end,
         },
     },
-    version = '1.*', 
+    version = '1.*',
     branch = "main",
     -- commit = "cb5e346",  -- 对应v1.1.1版本; v1.2.0版本报错
     ---@module 'blink.cmp'
@@ -2393,6 +2489,21 @@ require("lazy").setup({
   },
 -- }}}
 
+-- {{{ 396458015/imeflow.nvim
+  {
+   "396458015/imeflow.nvim",
+   lazy = true,
+   event = "InsertEnter",
+   opts = {
+       -- path = "C:/Users/ThinkPad/AppData/Local/nvim-data/Maxl/im-select.exe",
+       VimEnter    = true,
+       InsertEnter = true,
+       InsertLeave = true,
+       VimLeave    = true,
+   },
+  },
+-- }}}
+
 -- {{{ Eandrju/cellular-automaton.nvim
   {
     "Eandrju/cellular-automaton.nvim",
@@ -2563,106 +2674,6 @@ require("lazy").setup({
     },
   },
 -- }}}
-})
--- }}}
-
--- {{{ autocmds
-
--- 设置高亮: norg --> org
-vim.filetype.add({
-    extension = { norg = "org" },
-})
-
--- 当 Neovim 重新获得焦点、进入 buffer 或停留时，检测文件是否被外部修改
-vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "CursorHold" }, {
-  pattern = "*",
-  command = "checktime",
-})
--- 当文件被外部更改后，提示代码已修改
-vim.api.nvim_create_autocmd("FileChangedShellPost", {
-  pattern = "*",
-  callback = function()
-    vim.fn.confirm(" File changed on disk!", "OK", 1)
-  end,
-})
-
-vim.cmd[[
-" 中/英输入法切换
-" augroup input_switching
-"     au!
-"     au VimEnter * :silent :!C:/Users/ThinkPad/AppData/Local/nvim-data/Maxl/im-select.exe 1033
-"     au InsertLeave * :silent :!C:/Users/ThinkPad/AppData/Local/nvim-data/Maxl/im-select.exe 1033
-"     au VimLeave * :silent :!C:/Users/ThinkPad/AppData/Local/nvim-data/Maxl/im-select.exe 1033
-"     " au InsertEnter * :silent :!C:/Users/ThinkPad/AppData/Local/nvim-data/Maxl/im-select.exe 2052
-" augroup END
-
-" 解决matlab中文乱码的问题
-augroup matlab_filetype
-    au!
-    au FileType matlab set fileencoding=cp936
-augroup END
-
-" 文本超过一定长度时自动换行
-augroup tex_md_width
-    au!
-    au FileType tex set textwidth=72
-    au FileType markdown set textwidth=80
-augroup END
-
-" 高亮加下划线显示每行第80个字符
-" Fortran语言,高亮加下划线显示每行第72个字符(遵循Fortran77固定格式)
-augroup line_font
-    au!
-    au BufRead,BufNewFile *.asm,*.c,*.cpp,*.java,*.cs,*.sh,*.lua,*.pl,*.pm,*.py,*.rb,*.hs,*.vim,*.md 2match Underlined /.\%81v/
-    au BufRead,BufNewFile *.for 2match Underlined /.\%73v/
-augroup END
-
-" 当剩余的窗口都不是文件编辑窗口时,自动退出vim
-augroup Buffer_quit
-    au!
-    au BufEnter * if 0 == len(filter(range(1, winnr('$')), 'empty(getbufvar(winbufnr(v:val), "&bt"))')) | qa! | endif
-augroup END
-
-highlight HighlightedyankRegion ctermbg=237 guibg=#c34043
-augroup highlight_yank
-    au!
-    au TextYankPost * silent! lua vim.highlight.on_yank{higroup="HighlightedyankRegion", timeout=120}
-augroup END
-
-" << Plugin - table-mode >>
-augroup markdown_table
-    au!
-    au FileType markdown let g:table_mode_corner = '|'
-    au FileType markdown let g:table_mode_delimiter = ' '
-    au FileType markdown let g:table_mode_verbose = 0
-    au FileType markdown let g:table_mode_auto_align = 0
-    au FileType markdown TableModeEnable
-augroup END
-]]
-
--- nvim_create_augroups(autocmds)
-local function nvim_create_augroups(definitions)
-    for group_name, definition in pairs(definitions) do
-        vim.api.nvim_command("augroup " .. group_name)
-        vim.api.nvim_command "autocmd!"
-        for _, def in ipairs(definition) do
-            local command = table.concat(vim.tbl_flatten { "autocmd", def }, " ")
-            vim.api.nvim_command(command)
-        end
-        vim.api.nvim_command "augroup END"
-    end
-end
-
-nvim_create_augroups({
-    custom_filetypes = {
-        { "BufNewFile,BufRead", "*.rpy", "set syntax=python" },
-        { "BufNewFile,BufRead", "*.py", "set fileformat=unix" },
-
-        { "BufRead", "*.md", "set conceallevel=2" },
-    },
-    save_shada = {
-        { "VimLeave", "*", "wshada!" },
-    },  -- save marks
 })
 -- }}}
 
