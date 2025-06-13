@@ -164,6 +164,17 @@
         "—": "_"
     },
 
+    // Explicit Folding
+    "editor.foldingStrategy": "auto",
+    "editor.showFoldingControls": "always",
+    "editor.defaultFoldingRangeProvider": "zokugun.explicit-folding",
+    "explicitFolding.rules": {
+        "*": {
+            "begin": "{{{",
+            "end": "}}}"
+        }
+    },
+
     // todo-tree
     "todo-tree.regex.regex": "((//|#|<!--|;|/\\*|^|%|\\\\)\\s*($TAGS)\\{*|^\\s*- \\[ \\])",
     "todo-tree.highlights.customHighlight": {
@@ -206,6 +217,8 @@
             "editor.selectionHighlightBorder": "#34d058",
             "statusBar.background": "#eeeeee",
             "statusBar.noFolderBackground": "#eeeeee",
+            "editorGutter.foldingControlForeground": "#d20f44",     // 折叠箭头为红色
+            "editor.foldBackground": "#c7eece",                     // 折叠区域淡绿色背景
             "statusBar.debuggingForeground": "#eeeeee",
             "sideBar.background": "#eeeeee",
             "titleBar.activeBackground": "#eeeeee",

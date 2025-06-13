@@ -41,34 +41,6 @@
         "when": "!config.latex-workshop.bind.altKeymap.enabled && !virtualWorkspace && editorLangId =~ /^latex$|^latex-expl3$|^doctex$|^rsweave$|^jlweave$|^pweave$/"
     },
     {
-        "key": "alt+oem_period",
-        "command": "glassit.decrease"
-    },
-    {
-        "key": "ctrl+alt+c",
-        "command": "-glassit.decrease"
-    },
-    {
-        "key": "alt+oem_comma",
-        "command": "glassit.increase"
-    },
-    {
-        "key": "ctrl+alt+z",
-        "command": "-glassit.increase"
-    },
-    {
-        "key": "ctrl+alt+oem_period",
-        "command": "glassit.minimize"
-    },
-    {
-        "key": "ctrl+alt+x",
-        "command": "-glassit.minimize"
-    },
-    {
-        "key": "ctrl+alt+oem_comma",
-        "command": "glassit.maximize"
-    },
-    {
         "key": "alt+k",
         "command": "cursorUp",
         "when": "textInputFocus"
@@ -215,5 +187,25 @@
         "key": "ctrl+alt+a",
         "command": "-bracket-select.select-include",
         "when": "editorTextFocus"
+    },
+    {
+      "key": "ctrl+shift+oem_comma",
+      "command": "editor.foldAllMarkerRegions",
+      "when": "editorTextFocus"
+    },
+    {
+      "key": "ctrl+shift+oem_period",
+      "command": "editor.unfoldAllMarkerRegions",
+      "when": "editorTextFocus"
+    },
+    {
+      "key": "alt+oem_comma",
+      "command": "editor.fold",
+      "when": "editorTextFocus"
+    },
+    {
+      "key": "alt+oem_period",
+      "command": "editor.unfold",
+      "when": "editorTextFocus"
     },
 ]
