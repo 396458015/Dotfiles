@@ -29,6 +29,10 @@
       双标双击PDF : 逆向搜索定位  
       Alt + v     : PDF预览  
       Alt + e     : 显示LaTex面板(左侧命令面板和文档大纲)  
+      ctrl+shift+p, clean up auxiliary files      : 清除Latex过程文件  
+
+      插件'LaTex Table Helper' 创建表格  
+      \table 4 4 name, 鼠标右键'Latex: Create table'  
 
       Ctrl + i    : 代码片段预览  
 
