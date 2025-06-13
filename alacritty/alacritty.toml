@@ -2,6 +2,7 @@
 [general]
 import = [
   # dark
+  "C:/Users/ThinkPad/AppData/Roaming/alacritty/themes/ubuntu.toml",
   # "C:/Users/ThinkPad/AppData/Roaming/alacritty/themes/gruvbox_material_medium_dark.toml",
   # "C:/Users/ThinkPad/AppData/Roaming/alacritty/themes/catppuccin_macchiato.toml",
   # "C:/Users/ThinkPad/AppData/Roaming/alacritty/themes/catppuccin_mocha.toml",
@@ -19,7 +20,7 @@ import = [
   # "C:/Users/ThinkPad/AppData/Roaming/alacritty/themes/kanagawa_dragon.toml",
   # "C:/Users/ThinkPad/AppData/Roaming/alacritty/themes/zenburn.toml",
   # "C:/Users/ThinkPad/AppData/Roaming/alacritty/themes/catppuccin_mocha.toml",
-  "C:/Users/ThinkPad/AppData/Roaming/alacritty/themes/catppuccin_frappe.toml",
+  # "C:/Users/ThinkPad/AppData/Roaming/alacritty/themes/catppuccin_frappe.toml",
 
   # light
   # "C:/Users/ThinkPad/AppData/Roaming/alacritty/themes/github_light.toml",
@@ -37,17 +38,17 @@ COLORTERM = "truecolor"
 MYSIGN = "alacritty_sign"
 
 [terminal.shell]
-program = 'C:\Program Files\PowerShell\7\pwsh.exe'
+# program = 'C:\Program Files\PowerShell\7\pwsh.exe'
+program= "ubuntu"
 
 [window]
-opacity         = 0.96
+opacity         = 1.00
 startup_mode    = "Windowed" # Windowed Fullscreen Maximized
 decorations     = "Transparent" # Full None Transparent Buttonless
 dynamic_padding = false
 dynamic_title   = true
 padding         = { x = 2, y = 2 }
 blur            = true
-decorations_theme_variant = "Dark" # "Dark" "Light"
 
 # center_window when font size is 16.0
 # position        = { x = 132, y = 50 }
@@ -71,7 +72,7 @@ builtin_box_drawing = true
 [cursor]
 style = { shape = "Block", blinking = "Off" } # Block Beam Underline
 unfocused_hollow = true
-thickness = 0.3 # default is 0.15
+thickness = 0.15
 
 [scrolling]
 history    = 10000
@@ -84,33 +85,30 @@ duration  = 0
 [colors]
 draw_bold_text_with_bright_colors = true
 transparent_background_colors     = true
-# cursor  = { text = "#303446", cursor = '#abb2bf' } # 光标颜色 (Frappe)
-cursor  = { text = "#11111b", cursor = '#f5e0dc' } # 光标颜色 (Frappe)
-vi_mode_cursor = { text = "#1e1e2e", cursor = "#b96167"}  # (Frappe)
+cursor  = { cursor = '#6c6f85' } # 光标颜色 (Latte)
 
 [colors.primary]
-background = '#1e1e2e' # 背景颜色 (Frappe)
-foreground = '#abb2bf' # 字体颜色  (Frappe)
+# background = '#eeeeee' # 背景颜色 (Latte)
 
 [colors.normal]
-black   = '#0C0C0C'   # black
-red     = '#C50F1F'   # red
-green   = '#13A10E'   # green
-yellow  = '#C19C00'   # yellow
-blue    = '#0037DA'   # blue
-magenta = '#881798'   # purple
-cyan    = '#3A96DD'   # cyan
-white   = '#CCCCCC'   # white
+# black   = '#0C0C0C'   # black
+# red     = '#C50F1F'   # red
+# green   = '#13A10E'   # green
+# yellow  = '#C19C00'   # yellow
+# blue    = '#0037DA'   # blue
+# magenta = '#881798'   # purple
+# cyan    = '#3A96DD'   # cyan
+# white   = '#CCCCCC'   # white
 
 [colors.bright]
-black   = '#767676'  # black
-red     = '#E74856'  # red
-green   = '#16C60C'  # green
-yellow  = '#e6cf00'  # yellow
-blue    = '#3B78FF'  # blue
-magenta = '#B4009E'  # purple
-cyan    = '#61D6D6'  # cyan
-white   = '#F2F2F2'  # white
+# black   = '#767676'  # black
+# red     = '#E74856'  # red
+# green   = '#16C60C'  # green
+# yellow  = '#ff7a00'  # yellow
+# blue    = '#3B78FF'  # blue
+# magenta = '#B4009E'  # purple
+# cyan    = '#61D6D6'  # cyan
+# white   = '#F2F2F2'  # white
 
 [colors.search]
 focused_match = { foreground = "#44475A", background = "#d94453" }
