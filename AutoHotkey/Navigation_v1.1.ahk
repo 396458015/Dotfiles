@@ -9,7 +9,7 @@ IsTargetApp() {
         or WinActive("ahk_exe POWERPNT.EXE")         ; PPT 演讲者模式标注栏
         or WinActive("ahk_class XLMAIN")             ; Excel
         or WinActive("ahk_class Chrome_WidgetWin_1") ; Chrome
-        or WinActive("ahk_class WeChatMainWndForPC") ; 微信
+        or WinActive("ahk_exe Weixin.exe")           ; 微信
         or WinActive("ahk_exe Origin64.exe")         ; OriginPro
         or WinActive("ahk_exe Explorer.EXE")         ; Explorer
         or WinActive("ahk_class TTOTAL_CMD")         ; Total Commander
