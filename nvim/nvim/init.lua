@@ -845,7 +845,7 @@ require("lazy").setup({
 -- {{{ alpertuna/vim-header
   {
     "alpertuna/vim-header",
-	keys = { { "<F2>", mode = { "n" }, ":AddHeader<CR>", desc = "Add Header" } },
+	keys = { { "<F10>", mode = { "n" }, ":AddHeader<CR>", desc = "Add Header" } },
     config = function()
     vim.g.header_field_author           = 'Max'
     vim.g.header_field_author_email     = 'ismaxiaolong@gmail.com'
@@ -1921,12 +1921,30 @@ require("lazy").setup({
           })
           end,
         },
+        {
+        "hamidi-dev/org-list.nvim",
+        dependencies = { 'tpope/vim-repeat' },  -- for repeatable actions with '.'
+        config = function()
+          require("org-list").setup({
+            mapping = {
+              key = "<leader>o-",  -- nvim-orgmode users: you might want to change this to <leader>olt
+              desc = "Toggle: Cycle through list types"
+            },
+            checkbox_toggle = {
+              enabled = true,
+              key = "<Cr>",
+              desc = "Toggle checkbox state",
+              filetypes = { "org", "markdown" }  -- Add more filetypes as needed
+            }
+          })
+        end
+        },
     },
     config = function()
     local orgmode = require('orgmode')
     -- orgmode.setup_ts_grammar()
     orgmode.setup({
-       org_agenda_files = { 'C:/Users/ThinkPad/AppData/Local/nvim-data/Maxl/Org/**' },
+       org_agenda_files = 'C:/Users/ThinkPad/AppData/Local/nvim-data/Maxl/Org/**/*',
        org_default_notes_file = 'C:/Users/ThinkPad/AppData/Local/nvim-data/Maxl/Org/index.org',
        org_hide_leading_stars = true,
        org_hide_emphasis_markers = true,
@@ -2496,10 +2514,14 @@ require("lazy").setup({
    event = "InsertEnter",
    opts = {
        -- path = "C:/Users/ThinkPad/AppData/Local/nvim-data/Maxl/im-select.exe",
-       VimEnter    = true,
+       enable = false,   -- Start enabled (default: true)
+       mapping = "<F2>", -- Optional toggle mapping
+
+       -- Optional per-event enable/disable
+       VimEnter    = false,
        InsertEnter = true,
        InsertLeave = true,
-       VimLeave    = true,
+       VimLeave    = false,
    },
   },
 -- }}}
