@@ -2514,7 +2514,7 @@ require("lazy").setup({
    event = "InsertEnter",
    opts = {
        -- path = "C:/Users/ThinkPad/AppData/Local/nvim-data/Maxl/im-select.exe",
-       enable = false,   -- Start enabled (default: true)
+       enabled = false,   -- Start enabled (default: true)
        mapping = "<F2>", -- Optional toggle mapping
 
        -- Optional per-event enable/disable
