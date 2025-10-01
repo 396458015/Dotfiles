@@ -10,13 +10,15 @@ require("searchjump"):setup {
     match_str_bg = "#84c443",
     first_match_str_fg = "#000000",
     first_match_str_bg = "#84c443",
-    lable_fg = "#eeeeee",
-    lable_bg = "#b34607",
+    label_fg = "#eeeeee",
+    label_bg = "#b34607",
     only_current = false, -- only search the current window
     show_search_in_statusbar = true,
-    auto_exit_when_unmatch = true,
-    enable_capital_lable = false,
-    search_patterns = {}  -- demo:{"%.e%d+","s%d+e%d+"}
+    auto_exit_when_unmatch = false,
+    enable_capital_label = false,
+	mapdata = require("sjch").data,
+	search_patterns = ({"hell[dk]d","%d+.1080p","第%d+集","第%d+话","%.E%d+","S%d+E%d+",})
+    -- search_patterns = {}  -- demo:{"%.e%d+","s%d+e%d+"}
 }
 
 
