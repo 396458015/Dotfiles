@@ -91,7 +91,7 @@
         },
         {
             "id": "Terminal.ToggleFocusMode",
-            "keys": "f11"
+            "keys": "f9"
         },
         {
             "id": null,
@@ -418,7 +418,7 @@
             "keys": "alt+f2"
         }
     ],
-    "launchMode": "default",
+    "launchMode": "focus",
     "minimizeToNotificationArea": false,
     "newTabMenu": 
     [
