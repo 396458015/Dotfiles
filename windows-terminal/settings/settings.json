@@ -395,7 +395,7 @@
         },
         {
             "id": "Terminal.OpenNewTab",
-            "keys": "ctrl+shift+n"
+            "keys": "alt+n"
         },
         {
             "id": "Terminal.MoveFocusLeft",
