@@ -32,7 +32,7 @@
             "\\begin{figure}[hbt!]",
             "    \\centering",
             "    \\includegraphics[width=5in]{${1:路径}}",
-            "    \\caption{${2:标题}}\\label{fig2:${3:索引名}}",
+            "    \\caption{${2:标题}}\\label{fig1:${3:索引名}}",
             "\\end{figure}",
 		],
 		"description": "1 figure"
@@ -45,16 +45,16 @@
             "    \\subfigure[${1:标题a}]{",
             "        \\begin{minipage}[t]{0.48\\linewidth}",
             "            \\centering",
-            "            \\includegraphics[height=2.5in]{${2:路径a}}\\label{fig2:${3:索引名}}",
+            "            \\includegraphics[height=2.5in]{${2:路径a}}\\label{fig1:${3:索引名}}",
             "        \\end{minipage}",
             "    }",
             "    \\subfigure[${4:标题b}]{",
             "        \\begin{minipage}[t]{0.48\\linewidth}",
             "            \\centering",
-            "            \\includegraphics[height=2.5in]{${5:路径b}}\\label{fig2:${6:索引名}}",
+            "            \\includegraphics[height=2.5in]{${5:路径b}}\\label{fig1:${6:索引名}}",
             "        \\end{minipage}",
             "    }",
-            "    \\caption{${7:标题}}\\label{${8:索引名}}",
+            "    \\caption{${7:标题}}\\label{fig1:${8:索引名}}",
             "\\end{figure}",
 		],
 		"description": "figure2 combine"
@@ -68,22 +68,39 @@
             "    \\begin{minipage}[t]{0.49\\linewidth}%",
             "        \\centering",
             "        \\includegraphics[height=2.5in]{${1:路径1}}",
-            "        \\caption{${2:标题1}}\\label{${3:索引1}}",
+            "        \\caption{${2:标题1}}\\label{fig1:${3:索引1}}",
             "    \\end{minipage}",
             "    \\begin{minipage}[t]{0.49\\linewidth}%",
             "        \\centering ",
             "        \\includegraphics[height=2.5in]{${4:路径1}}",
-            "        \\caption{${5:标题2}}\\label{${6:索引2}}",
+            "        \\caption{${5:标题2}}\\label{fig1:${6:索引2}}",
             "    \\end{minipage}",
             "\\end{figure}",
 		],
 		"description": "figure2 single"
 	},
+
+	"figure3_combine": {
+		"prefix": "figure3_c",
+		"body": [
+            "\\begin{figure}[hbt!]",
+            "\\centering",
+            "\\subfigure[${1:标题1}]{",
+            "\\includegraphics[width=0.3\\textwidth]{${2:路径1}}}",
+            "\\subfigure[${3:标题2}]{",
+            "\\includegraphics[width=0.3\\textwidth]{${4:路径2}}}",
+            "\\subfigure[${5:标题3}]{",
+            "\\includegraphics[width=0.3\\textwidth]{${6:路径3}}}",
+            "\\caption{${7:标题}}\\label{fig1:${8:索引名}}",
+            "\\end{figure}",
+		],
+		"description": "figure3 combine"
+	},
 	"table1": {
 		"prefix": "table1",
 		"body": [
             "\\begin{table}[hbt!]",
-            "    \\caption{\\label{Tab2:${1:索引名}} ${2:表名}}",
+            "    \\caption{\\label{Tab1:${1:索引名}} ${2:表名}}",
             "    \\centering",
             "    \\begin{tabularx}{\\textwidth}{XXXX}",
             "    \\toprule",
@@ -101,7 +118,7 @@
 	"eq1": {
 		"prefix": "eq1",
 		"body": [
-            "\\begin{equation}\\label{eq2:${1:索引名}}",
+            "\\begin{equation}\\label{eq1:${1:索引名}}",
             "    eq${2:equation}",
             "\\end{equation}",
 		],
@@ -110,7 +127,7 @@
 	"eq2": {
 		"prefix": "eq2",
 		"body": [
-            "\\begin{equation}\\label{eq2:${1:索引名}}",
+            "\\begin{equation}\\label{eq1:${1:索引名}}",
             "    \\left\\{\\begin{aligned}",
             "            & eq1\\\\\\\\",
             "            & eq2",
