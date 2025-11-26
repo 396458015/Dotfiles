@@ -1,5 +1,9 @@
 {
+    // colorTheme
     "workbench.colorTheme": "Tiny Light",
+    // "workbench.colorTheme": "One Dark Pro Mix",
+
+    // Font
     // "editor.fontFamily": "'Delugia Mono', 'LXGW WenKai Mono', monospace",
     // "editor.fontFamily": "'Delugia Mono', '宋体', monospace",
     // "editor.fontFamily": "'Delugia Mono', 'InconsolataGo QiHei NF', monospace",
@@ -50,6 +54,21 @@
     // ****************
     //		LaTeX
     // ****************
+
+    // pdf dark colorTheme (One Dark Pro Mix)
+    "latex-workshop.view.pdf.color.dark.pageColorsBackground": "#292c34",
+    "latex-workshop.view.pdf.color.dark.pageColorsForeground": "#AEAEAE",
+    "latex-workshop.view.pdf.color.dark.backgroundColor": "#292c34",
+    "latex-workshop.view.pdf.color.dark.pageBorderColor": "#656565",
+
+    // "latex-workshop.view.pdf.invert": 0.85,  // PDF反色显示
+
+    // pdf light colorTheme (Tiny Light)
+    /* "latex-workshop.view.pdf.color.light.pageColorsBackground": "#eeeeee",
+    "latex-workshop.view.pdf.color.light.pageColorsForeground": "#000000",
+    "latex-workshop.view.pdf.color.light.backgroundColor": "#eeeeee",
+    "latex-workshop.view.pdf.color.light.pageBorderColor": "#656565", */
+
     "files.associations": {
         "*.sty": "latex-expl3",
         "*.cls": "latex-expl3"
@@ -57,10 +76,11 @@
     "latex-workshop.showContextMenu": true,
     "latex-workshop.message.error.show": true,
     "latex-workshop.message.warning.show": false,
-    "latex-workshop.latex.autoBuild.run": "never",
+    "latex-workshop.latex.autoBuild.run": "never",  // 禁止自动编译
     "latex-workshop.latex.recipe.default": "lastUsed",
     "latex-workshop.latexindent.path": "latexindent",
     "latex-workshop.view.pdf.internal.synctex.keybinding": "double-click",
+    // "latex-workshop.latex.autoClean.run": "onBuilt",  // 编译后自动清理无用文件
     "latex-workshop.latex.clean.method": "glob",
     "latex-workshop.latex.clean.fileTypes": [
         "*.abs",
@@ -424,10 +444,4 @@
     "[typst-code]": {
         "editor.wordSeparators": "`~!@#$%^&*()=+[{]}\\|;:'\",.<>/?"
     },
-    /* "workbench.colorTheme": "One Dark Pro Darker",
-    "latex-workshop.view.pdf.color.light.pageBorderColor": "#24272e",
-    "latex-workshop.view.pdf.color.dark.pageBorderColor": "#24272e",
-    "latex-workshop.view.pdf.color.dark.pageColorsBackground": "#24272e",
-    "latex-workshop.view.pdf.color.dark.pageColorsForeground": "#AEAEAE",
-    "latex-workshop.view.pdf.color.dark.backgroundColor": "#24272e", */
 }
