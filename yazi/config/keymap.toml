@@ -142,6 +142,7 @@ keymap = [
 	{ on = [ "g", "p" ], run = "cd 'C:/Users/ThinkPad/Documents/PowerShell'", desc = "powershell config" },
 	{ on = [ "g", "a" ], run = "cd 'C:/Users/ThinkPad/AppData/Roaming/alacritty'", desc = "alacritty config" },
 	{ on = [ "g", "w" ], run = "cd 'C:/Users/ThinkPad/.config/wezterm'", desc = "wezterm config" },
+	{ on = [ "g", "W" ], run = "cd 'D:/Dotfiles/windows-terminal/settings'", desc = "Wterminal config" },
 	{ on = [ "g", "v" ], run = "cd 'C:/Users/ThinkPad/AppData/Local/nvim'", desc = "neovim config" },
 	{ on = [ "g", "V" ], run = "cd 'C:/Users/ThinkPad/AppData/Roaming/Code/User'", desc = "Vscode config" },
 	{ on = [ "g", "y" ], run = "cd 'C:/Users/ThinkPad/AppData/Roaming/yazi/config'", desc = "yazi config" },
