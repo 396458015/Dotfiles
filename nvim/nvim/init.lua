@@ -574,6 +574,9 @@ require("lazy").setup({
                     '%S',
                 },
                 {
+                    'encoding',
+                },
+                {
                     search_result,
                 },
                 {
