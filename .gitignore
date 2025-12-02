@@ -3,6 +3,11 @@ yazi/state/*
 lazygit/state.yml
 
 nvim/nvim-data/*
+!nvim/nvim-data/Maxl
+nvim/nvim-data/Maxl/cache
+nvim/nvim-data/Maxl/Org
+nvim/nvim-data/Maxl/openai_apikey
+
 nvim/nvim/lazy-lock.json
 
 vscode/User/globalStorage/*
