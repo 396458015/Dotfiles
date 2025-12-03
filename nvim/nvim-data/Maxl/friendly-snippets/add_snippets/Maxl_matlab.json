@@ -26,7 +26,7 @@
             "set(ax2,'XTick', []);",
             "box on",
             "%saveas(gcf,'savename.emf')",
-            "%print(gcf, fullfile(path, 'savename.tif'), '-dtiff', '-r600');"
+            "%print(gcf, fullfile(path, 'savename.png'), '-dpng', '-r1200');"
         ],
         "description": "Plot 1 line"
     },
@@ -54,7 +54,7 @@
             "set(ax2,'XTick', []);",
             "box on",
             "%saveas(gcf,'savename.emf')",
-            "%print(gcf, fullfile(path, 'savename.tif'), '-dtiff', '-r600');"
+            "%print(gcf, fullfile(path, 'savename.png'), '-dpng', '-r1200');"
         ],
         "description": "Plot 2 lines"
     },
@@ -82,7 +82,7 @@
             "set(ax2,'XTick', []);",
             "box on",
             "%saveas(gcf,'name.emf')",
-            "%print(gcf, fullfile(path, 'savename.tif'), '-dtiff', '-r600');"
+            "%print(gcf, fullfile(path, 'savename.png'), '-dpng', '-r1200');"
         ],
         "description": "Plot line and scatter"
     },
@@ -111,7 +111,7 @@
             "legend('boxoff');",
             "grid on",
             "%saveas(gcf,'name.emf')",
-            "%print(gcf, fullfile(path, 'savename.tif'), '-dtiff', '-r600');"
+            "%print(gcf, fullfile(path, 'savename.png'), '-dpng', '-r1200');"
         ],
         "description": "Double Y-axis curve"
     },
