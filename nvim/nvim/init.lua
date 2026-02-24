@@ -1750,20 +1750,24 @@ require("lazy").setup({
 -- {{{ kylechui/nvim-surround
   { "kylechui/nvim-surround",
     keys = {
-        { mode = "n", "ys" },
-        { mode = "n", "cs" },
-        { mode = "n", "ds" },
-        { mode = "x", "<C-s>" },
+        -- 触发 + 保持默认 ys/cs/ds 行为
+        { mode = "n", "ys" },  --ysiw
+        { mode = "n", "cs" },  -- css
+        { mode = "n", "ds" },  -- dss
+
+        -- Visual 模式用 <C-s> 包裹选中内容
+        { mode = "x", "<C-s>", "<Plug>(nvim-surround-visual)", remap = true },
+
+        -- 快捷包裹当前单词
+        { mode = "n", "))", "ysiw)", remap = true, desc = "Surround word with ()"},
+        { mode = "n", "((", "ysiw)", remap = true, desc = "Surround word with ()"},
+        { mode = "n", "}}", "ysiw}", remap = true, desc = "Surround word with {}"},
+        { mode = "n", '""', 'ysiw"', remap = true, desc = 'Surround word with ""'},
+        { mode = "n", "''", "ysiw'", remap = true, desc = "Surround word with ''"},
+        -- { mode = "n", "]]", "ysiw]", remap = true},
     },
     config = function()
-    require("nvim-surround").setup({
-        keymaps = {
-            normal = "ys",
-            change = "cs",
-            delete = "ds",
-            visual = "<C-s>",
-        },--S, dss, css
-    })
+    require("nvim-surround").setup()
     end,
   },
 -- }}}
