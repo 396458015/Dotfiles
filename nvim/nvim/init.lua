@@ -1026,7 +1026,7 @@ require("lazy").setup({
         au!
         au FileType floaterm nnoremap <buffer> <Esc> :q<CR>
         " -- Python --
-        au FileType python nnoremap <silent><C-CR> :FloatermNew py "%:p"<CR>
+        au FileType python nnoremap <silent><C-CR> :FloatermNew --width=0.8 --height=1.0 py "%:p"<CR>
         " au FileType python nnoremap <C-g> :FloatermNew py "%:p"<CR>
         au FileType python noremap! <C-CR>  <Esc>:FloatermToggle<CR>
         " au FileType python noremap! <C-g>  <Esc>:FloatermToggle<CR>
@@ -1065,30 +1065,31 @@ require("lazy").setup({
   },
 -- }}}
 -- {{{ sxyazi/yazi
-  {
-    "mikavilpas/yazi.nvim",
-    keys = {
-        { "<A-f>", function() require("yazi").yazi(nil, vim.fn.getcwd()) end, desc = "Open the file manager in nvim's working directory" },
-    },
-    opts = {
-         open_multiple_tabs = false,
-         open_for_directories = false,
-         floating_window_scaling_factor = 0.94,
-         keymaps = {
-             show_help = '<f8>',
-             -- 前置快捷键
-             open_file_in_vertical_split = '<c-\\>',
-             open_file_in_horizontal_split = '<c-x>',
-             open_file_in_tab = '<c-t>',
-             send_to_quickfix_list = '<c-q>',
-             grep_in_directory = false,
-             replace_in_directory = false,
-             cycle_open_buffers = false,
-             copy_relative_path_to_selected_files = false,
-             change_working_directory = false,
-        },
-    },
-  },
+  -- {
+  --   "mikavilpas/yazi.nvim",
+  --   -- commit = " ",
+  --   keys = {
+  --       { "<A-f>", function() require("yazi").yazi(nil, vim.fn.getcwd()) end, desc = "Open the file manager in nvim's working directory" },
+  --   },
+  --   opts = {
+  --        open_multiple_tabs = false,
+  --        open_for_directories = false,
+  --        floating_window_scaling_factor = 0.94,
+  --        keymaps = {
+  --            show_help = '<f8>',
+  --            -- 前置快捷键
+  --            open_file_in_vertical_split = '<c-\\>',
+  --            open_file_in_horizontal_split = '<c-x>',
+  --            open_file_in_tab = '<c-t>',
+  --            send_to_quickfix_list = '<c-q>',
+  --            grep_in_directory = false,
+  --            replace_in_directory = false,
+  --            cycle_open_buffers = false,
+  --            copy_relative_path_to_selected_files = false,
+  --            change_working_directory = false,
+  --       },
+  --   },
+  -- },
 -- }}}
 -- {{{ iamcco/markdown-preview.nvim
   {
