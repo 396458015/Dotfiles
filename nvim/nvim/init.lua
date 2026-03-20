@@ -1829,7 +1829,8 @@ require("lazy").setup({
     if vim.fn.has('gui_running') == 1 then
         transparent_TREM = false
     else
-        transparent_TREM = true
+        -- transparent_TREM = true
+        transparent_TREM = false
     end
     require("catppuccin").setup({
         transparent_background = transparent_TREM,
@@ -1881,6 +1882,7 @@ require("lazy").setup({
             -- blink_cmp = true,
             snacks = true,
             dashboard = true,
+            gitsigns = true,
             flash = true,
             markdown = true,
             mason = true,
@@ -2725,6 +2727,7 @@ else
         vim.cmd('colorscheme catppuccin-frappe')
     elseif term_sign == "wt_sign" then             -- windows-terminal
         vim.cmd('colorscheme catppuccin-frappe')
+        -- vim.cmd('colorscheme catppuccin-latte')
     else
         vim.cmd('colorscheme catppuccin-frappe')
     end
