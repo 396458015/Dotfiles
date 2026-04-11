@@ -942,6 +942,68 @@ end
 -- }}}
    #+END_SRC
 
+** mhinz/vim-startify
+   #+BEGIN_SRC lua
+-- {{{ mhinz/vim-startify
+  {
+    "mhinz/vim-startify",
+    cmd = "Startify",
+    config = function()
+    vim.g.startify_files_number = 16  -- 起始页显示的列表长度
+    vim.api.nvim_command("hi StartifyBracket ctermfg=10 guifg=#444B6A")
+    vim.api.nvim_command("hi StartifyNumber ctermfg=10 guifg=#FF9E64")
+    vim.api.nvim_command("hi StartifyPath ctermfg=10 guifg=#786591")
+    vim.api.nvim_command("hi StartifySlash ctermfg=10 guifg=#786591")
+    vim.api.nvim_command("hi StartifySection ctermfg=10 guifg=#7AA2F7")
+    vim.api.nvim_command("hi StartifyHeader ctermfg=10 guifg=#8687b0")
+    vim.api.nvim_command("hi StartifyFooter ctermfg=10 guifg=#F7768E")
+    vim.api.nvim_command("hi StartifySpecial ctermfg=10 guifg=#444B6A")
+    vim.g.ascii_neovim = {
+      '                                                                   ',
+      '                                                                   ',
+      '                                                                   ',
+      '                                                                   ',
+      '                                                                   ',
+      '            ,                                                      ',
+      '           / ,,_  ."|                                              ',
+      '         [[| /]]]]/_."                                             ',
+      '       ]]]]` "[["  ".                                              ',
+      '     [[[[[    _   ;,                                               ',
+      '  ,]]]]]]    /o`  ` ;)                                             ',
+      ' [[[[[[   /           (                                            ',
+      ' ]]]]]]   |                      ___________________________       ',
+      '[[[[[[[[                        /                           |      ',
+      ']]]]]]]]]   ".__      _  |     /                            |      ',
+      '[[[[[[[[       /`._  (_ /     |     Still waters run deep!  |      ',
+      ' ]]]]]]"      |    //___/   --=:                            |      ',
+      ' `[[[[`       |     `--`       |                            |      ',
+      '  ]]]`                          ____________________________/      ',
+    }
+    vim.g.startify_custom_footer = 'startify#pad(g:ascii_neovim)'
+
+    -- show startify icon
+    function _G.webDevIcons(path)
+      local filename = vim.fn.fnamemodify(path, ':t')
+      local extension = vim.fn.fnamemodify(path, ':e')
+      return require'nvim-web-devicons'.get_icon(filename, extension, { default = true })
+    end
+
+    vim.cmd[[
+    function! StartifyEntryFormat() abort
+      return 'v:lua.webDevIcons(absolute_path) . " " . entry_path'
+    endfunction
+    ]]
+
+    -- dark & light colorscheme
+    if vim.o.background == 'dark' then
+        vim.api.nvim_command("hi StartifyFile ctermfg=10 guifg=#9ECE6A")
+    elseif vim.o.background == 'light' then
+        vim.api.nvim_command("hi StartifyFile ctermfg=10 guifg=#12970e")
+    end
+    end,
+  },
+-- }}}
+   #+END_SRC
 
 ** orgmode
    #+BEGIN_SRC lua
