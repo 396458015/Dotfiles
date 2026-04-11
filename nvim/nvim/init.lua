@@ -1061,61 +1061,11 @@ require("lazy").setup({
     end,
   },
 -- }}}
--- {{{ plasticboy/vim-markdown
+-- {{{ OXY2DEV/markview.nvim
   {
-    "preservim/vim-markdown",
-    ft = "markdown",
-    config = function()
-    vim.g.vim_markdown_toc_autofit = 1                 -- Enable TOC window auto-fit,调节合适的窗口尺寸
-
-    vim.g.vim_markdown_conceal = 0                     -- 取消隐藏 Markdown          语法符号
-    vim.g.vim_markdown_conceal_code_blocks = 0         -- 取消隐藏 代码块            符号 ```
-    vim.g.tex_conceal = ""                             -- 取消隐藏 LaTeX math syntax 符号
-
-    vim.g.vim_markdown_math = 1                        -- 高亮显示 LaTeX math
-    vim.g.vim_markdown_strikethrough = 1               -- 划线文本显示,由 ~~xx~~ 变为 划线~~xx~~划线
-
-    vim.g.vim_markdown_new_list_item_indent = 2        -- *item1 *item2 缩进距离为2(默认是4).
-    vim.g.vim_markdown_auto_insert_bullets = 0
-
-    --let g.vim_markdown_no_default_key_mappings = 1    -- 取消默认按键映射
-    vim.g.vim_markdown_fenced_languages = {
-        "c++=cpp",
-        "viml=vim",
-        "bash=sh",
-        "ini=dosini",
-        "js=javascript",
-        "json=javascript",
-        "jsx=javascriptreact",
-        "tsx=typescriptreact",
-        "docker=Dockerfile",
-        "makefile=make",
-        "py=python",
-    }
-    vim.g.vim_markdown_follow_anchor = 1
-    vim.g.vim_markdown_edit_url_in = 'vsplit'       -- tab  vsplit  hsplit  current
-    vim.g.vim_markdown_folding_disabled = 0         -- 开启折叠功能
-    vim.g.vim_markdown_folding_style_pythonic = 1   -- 折叠样式
-    vim.g.vim_markdown_folding_level = 1            -- n级不自动折叠
-    end,
-  },
--- }}}
--- {{{ Kicamon/markdown-table-mode.nvim
-  {
-    "Kicamon/markdown-table-mode.nvim",
-    -- 运行 :Mtm 开启table mode后激活插件
-    ft = { "markdown", "org" },
-    config = function()
-        require("markdown-table-mode").setup({
-            filetype = {
-                "*.md",
-            },
-            options = {
-                insert = true, -- when typeing "|"
-                insert_leave = true, -- when leaveing insert
-            },
-        })
-    end,
+    "OXY2DEV/markview.nvim",
+    -- lazy = false,
+    ft = {"markdown", "typst"},
   },
 -- }}}
 -- {{{ lervag/vimtex
