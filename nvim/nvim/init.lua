@@ -155,9 +155,6 @@ neomap('n', '<leader>dt', ':diffthis<CR>', { desc = '[D]iff [T]his' })
 -- vimrc
 neomap('n', '<leader>rc', ':edit $MYVIMRC<CR>', { desc = 'Edit VIMRC' })
 neomap('n', '<leader>rr', ':source $MYVIMRC<CR>', { desc = '[R]eload VIMRC' })
--- 插入时间
-vim.cmd([[iab xtime <c-r>=strftime("20%y-%m-%d %a %H:%M")<CR>]])
-vim.cmd([[iab xdate <c-r>=strftime("20%y-%m-%d (%a)")<CR>]])
 -- 取消高亮
 neomap('n', '<BS>', ':nohlsearch<CR>', key_opts_ns)
 -- 显示列表，使用`.`表示空格
@@ -289,6 +286,7 @@ local vim_opts = {
     tabstop = 4,  -- 设置tab键的宽度
     termguicolors = true,
     ttimeoutlen = 0,
+    breakindent = true,
     undofile = true,
     timeout = true,
     updatetime = 250,
@@ -356,10 +354,13 @@ local function nvim_create_augroups(definitions)
         vim.api.nvim_command("augroup " .. group_name)
         vim.api.nvim_command("autocmd!")
         for _, def in ipairs(definition) do
-            local command = table.concat(vim.tbl_flatten { "autocmd", def }, " ")
+            local command = table.concat(
+                vim.iter({ "autocmd", def }):flatten():totable(),
+                " "
+            )
             vim.api.nvim_command(command)
         end
-        vim.api.nvim_command "augroup END"
+        vim.api.nvim_command("augroup END")
     end
 end
 
@@ -377,17 +378,17 @@ nvim_create_augroups({
         { "FileType", "markdown", "setlocal textwidth=80" },
     },
     highlight_column_limit = {
-    -- 下划线显示第80个字符
+        -- 下划线显示第80个字符
         {
-          "BufRead,BufNewFile",
-          "*.asm,*.c,*.cpp,*.java,*.cs,*.sh,*.lua,*.pl,*.pm,*.py,*.rb,*.hs,*.vim,*.md",
-          [[2match Underlined /.\%81v/]],
+            "BufRead,BufNewFile",
+            "*.asm,*.c,*.cpp,*.java,*.cs,*.sh,*.lua,*.pl,*.pm,*.py,*.rb,*.hs,*.vim,*.md",
+            [[2match Underlined /.\%81v/]],
         },
-    -- 下划线显示第72个字符(遵循Fortran77固定格式)
+        -- 下划线显示第72个字符(遵循Fortran77固定格式)
         {
-          "BufRead,BufNewFile",
-          "*.for",
-          [[2match Underlined /.\%73v/]],
+            "BufRead,BufNewFile",
+            "*.for",
+            [[2match Underlined /.\%73v/]],
         },
     },
 })
@@ -458,17 +459,9 @@ require("lazy").setup({
 -- }}}
 -- Local plugins
 -- {{{ Dir = vim-speeddating-master
-  { dir = "C:/Users/ThinkPad/AppData/Local/nvim-data/Maxl/Local_Plugins/vim-speeddating-master", ft = { "markdown" } }, --modified
+  { dir = "C:/Users/ThinkPad/AppData/Local/nvim-data/Maxl/Local_Plugins/vim-speeddating-master", ft = { "markdown", "org" } }, --modified
 -- }}}
--- {{{ Dir = weather3day.nvim-main
-  {
-    dir = "C:/Users/ThinkPad/AppData/Local/nvim-data/Maxl/Local_Plugins/weather3day.nvim-main", --modified
-    keys = { { "<localleader>wd", ":Weather3day<CR>",   mode = { "n" }, desc = '3 day' } },
-    init = function()
-    vim.g.weather_city = "Xi'an"--weather3day plug
-    end,
-  },
--- }}}
+
 -- Github plugins
 -- {{{ nvim-lualine/lualine.nvim
   {
@@ -675,16 +668,6 @@ require("lazy").setup({
                             action = 'Leaderf mru',
                         },
                         {
-                            icon    = '  ',
-                            icon_hl = 'Title',
-                            desc    = 'Last Session',
-                            desc_hl = 'String',
-                            key     = 's',
-                            key_hl  = 'Number',
-                            keymap  = 'SPC s l',
-                            action = 'lua require("persistence").load({ last = true })',
-                        },
-                        {
                             icon    = '💤 ',--  鈴
                             icon_hl = 'Title',
                             desc    = 'Manage Plugins',
@@ -704,16 +687,6 @@ require("lazy").setup({
                             action  = 'edit $MYVIMRC | tcd %:p:h', --tabnew;edit
                         },
                         {
-                            icon    = '  ',
-                            icon_hl = 'Title',
-                            desc    = 'Todo List',
-                            desc_hl = 'String',
-                            key     = 'n',
-                            key_hl  = 'Number',
-                            keymap  = 'SPC n',
-                            action = 'GlobalNote',
-                        },
-                        {
                             icon    = "  ",
                             icon_hl = 'Title',
                             desc    = "Exit",
@@ -727,7 +700,17 @@ require("lazy").setup({
                         return {
                             '',
                             '',
-                            "🎉 NVIM(v" .. vim.version().major .. "." .. vim.version().minor .. "." .. vim.version().patch .. ") " .. "loaded " .. require("lazy").stats().count .. " plugins  in " .. require"lazy".stats().startuptime .. " ms 🎉",
+                            "🎉 NVIM(v"
+                                .. vim.version().major .. "."
+                                .. vim.version().minor .. "."
+                                .. vim.version().patch .. ") "
+                                .. "loaded "
+                                .. require("lazy").stats().loaded
+                                .. "/"
+                                .. require("lazy").stats().count
+                                .. " plugins  in " 
+                                .. require"lazy".stats().startuptime
+                                .. " ms 🎉",
                         }
                     end
                 },
@@ -768,14 +751,6 @@ require("lazy").setup({
             vim.api.nvim_command("hi DashboardHeader guifg=" .. pacman_color_list[randomIndex_pacman])
         end,
     },
--- }}}
--- {{{ folke/persistence.nvim
-  {
-    "folke/persistence.nvim",
-    event = "BufReadPre", -- this will only start session saving when an actual file was opened
-    opts = { save_empty = false },
-    keys = { { "<leader>sl", function() require("persistence").load({ last = true }) end, desc = "Restore Last Session" } },
-  },
 -- }}}
 -- {{{ mbbill/undotree
   {
@@ -1064,33 +1039,6 @@ require("lazy").setup({
     end,
   },
 -- }}}
--- {{{ sxyazi/yazi
-  -- {
-  --   "mikavilpas/yazi.nvim",
-  --   -- commit = " ",
-  --   keys = {
-  --       { "<A-f>", function() require("yazi").yazi(nil, vim.fn.getcwd()) end, desc = "Open the file manager in nvim's working directory" },
-  --   },
-  --   opts = {
-  --        open_multiple_tabs = false,
-  --        open_for_directories = false,
-  --        floating_window_scaling_factor = 0.94,
-  --        keymaps = {
-  --            show_help = '<f8>',
-  --            -- 前置快捷键
-  --            open_file_in_vertical_split = '<c-\\>',
-  --            open_file_in_horizontal_split = '<c-x>',
-  --            open_file_in_tab = '<c-t>',
-  --            send_to_quickfix_list = '<c-q>',
-  --            grep_in_directory = false,
-  --            replace_in_directory = false,
-  --            cycle_open_buffers = false,
-  --            copy_relative_path_to_selected_files = false,
-  --            change_working_directory = false,
-  --       },
-  --   },
-  -- },
--- }}}
 -- {{{ iamcco/markdown-preview.nvim
   {
     "iamcco/markdown-preview.nvim",
@@ -1229,65 +1177,6 @@ require("lazy").setup({
         sections = 0,
         styles = 0,
     }
-    end,
-  },
--- }}}
--- {{{ mhinz/vim-startify
-  {
-    "mhinz/vim-startify",
-    cmd = "Startify",
-    config = function()
-    vim.g.startify_files_number = 16  -- 起始页显示的列表长度
-    vim.api.nvim_command("hi StartifyBracket ctermfg=10 guifg=#444B6A")
-    vim.api.nvim_command("hi StartifyNumber ctermfg=10 guifg=#FF9E64")
-    vim.api.nvim_command("hi StartifyPath ctermfg=10 guifg=#786591")
-    vim.api.nvim_command("hi StartifySlash ctermfg=10 guifg=#786591")
-    vim.api.nvim_command("hi StartifySection ctermfg=10 guifg=#7AA2F7")
-    vim.api.nvim_command("hi StartifyHeader ctermfg=10 guifg=#8687b0")
-    vim.api.nvim_command("hi StartifyFooter ctermfg=10 guifg=#F7768E")
-    vim.api.nvim_command("hi StartifySpecial ctermfg=10 guifg=#444B6A")
-    vim.g.ascii_neovim = {
-      '                                                                   ',
-      '                                                                   ',
-      '                                                                   ',
-      '                                                                   ',
-      '                                                                   ',
-      '            ,                                                      ',
-      '           / ,,_  ."|                                              ',
-      '         [[| /]]]]/_."                                             ',
-      '       ]]]]` "[["  ".                                              ',
-      '     [[[[[    _   ;,                                               ',
-      '  ,]]]]]]    /o`  ` ;)                                             ',
-      ' [[[[[[   /           (                                            ',
-      ' ]]]]]]   |                      ___________________________       ',
-      '[[[[[[[[                        /                           |      ',
-      ']]]]]]]]]   ".__      _  |     /                            |      ',
-      '[[[[[[[[       /`._  (_ /     |     Still waters run deep!  |      ',
-      ' ]]]]]]"      |    //___/   --=:                            |      ',
-      ' `[[[[`       |     `--`       |                            |      ',
-      '  ]]]`                          ____________________________/      ',
-    }
-    vim.g.startify_custom_footer = 'startify#pad(g:ascii_neovim)'
-
-    -- show startify icon
-    function _G.webDevIcons(path)
-      local filename = vim.fn.fnamemodify(path, ':t')
-      local extension = vim.fn.fnamemodify(path, ':e')
-      return require'nvim-web-devicons'.get_icon(filename, extension, { default = true })
-    end
-
-    vim.cmd[[
-    function! StartifyEntryFormat() abort
-      return 'v:lua.webDevIcons(absolute_path) . " " . entry_path'
-    endfunction
-    ]]
-
-    -- dark & light colorscheme
-    if vim.o.background == 'dark' then
-        vim.api.nvim_command("hi StartifyFile ctermfg=10 guifg=#9ECE6A")
-    elseif vim.o.background == 'light' then
-        vim.api.nvim_command("hi StartifyFile ctermfg=10 guifg=#12970e")
-    end
     end,
   },
 -- }}}
@@ -1717,19 +1606,6 @@ require("lazy").setup({
     end,
   },
 -- }}}
--- {{{ ellisonleao/weather.nvim
-  {
-    "ellisonleao/weather.nvim",
-    keys = { { "<localleader>we", ":Weather<CR>",   mode = { "n" }, desc = '1 day' } },
-    config = function()
-    require("weather").setup({
-        city = "Xi'an",
-        win_height = 10,
-        win_width = 50,
-    })
-    end,
-  },
--- }}}
 -- {{{ echasnovski/mini.align
   {
     "echasnovski/mini.align",
@@ -1995,63 +1871,56 @@ require("lazy").setup({
     end,
   },
 -- }}}
--- {{{ backdround/global-note.nvim
-  {
-    "backdround/global-note.nvim",
-    cmd = { "GlobalNote" },
-	keys = { { "<leader>n", mode = { "n" }, "<cmd>GlobalNote<cr>", desc = "Todo list" } },
-    config = function()
-        local global_note = require("global-note")
-        global_note.setup({
-            filename = "Todo-list.org",
-            directory = vim.fn.stdpath("data") .. "/Maxl/Org/",
-            title = "Todo list",
-            command_name = "GlobalNote",
-            window_config = function()
-                local window_height = vim.api.nvim_list_uis()[1].height
-                local window_width = vim.api.nvim_list_uis()[1].width
-                return {
-                    relative = "editor",
-                    border = "rounded",  -- single
-                    title = "Note",
-                    title_pos = "center",
-                    width = math.floor(0.7 * window_width),
-                    height = math.floor(0.85 * window_height),
-                    row = math.floor(0.55 * window_height),
-                    col = math.floor(0.15 * window_width),
-                }
-            end,
-            autosave = true,
-            additional_presets = {},
-        })
-    end,
-  },
--- }}}
--- {{{ nvim-treesitter/nvim-treesitter
-  {
-    "nvim-treesitter/nvim-treesitter",
+
+-- {{{ nvim-treesitter/nvim-treesitter --- kickstart
+  { -- Highlight, edit, and navigate code
+    'nvim-treesitter/nvim-treesitter',
+    lazy = false,
     build = ':TSUpdate',
-    event = { 'BufReadPost', 'BufNewFile', 'BufReadPre' },
+    branch = 'main',
+    -- event = { 'BufReadPost', 'BufNewFile', 'BufReadPre' },
     dependencies = {
         "hiphish/rainbow-delimiters.nvim",
     },
-    opts = {
-      ensure_installed = { "bash", "python", "fortran", "c", "vim", "vimdoc", "query", "lua", "bibtex", "markdown", "matlab", "json", "toml", "yaml", "typst", "ini", "bibtex", "latex" },
-      auto_install = true,
-      highlight = {
-        enable = true,
-        additional_vim_regex_highlighting = true,
-      },
-      indent = { enable = true },
-    },
-    config = function(_, opts)
-      require('nvim-treesitter.install').prefer_git = true
-      ---@diagnostic disable-next-line: missing-fields
-      require('nvim-treesitter.configs').setup(opts)
+    config = function()
+      local parsers = { 'bash', 'python', 'fortran', 'c', 'vim', 'vimdoc', 'query', 'lua', 'bibtex', 'markdown', 'matlab', 'json', 'toml', 'yaml', 'typst', 'ini', 'bibtex', 'latex' }
+      require('nvim-treesitter').install(parsers)
+
+      ---@param buf integer
+      ---@param language string
+      local function treesitter_try_attach(buf, language)
+        -- check if parser exists and load it
+        if not vim.treesitter.language.add(language) then return end
+        -- enables syntax highlighting and other treesitter features
+        vim.treesitter.start(buf, language)
+        vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+      end
+
+      local available_parsers = require('nvim-treesitter').get_available()
+      vim.api.nvim_create_autocmd('FileType', {
+        callback = function(args)
+          local buf, filetype = args.buf, args.match
+
+          local language = vim.treesitter.language.get_lang(filetype)
+          if not language then return end
+
+          local installed_parsers = require('nvim-treesitter').get_installed 'parsers'
+
+          if vim.tbl_contains(installed_parsers, language) then
+            -- enable the parser if it is installed
+            treesitter_try_attach(buf, language)
+          elseif vim.tbl_contains(available_parsers, language) then
+            -- if a parser is available in `nvim-treesitter` auto install it, and enable it after the installation is done
+            require('nvim-treesitter').install(language):await(function() treesitter_try_attach(buf, language) end)
+          else
+            -- try to enable treesitter features in case the parser exists but is not available from `nvim-treesitter`
+            treesitter_try_attach(buf, language)
+          end
+        end,
+      })
     end,
   },
 -- }}}
-
 -- {{{ neovim/nvim-lspconfig
 -- from "nvim-lua/kickstart.nvim"
   {
@@ -2095,12 +1964,17 @@ require("lazy").setup({
           end,
       })
 
-      vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-          border = "single",
-      })
-      vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
-          border = "single",
-      })
+      vim.lsp.handlers["textDocument/hover"] = function(_, result, ctx, config)
+          config = config or {}
+          config.border = "single"
+          return vim.lsp.handlers.hover(_, result, ctx, config)
+      end
+      
+      vim.lsp.handlers["textDocument/signatureHelp"] = function(_, result, ctx, config)
+          config = config or {}
+          config.border = "single"
+          return vim.lsp.handlers.signature_help(_, result, ctx, config)
+      end
 
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       -- capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())  -- nvim-cmp
@@ -2247,6 +2121,7 @@ require("lazy").setup({
                 neomap("n", "<leader>rsp", ":<C-U>e C:/Users/ThinkPad/AppData/Local/nvim-data/Maxl/friendly-snippets/add_snippets/Maxl_python.json<CR>", { desc = 'Snippets: [P]ython' })
                 neomap("n", "<leader>rso", ":<C-U>e C:/Users/ThinkPad/AppData/Local/nvim-data/Maxl/friendly-snippets/add_snippets/Maxl_org.json<CR>", { desc = 'Snippets: [O]rg' })
                 neomap("n", "<leader>rst", ":<C-U>e C:/Users/ThinkPad/AppData/Local/nvim-data/Maxl/friendly-snippets/add_snippets/Typst/maths.json<CR>", { desc = 'Snippets: [T]ypst' })
+                neomap("n", "<leader>rsg", ":<C-U>e C:/Users/ThinkPad/AppData/Local/nvim-data/Maxl/friendly-snippets/snippets/global.json<CR>", { desc = '[G]lobel Snippets' })
                 neomap("n", "<leader>rsT", ":<C-U>e C:/Users/ThinkPad/AppData/Roaming/Code/User/snippets/typst.json<CR>", { desc = 'VSC Snippets: [T]ypst' })
                 neomap("n", "<leader>rsL", ":<C-U>e C:/Users/ThinkPad/AppData/Roaming/Code/User/snippets/latex.json<CR>", { desc = 'VSC Snippets: [L]aTeX' })
             end,
@@ -2663,7 +2538,6 @@ require("lazy").setup({
             -- set plugin icon (color: azure, blue, cyan, green, grey, orange, purple, red, yellow)
             rules = {
                 { plugin = "neo-tree.nvim",           icon = "󰙅", color = "orange" },
-                { plugin = "global-note.nvim",        icon = "", color = "green" }, -- 󰝖
                 { plugin = "vim-interestingwords",    icon = "", color = "red" },
                 { plugin = "undotree",                icon = "", color = "red" },
                 { plugin = "cellular-automaton.nvim", icon = "", color = "red" },
@@ -2843,16 +2717,19 @@ if vim.g.neovide then-- neovide
     vim.g.neovide_cursor_vfx_particle_density = 7.0
     vim.g.neovide_cursor_trail_length = 0.05
     vim.g.neovide_refresh_rate = 60
+
     vim.g.neovide_cursor_antialiasing = true
     vim.g.neovide_cursor_animation_length = 0.02
-    vim.g.neovide_opacity = 0.97
+    vim.g.neovide_cursor_animate_in_insert_mode = true
+    vim.g.neovide_scroll_animation_length = 0.3
+
+    vim.g.neovide_opacity = 0.9
     vim.g.neovide_fullscreen = false
     vim.g.neovide_remember_window_size = true
     vim.g.neovide_remember_window_position = true
     vim.g.neovide_confirm_quit = true              -- 修改文件后退出提示
     vim.g.neovide_hide_mouse_when_typing = true    -- 输入时隐藏鼠标
     -- vim.g.neovide_profiler = true               -- 左上角显示帧数
-    vim.g.neovide_scroll_animation_length = 0.3
     -- Adjust transparency
     neomap('n', '<C-_>', ':let g:neovide_opacity -= 0.25<CR>:let g:neovide_opacity<CR>', {})
     neomap('n', '<C-+>', ':let g:neovide_opacity += 0.25<CR>:let g:neovide_opacity<CR>', {})
