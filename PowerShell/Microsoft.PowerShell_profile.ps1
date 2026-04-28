@@ -264,10 +264,11 @@ $fzf_opts = @(
     "--cycle",
     "--border=rounded --border-label='󰞘  󰞗'",
     "--margin=0,0",
-    "--preview 'bat --theme=TwoDark --color=always --style=numbers --line-range :500 {}'",
-    # "--color=fg:#abb2bf,bg+:#343d46,gutter:-1,pointer:#ff5189,info:#f09479,hl:#36c692,hl+:#36c692,label:#80a0ff", # Frappe
-    # "--color=marker:#f09479,spinner:#36c692,header:#80a0ff,fg+:#cdd6f4,prompt:#87afff,border:#51576d", # Frappe
-    "--color=fg:$($Flavor.Text),bg+:$($Flavor.Surface0),gutter:-1,pointer:$($Flavor.Rosewater),info:$($Flavor.Mauve),hl:$($Flavor.Red),hl+:$($Flavor.Red),label:#80a0ff", # catppuccin
+
+    # "--preview 'bat --theme=TwoDark --color=always --style=numbers --line-range :500 {}'",
+    "--preview 'bat --theme=`"Visual Studio Dark+`" --color=always --style=numbers --line-range :500 -- {}'",
+
+    "--color=fg:#949cbb,bg+:$($Flavor.Surface0),gutter:#3a3f5a,pointer:#ca9ee6,info:$($Flavor.Mauve),hl:$($Flavor.Red),hl+:$($Flavor.Red),label:#80a0ff",
     "--color=marker:$($Flavor.Rosewater),spinner:$($Flavor.Rosewater),header:$($Flavor.Red),fg+:$($Flavor.Text),prompt:$($Flavor.Mauve),border:$($Flavor.Surface2)", # catppuccin
     "--bind ctrl-p:toggle-preview",
     "--bind ctrl-j:down",
@@ -283,37 +284,41 @@ $fzf_opts = @(
 )
 Set-Item Env:FZF_DEFAULT_OPTS -Value ($fzf_opts -join " ")
 
-# 打开fzf用nvim打开文件
-function Invoke-FZF() {
-    $result = . (Get-Command -CommandType Application fzf) $args
-    if ($result) {
-        nvim $result
-    }
+# fzf,用nvim打开文件
+function Invoke-FZF {
+    $r = fzf
+    if ($r) { nvim $r }
 }
-Set-PSReadLineKeyHandler -Chord ctrl+f -ScriptBlock {
+Set-PSReadLineKeyHandler -Chord alt+s -ScriptBlock {
     [Microsoft.Powershell.PSConsoleReadline]::RevertLine()
     [Microsoft.Powershell.PSConsoleReadline]::Insert("Invoke-FZF")
     [Microsoft.Powershell.PSConsoleReadline]::AcceptLine()
 }
 
-# 打开fzf并且cd进去
-Set-PSReadlineKeyHandler -Chord ctrl+g -ScriptBlock {
-  [Microsoft.PowerShell.PSConsoleReadLine]::RevertLine()
-  [Microsoft.PowerShell.PSConsoleReadLine]::Insert('cd "$(fzf)\.."')
-  [Microsoft.PowerShell.PSConsoleReadLine]::AcceptLine()
+# fzf,cd到文件路径
+function Invoke-FZF-CD {
+    $r = fzf
+    if ($r) {
+        $dir = Split-Path $r
+        if ($dir) { Set-Location $dir }
+    }
 }
-function cf {cd "$(fzf)\.."}
+Set-PSReadLineKeyHandler -Chord alt+g -ScriptBlock {
+    [Microsoft.PowerShell.PSConsoleReadLine]::RevertLine()
+    [Microsoft.PowerShell.PSConsoleReadLine]::Insert('Invoke-FZF-CD')
+    [Microsoft.PowerShell.PSConsoleReadLine]::AcceptLine()
+}
 
 # ------------------- yazi -------------------
 # Changing working directory when exiting Yazi
 function yzcd {
-    $tmp = [System.IO.Path]::GetTempFileName()
-    yazi $args --cwd-file="$tmp"
-    $cwd = Get-Content -Path $tmp
-    if (-not [String]::IsNullOrEmpty($cwd) -and $cwd -ne $PWD.Path) {
-        Set-Location -Path $cwd
-    }
-    Remove-Item -Path $tmp
+	$tmp = (New-TemporaryFile).FullName
+	yazi.exe $args --cwd-file="$tmp"
+	$cwd = Get-Content -Path $tmp -Encoding UTF8
+	if ($cwd -and $cwd -ne $PWD.Path -and (Test-Path -LiteralPath $cwd -PathType Container)) {
+		Set-Location -LiteralPath (Resolve-Path -LiteralPath $cwd).Path
+	}
+	Remove-Item -Path $tmp
 }
 
 Set-PSReadLineKeyHandler -Chord Alt+f -ScriptBlock {

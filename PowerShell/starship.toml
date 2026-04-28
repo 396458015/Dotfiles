@@ -30,6 +30,7 @@ disabled = false # 显示git增加和删除的行数
 disabled = false
 min_time = 1_000
 show_milliseconds = true
+format = "[⏱ $duration]($style) "
 
 [shell]
 bash_indicator = ""  # ubuntu
