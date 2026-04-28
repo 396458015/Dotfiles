@@ -70,6 +70,9 @@ neomap('n', '<leader>s?', 'z=', { desc = 'Word Candidate' })
 -- 查找并替换
 neomap('n', '<leader>z', [[:%s/\<<C-R>=expand("<cword>")<CR>\>/<C-R>=expand("<cword>")<CR>/g<left><left>]], { desc = 'Replace Word' })
 neomap('v', '<leader>z', [[:s///g<left><left><left>]], { desc = 'Replace Word' })
+-- 统计中文字数
+neomap('n', '<leader>w', [[:s/\v[\u4E00-\u9FFF\u3000-\u303F\uFF00-\uFFEF]//gn<CR>]], { desc = 'Count Chinese [W]ords' })
+neomap('v', '<leader>w', [[:s/\v[\u4E00-\u9FFF\u3000-\u303F\uFF00-\uFFEF]//gn<CR>]], { desc = 'Count Chinese [W]ords' })
 -- 创建列表
 neomap('n', '<leader>b', [[:put =range(,,1)<left><left><left><left>]], { desc = 'Columns Num' })
 -------------------- 分屏 --------------------
@@ -1746,7 +1749,7 @@ require("lazy").setup({
   {
     "nvim-orgmode/orgmode",  -- orgmode 会自动安装org parser,无需设置nvim-treesitter安装org
     ft = "org",
-    -- commit = "de02a0c",
+    -- commit = "b0c9896",  -- 最新commit: 1ab7b45
     dependencies = {
         {
           "akinsho/org-bullets.nvim",
