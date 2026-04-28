@@ -233,64 +233,62 @@ rules = [
 	{ mime = "application/x-mobipocket-ebook", fg = "#c5cc43", bold = true },
     { mime = "application/pdf",                fg = "#f56335", bold = true },
 
-    { name = "*.toml", fg = "#e37933", bold = true },
-    { name = "*.json", fg = "#cbcb41", bold = true },
-
     # exts
-    { name = "*.lua",  fg = "#00a2ff", bold = true },
-    { name = "*.docx", fg = "#42a0fd", bold = true },
-    { name = "*.doc",  fg = "#42a0fd", bold = true },
-    { name = "*.xlsx", fg = "#2faa13", bold = true },
-    { name = "*.xls",  fg = "#2faa13", bold = true },
-    { name = "*.csv",  fg = "#2faa13", bold = true },
-    { name = "*.pptx", fg = "#cb4a32", bold = true },
-    { name = "*.ppt",  fg = "#cb4a32", bold = true },
-    { name = "*.org",  fg = "#93d690", bold = true },
-    { name = "*.norg", fg = "#93d690", bold = true },
-    { name = "*.txt",  fg = "#89e051", bold = true },
-    { name = "*.tex",  fg = "#56a34a", bold = true },
-    { name = "*.bib",  fg = "#56a34a", bold = true },
-    { name = "*.caj",  fg = "#dc8a78", bold = true },
-    { name = "*.md",   fg = "#dddddd", bold = true },
-    { name = "*.typ",  fg = "#4bb4b6", bold = true },
-    { name = "*.opju", fg = "#f66d54", bold = true },
-    { name = "*.hm",   fg = "#fa4616", bold = true },
-    { name = "*.stp",  fg = "#4273ca", bold = true },
-    { name = "*.inp",  fg = "#11a7a3", bold = true },
-    { name = "*.dll",  fg = "#5192d8", bold = true },
-    { name = "*.ps1",  fg = "#4273ca", bold = true },
-    { name = "*.rmvb", fg = "#a098dd", bold = true },
-    { name = "*.m",    fg = "#d6440b", bold = true },
-    { name = "*.for",  fg = "#ab85df", bold = true },
-    { name = "*.f",    fg = "#ab85df", bold = true },
-    { name = "*.cae",  fg = "#11a7a3", bold = true },
-    { name = "*.exe",  fg = "#40c5a9", bold = true },
-    { name = "*.rar",  fg = "#f4b8e4", bold = true },
-    { name = "*.vim",  fg = "#019833", bold = true },
-    { name = "*.ahk",  fg = "#7ac673", bold = true },
-    { name = "*.py",   fg = "#85d3fe", bold = true },
-    { name = "*.rpy",  fg = "#85d3fe", bold = true },
-    { name = "*.odb",  fg = "#11a7a3", bold = true },
-    { name = "*.lock", fg = "#f80000", bold = true },
-    { name = "*.xml",  fg = "#e34c26", bold = true },
+    { url = "*.py",   fg = "#85d3fe", bold = true },
+    { url = "*.for",  fg = "#ab85df", bold = true },
+    { url = "*.f",    fg = "#ab85df", bold = true },
+    { url = "*.lua",  fg = "#00a2ff", bold = true },
+    { url = "*.org",  fg = "#93d690", bold = true },
+    { url = "*.norg", fg = "#93d690", bold = true },
+    { url = "*.md",   fg = "#dddddd", bold = true },
+    { url = "*.m",    fg = "#d6440b", bold = true },
+    { url = "*.rar",  fg = "#f4b8e4", bold = true },
+    { url = "*.vim",  fg = "#019833", bold = true },
+
+    # { url = "*.docx", fg = "#42a0fd", bold = true },
+    # { url = "*.doc",  fg = "#42a0fd", bold = true },
+    # { url = "*.xlsx", fg = "#2faa13", bold = true },
+    # { url = "*.xls",  fg = "#2faa13", bold = true },
+    # { url = "*.csv",  fg = "#2faa13", bold = true },
+    # { url = "*.pptx", fg = "#cb4a32", bold = true },
+    # { url = "*.ppt",  fg = "#cb4a32", bold = true },
+    # { url = "*.txt",  fg = "#89e051", bold = true },
+    # { url = "*.tex",  fg = "#56a34a", bold = true },
+    # { url = "*.bib",  fg = "#56a34a", bold = true },
+    # { url = "*.caj",  fg = "#dc8a78", bold = true },
+    # { url = "*.typ",  fg = "#4bb4b6", bold = true },
+    # { url = "*.opju", fg = "#f66d54", bold = true },
+    # { url = "*.hm",   fg = "#fa4616", bold = true },
+    # { url = "*.stp",  fg = "#4273ca", bold = true },
+    # { url = "*.inp",  fg = "#11a7a3", bold = true },
+    # { url = "*.dll",  fg = "#5192d8", bold = true },
+    # { url = "*.ps1",  fg = "#4273ca", bold = true },
+    # { url = "*.rmvb", fg = "#a098dd", bold = true },
+    # { url = "*.cae",  fg = "#11a7a3", bold = true },
+    # { url = "*.exe",  fg = "#40c5a9", bold = true },
+    # { url = "*.ahk",  fg = "#7ac673", bold = true },
+    # { url = "*.rpy",  fg = "#85d3fe", bold = true },
+    # { url = "*.odb",  fg = "#11a7a3", bold = true },
+    # { url = "*.lock", fg = "#f80000", bold = true },
+    # { url = "*.xml",  fg = "#e34c26", bold = true },
+    # { url = "*.toml", fg = "#e37933", bold = true },
+    # { url = "*.json", fg = "#cbcb41", bold = true },
 
 	# Documents
     # { mime = "application/{pdf,doc,rtf,vnd.*}", fg = "cyan" },
 
-	# Empty files
-	{ mime = "inode/x-empty", fg = "red" },
-
 	# Special files
-	{ name = "*", is = "orphan", bg = "red" },
-	{ name = "*", is = "exec"  , fg = "green" },
+	{ url = "*", is = "orphan", bg = "red" },
+	{ url = "*", is = "exec"  , fg = "green" },
 
 	# Dummy files
-	{ name = "*",  is = "dummy", bg = "red" },
-	{ name = "*/", is = "dummy", bg = "red" },
+	{ url = "*",  is = "dummy", bg = "red" },
+	{ url = "*/", is = "dummy", bg = "red" },
 
 	# Fallback 文件和文件夹字体颜色
-	{ name = "*",  fg = "#abb2bf", bold = true }, # files font (Frappe)
-	{ name = "*/", fg = "#6c71c4", bold = true }, # directories font
+	{ url = "*",  fg = "#abb2bf", bold = true }, # files font (Frappe)
+	# { url = "*/", fg = "#6c71c4", bold = true }, # directories font
+	{ url = "*/", fg = "#eab766", bold = true }, # directories font
 ]
 
 [icon]
@@ -502,10 +500,8 @@ conds = [
 	{ if = "dummy",  text = "" },
 
 	# Fallback
-	# { if = "dir",  text = "", fg_dark = "#F7C030",fg_light = "#F7C030" },  # directories icon   󰉋 #F7C030
-	# { if = "exec", text = "", fg_dark = "#a2c5d1", fg_light = "#3a4446" },
-	{ if = "dir",  text = "", fg = "#eab766" },  # directories icon   󰉋 #F7C030
-	{ if = "exec", text = "", fg = "#a2c5d1" },
+	{ if = "dir",  text = "" },  # directories icon   󰉋 #F7C030
+	{ if = "exec", text = "" },  # #a2c5d1
 	{ if = "!dir", text = "" },  # files icon     󰈔
 ]
 
