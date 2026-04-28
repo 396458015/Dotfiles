@@ -154,7 +154,7 @@ neomap('n', '<leader>st', ':Startify<CR>', { desc = 'Startify' })
 neomap('n', '<leader>dt', ':diffthis<CR>', { desc = '[D]iff [T]his' })
 -- vimrc
 neomap('n', '<leader>rc', ':edit $MYVIMRC<CR>', { desc = 'Edit VIMRC' })
-neomap('n', '<leader>rr', ':source $MYVIMRC<CR>', { desc = '[R]eload VIMRC' })
+neomap('n', '<leader>rr', ':restart<CR>', { desc = '[R]eload VIMRC' })
 -- 取消高亮
 neomap('n', '<BS>', ':nohlsearch<CR>', key_opts_ns)
 -- 显示列表，使用`.`表示空格
@@ -300,6 +300,7 @@ local vim_opts = {
     wrap = true,
     writebackup = false,
     inccommand="nosplit",
+    winborder = 'rounded',
     -- shell = "C:/PROGRA~1/PowerShell/7/pwsh.exe" -- pwsh7,启动速度200+ms, 与yazi.nvim冲突
 }
 for k, v in pairs(vim_opts) do
@@ -335,6 +336,18 @@ vim.g.python3_host_prog = 'C:/Python/Python311/python.exe'
 vim.cmd([[ let $PYTHONUNBUFFERED=1 ]]) -- 禁用python stdout缓冲 ]
 -- Return to last edit position when opening files (You want this!)
 vim.cmd([[ au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif ]])
+
+-- neovim 0.12 new feature
+require('vim._core.ui2').enable({
+    enable = true,
+    msg = {
+        target = "msg", -- options: cmd(classic), msg(similar to noice)
+        pager = { height = 1 },
+        msg   = { height = 0.5, timeout = 4500 },
+        dialog = { height = 0.5 },
+        cmd    = { height = 0.5 },
+    },
+})
 -- }}}
 
 -- {{{ autocmds
