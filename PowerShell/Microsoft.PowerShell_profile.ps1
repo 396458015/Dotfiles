@@ -2,7 +2,7 @@
 
 # Import the module
 
-# ------------------- 颜色设置 -------------------
+# {{{ 颜色设置
 # 下载"https://github.com/catppuccin/powershell"主题到C:\Users\ThinkPad\Documents\PowerShell\Modules\Catppuccin
 Import-Module Catppuccin
 $Flavor = $Catppuccin['Frappe']
@@ -37,18 +37,14 @@ $Colors = @{
 	Variable               = $Flavor.Lavender.Foreground()
 }
 Set-PSReadLineOption -Colors $Colors
+# }}}
 
-# ------------------- 设置yazi环境(0.2.5) -------------------
-$Env:YAZI_FILE_ONE = "D:\Program Files\Git\usr\bin\file.exe"
-
-# 解决fzf查询结果含有CJK,路径乱码nvim打不开的情况
-# set PowerShell to UTF-8
-$OutputEncoding = [console]::InputEncoding = [console]::OutputEncoding = New-Object System.Text.UTF8Encoding
-
+# {{{ starship + Terminal-Icons + PSReadline
+# starship
 Invoke-Expression (&starship init powershell)
 Import-Module Terminal-Icons
 
-#PSReadline settings
+# PSReadline settings
 Set-PSReadLineOption -ShowToolTips
 Set-PSReadLineOption -BellStyle None
 Set-PSReadLineOption -HistoryNoDuplicates
@@ -66,8 +62,9 @@ Set-PSReadLineKeyHandler -Key "Ctrl+z" -Function Undo
 Set-PSReadLineKeyHandler -Key Ctrl+Backspace -Function BackwardKillWord
 Set-PSReadLineKeyHandler -Chord "Ctrl+j" -Function HistorySearchForward
 Set-PSReadLineKeyHandler -Chord "Ctrl+k" -Function HistorySearchBackward
+# }}}
 
-# Alias
+# {{{ Alias
 Set-Alias v nvim
 Set-Alias gg LazyGit
 Set-Alias ipy ipython
@@ -155,6 +152,7 @@ Set-PSReadLineKeyHandler -Chord ctrl+e -ScriptBlock {
     [Microsoft.Powershell.PSConsoleReadline]::Insert("edith")
     [Microsoft.Powershell.PSConsoleReadline]::AcceptLine()
 }
+
 # ------------------- open app -------------------
 
 function alacritty_start {
@@ -223,7 +221,6 @@ function geek_start {
 }
 Set-Alias -Name geek -Value geek_start
 
-
 # ------------------- config files -------------------
 # wezterm
 function weconfig { nvim 'C:\Users\ThinkPad\.config\wezterm\config\appearance.lua' }
@@ -245,8 +242,35 @@ function wfconfig { nvim 'C:\Users\ThinkPad\.config\winfetch\config.ps1' }
 function yzconfig { nvim 'C:\Users\ThinkPad\AppData\Roaming\yazi\config\keymap.toml' }
 # lazygit
 function lgconfig { nvim 'C:\Users\ThinkPad\AppData\Roaming\lazygit\config.yml' }
+# }}}
 
-# ------------------- fzf + nvim + bat -------------------
+# {{{ yazi
+# 设置yazi环境
+$Env:YAZI_FILE_ONE = "D:\Program Files\Git\usr\bin\file.exe"
+
+# Changing working directory when exiting Yazi
+function yzcd {
+	$tmp = (New-TemporaryFile).FullName
+	yazi.exe $args --cwd-file="$tmp"
+	$cwd = Get-Content -Path $tmp -Encoding UTF8
+	if ($cwd -and $cwd -ne $PWD.Path -and (Test-Path -LiteralPath $cwd -PathType Container)) {
+		Set-Location -LiteralPath (Resolve-Path -LiteralPath $cwd).Path
+	}
+	Remove-Item -Path $tmp
+}
+
+Set-PSReadLineKeyHandler -Chord Alt+f -ScriptBlock {
+    [Microsoft.Powershell.PSConsoleReadline]::RevertLine()
+    [Microsoft.Powershell.PSConsoleReadline]::Insert("yzcd")
+    [Microsoft.Powershell.PSConsoleReadline]::AcceptLine()
+}
+# }}}
+
+# {{{ fzf + nvim + bat
+# 解决fzf查询结果含有CJK,路径乱码nvim打不开的情况
+# set PowerShell to UTF-8
+$OutputEncoding = [console]::InputEncoding = [console]::OutputEncoding = New-Object System.Text.UTF8Encoding
+
 #█▓▒░ fzf
 $fzf_opts = @(
     # "--multi",
@@ -303,31 +327,14 @@ function Invoke-FZF-CD {
         if ($dir) { Set-Location $dir }
     }
 }
-Set-PSReadLineKeyHandler -Chord alt+g -ScriptBlock {
+Set-PSReadLineKeyHandler -Chord alt+z -ScriptBlock {
     [Microsoft.PowerShell.PSConsoleReadLine]::RevertLine()
     [Microsoft.PowerShell.PSConsoleReadLine]::Insert('Invoke-FZF-CD')
     [Microsoft.PowerShell.PSConsoleReadLine]::AcceptLine()
 }
+# }}}
 
-# ------------------- yazi -------------------
-# Changing working directory when exiting Yazi
-function yzcd {
-	$tmp = (New-TemporaryFile).FullName
-	yazi.exe $args --cwd-file="$tmp"
-	$cwd = Get-Content -Path $tmp -Encoding UTF8
-	if ($cwd -and $cwd -ne $PWD.Path -and (Test-Path -LiteralPath $cwd -PathType Container)) {
-		Set-Location -LiteralPath (Resolve-Path -LiteralPath $cwd).Path
-	}
-	Remove-Item -Path $tmp
-}
-
-Set-PSReadLineKeyHandler -Chord Alt+f -ScriptBlock {
-    [Microsoft.Powershell.PSConsoleReadline]::RevertLine()
-    [Microsoft.Powershell.PSConsoleReadline]::Insert("yzcd")
-    [Microsoft.Powershell.PSConsoleReadline]::AcceptLine()
-}
-
-# ------------------- wezterm -------------------
+# {{{ wezterm
 # wezterm图片预览
 function img { wezterm imgcat $args }
 
@@ -337,9 +344,9 @@ function img { wezterm imgcat $args }
 # Set-PSReadLineKeyHandler -Chord 'F10,a' -Function HistorySearchForward
 # Set-PSReadLineKeyHandler -Chord 'F10,b' -Function HistorySearchBackward
 
-
 # ni 新建文本
 # ren 重命名
+# }}}
 
 
 
