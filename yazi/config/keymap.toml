@@ -1,9 +1,9 @@
 [mgr]
 
 keymap = [
-	{ on = "<Esc>", run = "escape",             desc = "Exit visual mode, clear selected, or cancel search" },
-	{ on = "q",     run = "quit",               desc = "Exit the process" },
-	{ on = "Q",     run = "quit --no-cwd-file", desc = "Exit the process without writing cwd-file" },
+	{ on = "<Esc>", run = "quit",               desc = "Exit visual mode, clear selected, or cancel search" },
+	{ on = "q",     run = "escape",             desc = "Exit the process" },
+	# { on = "Q",     run = "quit --no-cwd-file", desc = "Exit the process without writing cwd-file" },
 	{ on = "<C-q>", run = "close",              desc = "Close the current tab, or quit if it is last tab" },
 	{ on = "<C-z>", run = "suspend",            desc = "Suspend the process" },
 
@@ -66,7 +66,7 @@ keymap = [
 	{ on = ".",         run = "hidden toggle",               desc = "Toggle the visibility of hidden files" },
 	{ on = "s",         run = "search --via=fd",             desc = "Search files by name via fd" },
 	{ on = "S",         run = "search --via=rg",             desc = "Search files by content via ripgrep" },
-    { on = "<C-s>",     run = "escape --search",             desc = "Cancel the ongoing search" },
+    # { on = "<C-s>",     run = "escape --search",             desc = "Cancel the ongoing search" },
 	{ on = "z",         run = "plugin fzf",                  desc = "Jump to a directory, or reveal a file using fzf" },
 	# { on = "z",         run = "plugin zoxide",               desc = "Jump to a directory using zoxide" },
 
