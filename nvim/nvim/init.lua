@@ -71,8 +71,8 @@ neomap('n', '<leader>s?', 'z=', { desc = 'Word Candidate' })
 neomap('n', '<leader>z', [[:%s/\<<C-R>=expand("<cword>")<CR>\>/<C-R>=expand("<cword>")<CR>/g<left><left>]], { desc = 'Replace Word' })
 neomap('v', '<leader>z', [[:s///g<left><left><left>]], { desc = 'Replace Word' })
 -- 统计中文字数
-neomap('n', '<leader>w', [[:s/\v[\u4E00-\u9FFF\u3000-\u303F\uFF00-\uFFEF]//gn<CR>]], { desc = 'Count Chinese [W]ords' })
-neomap('v', '<leader>w', [[:s/\v[\u4E00-\u9FFF\u3000-\u303F\uFF00-\uFFEF]//gn<CR>]], { desc = 'Count Chinese [W]ords' })
+neomap('n', '<localleader>w', [[:s/\v[\u4E00-\u9FFF\u3000-\u303F\uFF00-\uFFEF]//gn<CR>]])
+neomap('v', '<localleader>w', [[:s/\v[\u4E00-\u9FFF\u3000-\u303F\uFF00-\uFFEF]//gn<CR>]])
 -- 创建列表
 neomap('n', '<leader>b', [[:put =range(,,1)<left><left><left><left>]], { desc = 'Columns Num' })
 -------------------- 分屏 --------------------
@@ -2529,7 +2529,7 @@ require("lazy").setup({
             { "<leader>ta",     desc = "Term([A]dmin)",        icon = { icon = "", color = "yellow" } },
 
             { "<localleader>l", desc = "[L]atex",              icon = { icon = "ﭨ", color = "green" } },
-            { "<localleader>w", desc = "[W]eather Forecast",   icon = { icon = "", color = "blue" } },
+            { "<localleader>w", desc = "Count Chinese [W]ords",   icon = { icon = "", color = "blue" }, mode = { "n", "v" } }, -- 
 
       -- set function icon
             { "<leader> ",      desc = "Calculator",   icon = { icon = "", color = "cyan" } }, -- bug
