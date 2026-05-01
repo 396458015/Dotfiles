@@ -559,14 +559,17 @@ require("lazy").setup({
                     sources = { "nvim_diagnostic" },
                     sections = { "error", "warn", "hint", "info" },
                     symbols = {
-                        error = ' ', --
-                        warn = ' ', --
-                        hint = ' ', --
-                        info = ' ', --
+                        error = ' ',
+                        warn  = ' ',
+                        hint  = ' ',
+                        info  = ' ',
                     },
                     colored = true,
                     update_in_insert = false,
                     always_visible = false,
+                    cond = function()
+                        return vim.diagnostic.is_enabled()
+                    end,
                 },
             },
             lualine_c = {
@@ -724,7 +727,7 @@ require("lazy").setup({
                                 .. require("lazy").stats().loaded
                                 .. "/"
                                 .. require("lazy").stats().count
-                                .. " plugins  in " 
+                                .. " plugins  in "
                                 .. require"lazy".stats().startuptime
                                 .. " ms 🎉",
                         }
@@ -1935,7 +1938,7 @@ require("lazy").setup({
           config.border = "single"
           return vim.lsp.handlers.hover(_, result, ctx, config)
       end
-      
+
       vim.lsp.handlers["textDocument/signatureHelp"] = function(_, result, ctx, config)
           config = config or {}
           config.border = "single"
@@ -2034,9 +2037,10 @@ require("lazy").setup({
           local hl = 'DiagnosticSign' .. type
           vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
       end
+
       vim.diagnostic.config({
           virtual_text = {
-              prefix = '●', -- , , , ●
+              prefix = '●',  -- , , , ●
           },
           underline = false,
           signs = true,
@@ -2053,21 +2057,20 @@ require("lazy").setup({
               prefix = "",
           },
       })
-      local diagnostics_active = true
-      local toggle_diagnostics = function()
+
+      -- diagnostics开关设置
+      local diagnostics_active = false
+      vim.diagnostic.enable(diagnostics_active)  -- 默认关闭diagnostics
+      local function toggle_diagnostics()
           diagnostics_active = not diagnostics_active
-          if diagnostics_active then
-              vim.diagnostic.show()
-          else
-              vim.diagnostic.hide()
-          end
+          vim.diagnostic.enable(diagnostics_active)
+          require('lualine').refresh()
+          print(diagnostics_active and "Diagnostics ON" or "Diagnostics OFF")
       end
-
       neomap('n', '<F6>', toggle_diagnostics, { desc = 'Toggle diagnostics' })
-      neomap('n', '<F5>', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
-      -- neomap('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 
-      vim.lsp.handlers["textDocument/publishDiagnostics"] = function() end -- 取消代码诊断信息显示
+      neomap('n', '<F5>', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
+      neomap('n', '<leader>ld', vim.diagnostic.setloclist, { desc = 'LSP: [D]iagnostic quickfix list' })
     end,
   },
 -- }}}
