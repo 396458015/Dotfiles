@@ -1455,130 +1455,15 @@ require("lazy").setup({
     -- commit = "9697285",
     event = { "BufReadPre", "BufNewFile" },
     config = function()
-    -- 设置icon (lualine, neo-tree)
+    -- 设置icon (lualine, neo-tree, Oil)
     require('nvim_web_devicons_edit_icons')
     end,
   },
 -- }}}
--- {{{ nvim-neo-tree/neo-tree.nvim
+-- {{{ nvim-mini/mini.align
   {
-    "nvim-neo-tree/neo-tree.nvim",
-    branch = "v3.x",
-    cmd = { "Neotree" },
-    keys = {
-        { '<Leader>e', '<cmd>Neotree filesystem left toggle dir=./<CR>', desc = 'NeoTre[e]' },
-        { '<F7>', '<cmd>Neotree filesystem left toggle dir=c:/Users/ThinkPad/Desktop/<CR>', desc = 'Desktop' },
-    },
-    dependencies = {
-        { "nvim-lua/plenary.nvim" },
-        { "MunifTanjim/nui.nvim" },
-        { "kyazdani42/nvim-web-devicons" },
-    },
-    init = function()
-      vim.g.neo_tree_remove_legacy_commands = 1
-      if vim.fn.argc() == 1 then
-        local stat = vim.loop.fs_stat(vim.fn.argv(0))
-        if stat and stat.type == "directory" then
-          require("neo-tree")
-        end
-      end
-    end,
-    config = function()
-    require("neo-tree").setup({
-        use_default_mappings = false,
-        close_if_last_window = true,
-        popup_border_style = "rounded",
-        window = {
-            auto_expand_width = true,
-        },
-        filesystem = {
-            follow_current_file = {
-                enabled = true,
-                leave_dirs_open = false,
-            },
-            use_libuv_file_watcher = true,
-            hijack_netrw_behavior = "open_current",
-            window = {
-              mappings = {
-                ["h"] = "navigate_up",
-                ["l"] = "toggle_node",
-
-                ["<2-leftmouse>"] = "open",
-                ["<cr>"] = "open",
-
-                ["<C-v>"] = "open_vsplit",
-                ["<c-x>"] = "open_split",
-                ["<C-t>"] = "open_tabnew",
-
-                ["a"] = "add",
-                ["A"] = "add_directory",
-                ["yy"] = "copy_to_clipboard",
-                ["dd"] = "cut_to_clipboard",
-                ["p"] = "paste_from_clipboard",
-                ["X"] = "delete",
-                ["r"] = "rename",
-
-                ["P"] = "toggle_preview",
-                ["<esc>"] = "revert_preview",
-
-                ["."] = "toggle_hidden",
-                ["R"] = "refresh",
-                ["q"] = "close_window",
-                ["?"] = "show_help",
-              },
-            },
-        },
-        default_component_configs = {
-            container = {
-              enable_character_fade = true,
-            },
-            indent = {
-              indent_size = 2,
-              padding = 1, -- extra padding on left hand side
-              with_markers = true,
-              indent_marker = "│",
-              last_indent_marker = "└", -- └
-              highlight = "NeoTreeIndentMarker",
-              with_expanders = true, -- if nil and file nesting is enabled, will enable expanders
-              expander_highlight = "NeoTreeExpander",
-            },
-            icon = {
-              folder_closed = "",
-              folder_open = "",
-              folder_empty = "",
-              default = " ",
-              highlight = "NeoTreeFileIcon",
-            },
-            modified = {
-              symbol = "[+]",
-              highlight = "NeoTreeModified",
-            },
-            name = {
-              trailing_slash = false,
-              use_git_status_colors = true,
-              highlight = "NeoTreeFileName",
-            },
-            git_status = {
-              symbols = {
-                modified  = "○",
-                untracked = "",
-                ignored   = "",
-                unstaged  = "", -- U 
-                staged    = "",
-                conflict  = "",
-              },
-            },
-        },
-    })
-    -- change color for NeoTreeIndent to light blue
-    vim.api.nvim_set_hl(0, "NeoTreeIndentMarker", { fg = "#3FC5FF" })
-    end,
-  },
--- }}}
--- {{{ echasnovski/mini.align
-  {
-    "echasnovski/mini.align",
-    version = false,
+    "nvim-mini/mini.align",
+    version = "*",
     keys = {
         { mode = { 'x' }, '<leader>a', desc = '[A]lign' },
         { mode = { 'x' }, '<leader>A', desc = 'Interactive [A]lign' },
@@ -1591,6 +1476,102 @@ require("lazy").setup({
             },
         })
     end,
+  },
+-- }}}
+-- {{{ oil.nvim + oil-git-status.nvim
+  {
+    'stevearc/oil.nvim',
+    keys = {
+        { '<leader>e', function() require('oil').toggle_float() end, mode = 'n', desc = "Oil File Explorer", },
+     },
+    cmd = "Oil",
+    opts = {},
+    dependencies = { 
+        { "kyazdani42/nvim-web-devicons" }, 
+        { "refractalize/oil-git-status.nvim" },
+    },
+    -- lazy = false,
+    config = function()
+    local oil_detail = false
+    require("oil").setup({
+      default_file_explorer = true,
+      delete_to_trash = true,
+      skip_confirm_for_simple_edits = true,
+      use_default_keymaps = false,
+      view_options = {
+        show_hidden = false,
+        natural_order = "fast",
+      },
+      win_options = {
+        wrap = true,
+        signcolumn = "yes:1",  -- 隐藏了git的index,只显示git的working_tree,1就够了
+      },
+      keymaps = {
+        ["g?"] = { "actions.show_help", mode = "n" },
+        ["<CR>"] = "actions.select",
+        ["<C-s>"] = { "actions.select", opts = { vertical = true } },
+        ["<C-h>"] = { "actions.select", opts = { horizontal = true } },
+        ["<C-t>"] = { "actions.select", opts = { tab = true } },
+        ["<C-p>"] = "actions.preview",
+        ["<C-c>"] = { "actions.close", mode = "n" },
+        ["<C-l>"] = "actions.refresh",
+        ["<BS>"] = { "actions.parent", mode = "n" },
+        ["_"] = { "actions.open_cwd", mode = "n" },
+        -- ["`"] = { "actions.cd", mode = "n" },
+        -- ["g~"] = { "actions.cd", opts = { scope = "tab" }, mode = "n" },
+        ["gs"] = { "actions.change_sort", mode = "n" },
+        ["gx"] = "actions.open_external",
+        ["g."] = { "actions.toggle_hidden", mode = "n" },
+        ["g\\"] = { "actions.toggle_trash", mode = "n" },
+        ["gd"] = {
+          desc = "Toggle file detail view",
+          callback = function()
+            oil_detail = not oil_detail
+            if oil_detail then
+              require("oil").set_columns({ "icon", "permissions", "size", "mtime" })
+            else
+              require("oil").set_columns({ "icon" })
+            end
+          end,
+        },
+      },
+    })
+    require("oil-git-status").setup({
+        show_ignored = true, -- show files that match gitignore with !!
+         symbols = { -- customize the symbols that appear in the git status columns
+           index = {
+			 ["!"] = "", -- ignored
+			 ["?"] = "", -- untracked
+			 -- ["A"] = "", -- added
+			 -- ["C"] = "", -- copied
+			 -- ["D"] = "", -- deleted
+			 ["M"] = "", -- modified
+			 -- ["R"] = "", -- renamed
+			 -- ["T"] = "", -- type changed
+			 -- ["U"] = "", -- unmerged
+			 [" "] = "", -- clean
+           },
+           working_tree = {
+			 ["!"] = "󰘓", -- ignored
+			 ["?"] = "", -- untracked
+			 -- ["A"] = "", -- added
+			 -- ["C"] = "○", -- copied
+			 -- ["D"] = "○", -- deleted
+			 ["M"] = "", -- modified
+			 -- ["R"] = "→", -- renamed
+			 -- ["T"] = "○", -- type changed
+			 -- ["U"] = "○", -- unmerged
+			 [" "] = "✓", -- clean
+           },
+         },
+    })
+    vim.api.nvim_set_hl(0, "OilGitStatusWorkingTreeUnmodified", { fg = "#6cc749" })
+    vim.api.nvim_set_hl(0, "OilGitStatusWorkingTreeIgnored", { fg = "#7f848e" })
+    vim.api.nvim_set_hl(0, "OilGitStatusWorkingTreeUntracked", { fg = "#e5c07b" })
+    vim.api.nvim_set_hl(0, "OilGitStatusWorkingTreeAdded", { fg = "#98c379" })
+    vim.api.nvim_set_hl(0, "OilGitStatusWorkingTreeModified", { fg = "#ec613f" })
+    vim.api.nvim_set_hl(0, "OilGitStatusWorkingTreeRenamed", { fg = "#61afef" })
+    end
   },
 -- }}}
 -- {{{ kylechui/nvim-surround
@@ -1836,7 +1817,7 @@ require("lazy").setup({
     end,
     init = function()
     vim.cmd([[au FileType org setlocal nofoldenable]]) -- 关闭打开org默认folding
-    neomap("n", "<leader>od", ":Neotree C:/Users/ThinkPad/AppData/Local/nvim-data/Maxl/Org/<CR>", { desc = 'Org [D]irectories' })
+    neomap("n", "<leader>od", ":Oil C:/Users/ThinkPad/AppData/Local/nvim-data/Maxl/Org/<CR>", { desc = 'Org [D]irectories' })
     end,
   },
 -- }}}
@@ -2506,7 +2487,8 @@ require("lazy").setup({
             group = "", -- + 󰙅    
             -- set plugin icon (color: azure, blue, cyan, green, grey, orange, purple, red, yellow)
             rules = {
-                { plugin = "neo-tree.nvim",           icon = "󰙅", color = "orange" },
+                -- { plugin = "neo-tree.nvim",           icon = "󰙅", color = "orange" },
+                { plugin = "oil.nvim",                icon = "󰙅", color = "orange" },
                 { plugin = "vim-interestingwords",    icon = "", color = "red" },
                 { plugin = "undotree",                icon = "", color = "red" },
                 { plugin = "cellular-automaton.nvim", icon = "", color = "red" },
