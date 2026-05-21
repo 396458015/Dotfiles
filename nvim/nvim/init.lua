@@ -513,8 +513,8 @@ require("lazy").setup({
             component_separators = { left = '', right = '' },
             section_separators = { left = '', right = ''},
             disabled_filetypes = {
-                statusline = { 'dashboard', 'startify' },
-                winbar = {},
+                statusline = { 'snacks_dashboard', 'startify' },
+                winbar = { 'snacks_dashboard' },
             },
             ignore_focus = {},
             always_divide_middle = true,
@@ -633,144 +633,6 @@ require("lazy").setup({
     end,
   },
 -- }}}
--- {{{ nvimdev/dashboard-nvim
-    {
-        "nvimdev/dashboard-nvim",
-        branch = "master",
-        -- commit = "000448d",
-        event = 'BufWinEnter',
-        config = function()
-            require('dashboard').setup {
-                theme = 'doom',
-                config = {
-                    header ={
-                        [[                                             ]],
-                        [[                                             ]],
-                        [[                                             ]],
-                        [[   ▄████▄              ▒▒▒▒▒       ▒▒▒▒▒     ]],
-                        [[  ███▄█▀              ▒ ▄▒ ▄▒     ▒ ▄▒ ▄▒    ]],
-                        [[ ▐████     █  █  █   ▒▒▒▒▒▒▒▒▒   ▒▒▒▒▒▒▒▒▒   ]],
-                        [[  █████▄             ▒▒▒▒▒▒▒▒▒   ▒▒▒▒▒▒▒▒▒   ]],
-                        [[   ▀████▀            ▒ ▒ ▒ ▒ ▒   ▒ ▒ ▒ ▒ ▒  ]],
-                        [[                                             ]],
-                        [[                                             ]],
-                        [[                                             ]],
-                    },
-                    center = {
-                        {
-                            icon    = '  ',  -- 
-                            icon_hl = 'Title',
-                            desc    = 'New File',
-                            desc_hl = 'String',
-                            key     = 'i',
-                            key_hl  = 'Number',
-                            action  = 'enew',
-                        },
-                        {
-                            icon    = '  ',
-                            icon_hl = 'Title',
-                            desc    = 'Find File',
-                            desc_hl = 'String',
-                            key     = 'f',
-                            keymap  = 'SPC f f',
-                            key_hl  = 'Number',
-                            action  = 'Leaderf file'
-                        },
-                        {
-                            icon    = '  ',-- 
-                            icon_hl = 'Title',
-                            desc    = 'Recently Files',
-                            desc_hl = 'String',
-                            key     = 'r',
-                            key_hl  = 'Number',
-                            keymap  = ', r',
-                            action = 'Leaderf mru',
-                        },
-                        {
-                            icon    = '💤 ',--  鈴
-                            icon_hl = 'Title',
-                            desc    = 'Manage Plugins',
-                            desc_hl = 'String',
-                            key     = 'l',
-                            key_hl  = 'Number',
-                            action  = 'Lazy',
-                        },
-                        {
-                            icon    = '  ',
-                            icon_hl = 'Title',
-                            desc    = 'Dotfile',
-                            desc_hl = 'String',
-                            key     = 'd',
-                            keymap  = 'SPC r c',
-                            key_hl  = 'Number',
-                            action  = 'edit $MYVIMRC | tcd %:p:h', --tabnew;edit
-                        },
-                        {
-                            icon    = "  ",
-                            icon_hl = 'Title',
-                            desc    = "Exit",
-                            desc_hl = 'String',
-                            key     = "q",
-                            key_hl  = 'Number',
-                            action  = "qa",
-                        },
-                    },
-                    footer = function()
-                        return {
-                            '',
-                            '',
-                            "🎉 NVIM(v"
-                                .. vim.version().major .. "."
-                                .. vim.version().minor .. "."
-                                .. vim.version().patch .. ") "
-                                .. "loaded "
-                                .. require("lazy").stats().loaded
-                                .. "/"
-                                .. require("lazy").stats().count
-                                .. " plugins  in "
-                                .. require"lazy".stats().startuptime
-                                .. " ms 🎉",
-                        }
-                    end
-                },
-                hide = {
-                    statusline = true,
-                    tabline = true,
-                    winbar = true,
-                },
-            }
-
-            -- random pacman color
-            local pacman_color_list
-            if vim.fn.exists('&bg') and vim.fn.eval('&bg') == 'dark' then
-                pacman_color_list = {
-                    '#000000', '#030303', '#080808', '#0D0D0D', '#121212', '#171717', '#1A1A1A',
-                    -- '#fff304', '#e46e16', '#49b6b1', '#f4a6c5',
-                    -- '#db231d', '#374392', '#0C0C0C', '#C50F1F',
-                    -- '#13A10E', '#C19C00', '#0037DA', '#881798',
-                    -- '#3A96DD', '#CCCCCC', '#767676', '#E74856',
-                    -- '#16C60C', '#e6cf00', '#3B78FF', '#B4009E',
-                    -- '#72b5e4', '#f0c53f', '#ff8784', '#c5c7f1',
-                    -- '#c2d735', '#78d3cc', '#ea8336', '#e43542',
-                    -- '#ebab35', '#ebe735', '#aadd32', '#dcca6b',
-                    -- '#219286', '#2f569c', '#ffb577', '#5282a4',
-                    -- '#edfccf', '#67064c', '#f5bca7', '#95c474',
-                    -- '#dece83', '#de9783', '#f2e700', '#e9e9e9',
-                    -- '#69636d', '#626b98', '#f5f5a7', '#dcca6b',
-                    -- '#b72a83', '#6f2b9d', '#69636d', '#5f569c',
-                }
-            elseif vim.fn.exists('&bg') and vim.fn.eval('&bg') == 'light' then
-                pacman_color_list = {
-                    '#dce0e8', '#e6e9ef', '#eff1f5', '#ccd0da',
-                }
-            end
-
-            local randomIndex_pacman = math.random(1, #pacman_color_list)
-            -- vim.api.nvim_command("hi DashboardHeader guifg='#925ba6'")
-            vim.api.nvim_command("hi DashboardHeader guifg=" .. pacman_color_list[randomIndex_pacman])
-        end,
-    },
--- }}}
 -- {{{ mbbill/undotree
   {
     "mbbill/undotree",
@@ -862,9 +724,9 @@ require("lazy").setup({
     event = { "BufReadPre", "BufNewFile" },
     cmd = { "Leaderf" },
     keys = {
-        { "<leader>fs", mode = { "n" }, ":LeaderfFile :/<left><left>", desc = "File by Path" },
-        { "<leader>fp", mode = { "n" }, "<cmd>Leaderf rg<cr>", desc = "Fuzzy word" },
-        { "<leader>ff", mode = { "n" }, "<cmd>Leaderf file<cr>", desc = "[F]ile" },
+        -- { "<leader>fs", mode = { "n" }, ":LeaderfFile :/<left><left>", desc = "File by Path" },
+        -- { "<leader>fp", mode = { "n" }, "<cmd>Leaderf rg<cr>", desc = "Fuzzy word" },
+        -- { "<leader>ff", mode = { "n" }, "<cmd>Leaderf file<cr>", desc = "[F]ile" },
         { "<leader>fg", mode = { "n" }, "<cmd>Leaderf git<cr>", desc = "[G]it" },
         { "<leader>fl", mode = { "n" }, "<cmd>Leaderf line<cr>", desc = "[L]ine" },
         { "<leader>fc", mode = { "n" }, "<cmd>Leaderf colorscheme<cr>", desc = "[C]olorscheme" },
@@ -1165,7 +1027,7 @@ require("lazy").setup({
     vim.g.strip_whitespace_on_save=0
     vim.g.better_whitespace_filetypes_blacklist = {
                 'diff', 'git', 'gitcommit', 'unite', 'qf', 'help', 'markdown',
-                'startify', 'dashboard'
+                'startify', 'snacks_dashboard'
     }
     end,
   },
@@ -1261,8 +1123,24 @@ require("lazy").setup({
     "folke/snacks.nvim",
     priority = 1000,
     lazy = false,
+    init = function()
+      -- snacks_dashboard color
+      vim.api.nvim_set_hl(0, 'NeovimDashboardLogo1', { fg = '#5b3cc4' })
+      vim.api.nvim_set_hl(0, 'NeovimDashboardLogo2', { fg = '#7b4fd6' })
+      vim.api.nvim_set_hl(0, 'NeovimDashboardLogo3', { fg = '#9d6ff0' })
+      vim.api.nvim_set_hl(0, 'NeovimDashboardLogo4', { fg = '#c77dff' })
+      vim.api.nvim_set_hl(0, 'NeovimDashboardLogo5', { fg = '#e38fff' })
+
+      -- vim.api.nvim_set_hl(0, 'NeovimDashboardLogo1', { fg = '#ffff00' })
+      -- vim.api.nvim_set_hl(0, 'NeovimDashboardLogo2', { fg = '#ffff00' })
+      -- vim.api.nvim_set_hl(0, 'NeovimDashboardLogo3', { fg = '#ffff00' })
+      -- vim.api.nvim_set_hl(0, 'NeovimDashboardLogo4', { fg = '#ffff00' })
+      -- vim.api.nvim_set_hl(0, 'NeovimDashboardLogo5', { fg = '#ffff00' })
+    end,
     ---@type snacks.Config
     opts = {
+        bigfile = { enabled = true },
+        quickfile = { enabled = true },
         indent = {
             enabled = true,
             indent = {
@@ -1285,9 +1163,37 @@ require("lazy").setup({
                 char = ' ',
             },
         },
-        notifier = { enabled = true },
+        dashboard = {
+                enabled = true,
+                preset = {
+                  keys = {
+                    { icon = "  ", key = "i", desc = "New File", action = ":ene | startinsert" },
+                    -- { icon = "  ", key = "f", desc = "Find File", action = ":Leaderf file" },
+                    { icon = "  ", key = "f", desc = "Find File", action = ":lua Snacks.dashboard.pick('files')" },
+                    { icon = "  ", key = "s", desc = "Find Text", action = ":lua Snacks.dashboard.pick('live_grep')" },
+                    { icon = "  ", key = "r", desc = "Recently Files", action = ":Leaderf mru" },
+                    { icon = "💤 ", key = "l", desc = "Manage Plugins", action = ":Lazy", enabled = package.loaded.lazy ~= nil },  --  鈴💤
+                    { icon = "  ", key = "d", desc = "Dotfiles", action = ":lua Snacks.dashboard.pick('files', {cwd = vim.fn.stdpath('config')})" },
+                    { icon = "  ", key = "q", desc = "Quit", action = ":qa" },  --  
+                  },
+                },
+                sections = {
+                  { text = { [[     ▄████▄              ▒▒▒▒▒       ▒▒▒▒▒       ]], hl = 'NeovimDashboardLogo1' }, align = 'center' }, ---@diagnostic disable-line
+                  { text = { [[    ███▄█▀              ▒ ▄▒ ▄▒     ▒ ▄▒ ▄▒      ]], hl = 'NeovimDashboardLogo2' }, align = 'center' }, ---@diagnostic disable-line
+                  { text = { [[   ▐████     █  █  █   ▒▒▒▒▒▒▒▒▒   ▒▒▒▒▒▒▒▒▒     ]], hl = 'NeovimDashboardLogo3' }, align = 'center' }, ---@diagnostic disable-line
+                  { text = { [[    █████▄             ▒▒▒▒▒▒▒▒▒   ▒▒▒▒▒▒▒▒▒     ]], hl = 'NeovimDashboardLogo4' }, align = 'center' }, ---@diagnostic disable-line
+                  { text = { [[     ▀████▀            ▒ ▒ ▒ ▒ ▒   ▒ ▒ ▒ ▒ ▒    ]], hl = 'NeovimDashboardLogo5' }, align = 'center' }, ---@diagnostic disable-line
+                  { text = { [[                                                 ]], hl = 'NeovimDashboardLogo1' }, align = 'center' }, ---@diagnostic disable-line
+                  { padding = 1 },
+                  -- { section = "header" },
+                  { section = 'keys', gap = 1, padding = 1 },
+                  { section = 'startup' },
+                },
+        },
     },
     keys = {
+        { "<leader>ff", ":lua Snacks.dashboard.pick('files')<CR>",   mode = { "n" }, desc = '[F]ile' },
+        { "<leader>fs", ":lua Snacks.dashboard.pick('live_grep')<CR>", mode = { "n" }, desc = 'Fuzzy word' },
     },
   },
 -- }}}
@@ -1338,7 +1244,7 @@ require("lazy").setup({
     },
     config = function()
     require("scrollview").setup {
-      excluded_filetypes = { 'dashboard', 'neo-tree','mason','floaterm' },
+      excluded_filetypes = { 'snacks_dashboard', 'neo-tree','mason','floaterm' },
       winblend = 50,
       -- signs_on_startup = {'all'},
       signs_on_startup = {
@@ -1486,8 +1392,8 @@ require("lazy").setup({
      },
     cmd = "Oil",
     opts = {},
-    dependencies = { 
-        { "kyazdani42/nvim-web-devicons" }, 
+    dependencies = {
+        { "kyazdani42/nvim-web-devicons" },
         { "refractalize/oil-git-status.nvim" },
     },
     -- lazy = false,
@@ -1513,7 +1419,8 @@ require("lazy").setup({
         ["<C-h>"] = { "actions.select", opts = { horizontal = true } },
         ["<C-t>"] = { "actions.select", opts = { tab = true } },
         ["<C-p>"] = "actions.preview",
-        ["<C-c>"] = { "actions.close", mode = "n" },
+        -- ["<C-c>"] = { "actions.close", mode = "n" },
+        ["q"] = { "actions.close", mode = "n" },
         ["<C-l>"] = "actions.refresh",
         ["<BS>"] = { "actions.parent", mode = "n" },
         ["_"] = { "actions.open_cwd", mode = "n" },
@@ -1707,7 +1614,7 @@ require("lazy").setup({
         integrations = {
             -- blink_cmp = true,
             snacks = true,
-            dashboard = true,
+            snacks_dashboard = true,
             gitsigns = true,
             flash = true,
             markdown = true,
