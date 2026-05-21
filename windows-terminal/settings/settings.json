@@ -32,6 +32,14 @@
             "command": 
             {
                 "action": "sendInput",
+                "input": "\u001b[13;5u"
+            },
+            "id": "User.sendInput.F8A79DCB"
+        },
+        {
+            "command": 
+            {
+                "action": "sendInput",
                 "input": "\u001b[B"
             },
             "id": "User.sendInput.42123734"
@@ -65,6 +73,14 @@
         {
             "command": 
             {
+                "action": "sendInput",
+                "input": "\u001b[13;2u"
+            },
+            "id": "User.sendInput.8882FD6D"
+        },
+        {
+            "command": 
+            {
                 "action": "splitPane"
             },
             "id": "User.splitPane.91AB55B1"
@@ -86,12 +102,36 @@
     "keybindings": 
     [
         {
+            "id": null,
+            "keys": "alt+shift+up"
+        },
+        {
+            "id": "User.sendInput.F8A79DCB",
+            "keys": "ctrl+enter"
+        },
+        {
             "id": "User.sendInput.86D5A3",
             "keys": "alt+l"
         },
         {
+            "id": "User.sendInput.8882FD6D",
+            "keys": "shift+enter"
+        },
+        {
+            "id": null,
+            "keys": "ctrl+shift+end"
+        },
+        {
             "id": "Terminal.ToggleFocusMode",
             "keys": "f9"
+        },
+        {
+            "id": "Terminal.SwitchToTab3",
+            "keys": "alt+4"
+        },
+        {
+            "id": null,
+            "keys": "ctrl+shift+pgup"
         },
         {
             "id": null,
@@ -100,14 +140,6 @@
         {
             "id": null,
             "keys": "ctrl+shift+pgdn"
-        },
-        {
-            "id": null,
-            "keys": "ctrl+shift+pgup"
-        },
-        {
-            "id": "Terminal.SwitchToTab3",
-            "keys": "alt+4"
         },
         {
             "id": null,
@@ -214,6 +246,10 @@
             "keys": "ctrl+shift+i"
         },
         {
+            "id": "Terminal.OpenNewTab",
+            "keys": "alt+n"
+        },
+        {
             "id": "Terminal.DuplicatePaneAuto",
             "keys": "alt+shift+d"
         },
@@ -275,19 +311,11 @@
         },
         {
             "id": null,
-            "keys": "ctrl+shift+end"
-        },
-        {
-            "id": null,
             "keys": "ctrl+shift+7"
         },
         {
             "id": null,
             "keys": "ctrl+shift+home"
-        },
-        {
-            "id": null,
-            "keys": "alt+shift+up"
         },
         {
             "id": null,
@@ -327,11 +355,11 @@
         },
         {
             "id": null,
-            "keys": "ctrl+alt+2"
+            "keys": "ctrl+alt+9"
         },
         {
             "id": null,
-            "keys": "ctrl+alt+9"
+            "keys": "ctrl+alt+2"
         },
         {
             "id": null,
@@ -392,10 +420,6 @@
         {
             "id": "Terminal.ResizePaneRight",
             "keys": "alt+right"
-        },
-        {
-            "id": "Terminal.OpenNewTab",
-            "keys": "alt+n"
         },
         {
             "id": "Terminal.MoveFocusLeft",
