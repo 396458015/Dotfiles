@@ -154,7 +154,7 @@ neomap('c', '<C-V>', '<C-R>+', key_opts_n)
 -- open Startify
 neomap('n', '<leader>st', ':Startify<CR>', { desc = 'Startify' })
 -- diff this
-neomap('n', '<leader>dt', ':diffthis<CR>', { desc = '[D]iff [T]his' })
+neomap('n', '<leader>dt', ':windo diffthis<CR>', { desc = '[D]iff [T]his' })
 -- vimrc
 neomap('n', '<leader>rc', ':edit $MYVIMRC<CR>', { desc = 'Edit VIMRC' })
 neomap('n', '<leader>rr', ':restart<CR>', { desc = '[R]eload VIMRC' })
@@ -1356,9 +1356,8 @@ require("lazy").setup({
 -- }}}
 -- {{{ kyazdani42/nvim-web-devicons
   {
-    "kyazdani42/nvim-web-devicons",
+    "nvim-tree/nvim-web-devicons",
     branch = "master",
-    -- commit = "9697285",
     event = { "BufReadPre", "BufNewFile" },
     config = function()
     -- 设置icon (lualine, neo-tree, Oil)
