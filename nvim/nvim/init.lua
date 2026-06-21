@@ -1727,6 +1727,16 @@ require("lazy").setup({
     end,
   },
 -- }}}
+-- {{{ nvzone/showkeys
+  {
+   "nvzone/showkeys",
+   cmd = "ShowkeysToggle",
+   opts = {
+       maxkeys = 5,
+       position = 'top-center',  -- bottom-left, bottom-right, bottom-center, top-left, top-right, top-center
+   },
+  },
+-- }}}
 
 -- {{{ nvim-treesitter/nvim-treesitter --- kickstart
   { -- Highlight, edit, and navigate code
@@ -2596,12 +2606,6 @@ if vim.g.neovide then-- neovide
     neomap("n", "<m-CR>", function()
         vim.g.neovide_fullscreen = vim.g.neovide_fullscreen == 1 and 0 or 1
     end, { desc = "Toggle fullscreen" })
-elseif vim.g.goneovim then-- gonevim
-    --不完美解决goneovim透明后,窗口不透明的问题,下面设置窗口不遮挡文本,如果值为100,纯透明会和文本重叠影响操作
-    vim.opt.pumblend = 10
-    vim.opt.winblend = 10
-    neomap("n", "<m-CR>", ":GonvimMaximize<CR>", key_opts_ns)
-    neomap("n", "<leader>rg", ":<C-U>e C:/Users/ThinkPad/AppData/Roaming/.goneovim/settings.toml<CR>", { desc = '[G]oneovim Config' })
 elseif vim.g.nvy then-- nvy
 else-- terminal
     -- vim.api.nvim_command("hi Normal guibg=NONE")
