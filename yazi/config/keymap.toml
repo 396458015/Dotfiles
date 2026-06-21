@@ -386,9 +386,8 @@ desc = "searchjump mode"
 on   = [ "<C-y>" ]
 run = "plugin clipboard"
 
-# diff.yazi
+# selected-diff.yazi
 [[mgr.prepend_keymap]]
 on   = "<C-d>"
-run  = "plugin diff"
-desc = "Diff the selected with the hovered file"
-
+run  = "plugin selected-diff"
+desc = "Compare two selected files with Neovim"
