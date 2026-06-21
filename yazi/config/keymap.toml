@@ -68,7 +68,7 @@ keymap = [
 	{ on = "S",         run = "search --via=rg",             desc = "Search files by content via ripgrep" },
     # { on = "<C-s>",     run = "escape --search",             desc = "Cancel the ongoing search" },
 	{ on = "z",         run = "plugin fzf",                  desc = "Jump to a directory, or reveal a file using fzf" },
-	# { on = "z",         run = "plugin zoxide",               desc = "Jump to a directory using zoxide" },
+	{ on = "Z",         run = "plugin zoxide",               desc = "Jump to a directory using zoxide" },
 
 	# Linemode
 	{ on = [ "m", "s" ], run = "linemode size",        desc = "Set linemode to size" },
@@ -147,8 +147,6 @@ keymap = [
 	{ on = [ "g", "y" ], run = "cd 'C:/Users/ThinkPad/AppData/Roaming/yazi/config'", desc = "yazi config" },
 	{ on = [ "g", "l" ], run = "cd 'C:/Users/ThinkPad/AppData/Roaming/lazygit'", desc = "lazygit config" },
 	{ on = [ "g", "s" ], run = "cd 'C:/Users/ThinkPad/AppData/Roaming/Microsoft/Windows/Start Menu/Programs'", desc = "Start Menu (Win10)" },
-	{ on = [ "g", "9" ], run = "cd 'C:/Users/ThinkPad/.config/winfetch'", desc = "winfetch config" },
-	{ on = [ "g", "8" ], run = "cd 'C:/Users/ThinkPad/AppData/Roaming/.goneovim'", desc = "goneovim config" },
 
 	{ on = [ "g", "T" ], run = "cd 'C:/Users/ThinkPad/AppData/Roaming/typst/packages/local'", desc = "typst templates" },
 
@@ -159,6 +157,7 @@ keymap = [
 	{ on = [ "g", "1" ], run = "cd 'F:/NPU/mxl_nputhesis'", desc = "NPU thesis" },
 
 	{ on = [ "g", "x" ], run = "cd 'F:/西安航空学院'", desc = "西航" },
+	{ on = [ "g", "G" ], run = "cd 'E:/Github/My_plugins'", desc = "Github plugin" },
 	# Help
 	{ on = "<F1>", run = "help", desc = "Open help" },
 ]
@@ -388,6 +387,6 @@ run = "plugin clipboard"
 
 # selected-diff.yazi
 [[mgr.prepend_keymap]]
-on   = "<C-d>"
+on   = "="
 run  = "plugin selected-diff"
 desc = "Compare two selected files with Neovim"

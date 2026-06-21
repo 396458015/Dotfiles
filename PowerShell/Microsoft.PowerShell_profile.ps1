@@ -44,6 +44,9 @@ Set-PSReadLineOption -Colors $Colors
 Invoke-Expression (&starship init powershell)
 Import-Module Terminal-Icons
 
+# zoxide
+Invoke-Expression (& { (zoxide init powershell | Out-String) })
+
 # PSReadline settings
 Set-PSReadLineOption -ShowToolTips
 Set-PSReadLineOption -BellStyle None
@@ -313,7 +316,7 @@ function Invoke-FZF {
     $r = fzf
     if ($r) { nvim $r }
 }
-Set-PSReadLineKeyHandler -Chord alt+s -ScriptBlock {
+Set-PSReadLineKeyHandler -Chord alt+x -ScriptBlock {
     [Microsoft.Powershell.PSConsoleReadline]::RevertLine()
     [Microsoft.Powershell.PSConsoleReadline]::Insert("Invoke-FZF")
     [Microsoft.Powershell.PSConsoleReadline]::AcceptLine()
@@ -328,9 +331,9 @@ function Invoke-FZF-CD {
     }
 }
 Set-PSReadLineKeyHandler -Chord alt+z -ScriptBlock {
-    [Microsoft.PowerShell.PSConsoleReadLine]::RevertLine()
-    [Microsoft.PowerShell.PSConsoleReadLine]::Insert('Invoke-FZF-CD')
-    [Microsoft.PowerShell.PSConsoleReadLine]::AcceptLine()
+    [Microsoft.Powershell.PSConsoleReadLine]::RevertLine()
+    [Microsoft.Powershell.PSConsoleReadLine]::Insert('Invoke-FZF-CD')
+    [Microsoft.Powershell.PSConsoleReadLine]::AcceptLine()
 }
 # }}}
 
