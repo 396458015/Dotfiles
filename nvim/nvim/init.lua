@@ -903,7 +903,10 @@ require("lazy").setup({
         au BufRead,BufNewFile *.typ setlocal filetype=typst
         au FileType typst nnoremap <silent><C-CR> :FloatermNew --height=1.0 typst watch %:p<CR>
         " au FileType typst nnoremap <C-g> :FloatermNew --height=1.0 typst watch %:p<CR>
-        au FileType typst command! TypstPDF execute "FloatermNew! sumatrapdf %:p<C-h><C-h><C-h>pdf<CR>"
+
+        " au FileType typst command! TypstPDF execute "FloatermNew! sumatrapdf %:p<C-h><C-h><C-h>pdf<CR>"
+        au FileType typst nnoremap <silent> <F5> :call jobstart(['sumatrapdf', expand('%:r') . '.pdf'], {'detach': v:true})<CR>
+
         augroup END
         " Git
         command! Push execute "FloatermNew!git add init.lua<CR>git commit --allow-empty-message -m \"\"<CR>git push<CR>"
@@ -1139,6 +1142,7 @@ require("lazy").setup({
     end,
     ---@type snacks.Config
     opts = {
+        picker = { enabled = true },
         bigfile = { enabled = true },
         quickfile = { enabled = true },
         indent = {
@@ -1964,9 +1968,9 @@ require("lazy").setup({
           require('lualine').refresh()
           print(diagnostics_active and "Diagnostics ON" or "Diagnostics OFF")
       end
-      neomap('n', '<F6>', toggle_diagnostics, { desc = 'Toggle diagnostics' })
+      neomap('n', '<F8>', toggle_diagnostics, { desc = 'Toggle diagnostics' })
 
-      neomap('n', '<F5>', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
+      neomap('n', '<F7>', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
       neomap('n', '<leader>ld', vim.diagnostic.setloclist, { desc = 'LSP: [D]iagnostic quickfix list' })
     end,
   },
@@ -1986,7 +1990,11 @@ require("lazy").setup({
                 neomap("n", "<leader>rsm", ":<C-U>e C:/Users/ThinkPad/AppData/Local/nvim-data/Maxl/friendly-snippets/add_snippets/Maxl_matlab.json<CR>", { desc = 'Snippets: [M]atlab' })
                 neomap("n", "<leader>rsp", ":<C-U>e C:/Users/ThinkPad/AppData/Local/nvim-data/Maxl/friendly-snippets/add_snippets/Maxl_python.json<CR>", { desc = 'Snippets: [P]ython' })
                 neomap("n", "<leader>rso", ":<C-U>e C:/Users/ThinkPad/AppData/Local/nvim-data/Maxl/friendly-snippets/add_snippets/Maxl_org.json<CR>", { desc = 'Snippets: [O]rg' })
-                neomap("n", "<leader>rst", ":<C-U>e C:/Users/ThinkPad/AppData/Local/nvim-data/Maxl/friendly-snippets/add_snippets/Typst/maths.json<CR>", { desc = 'Snippets: [T]ypst' })
+                neomap("n", "<leader>rst", function()
+                    Snacks.picker.files({
+                        cwd = "C:/Users/ThinkPad/AppData/Local/nvim-data/Maxl/friendly-snippets/add_snippets/Typst",
+                    })
+                end, { desc = "Snippets: [T]ypst" })
                 neomap("n", "<leader>rsg", ":<C-U>e C:/Users/ThinkPad/AppData/Local/nvim-data/Maxl/friendly-snippets/snippets/global.json<CR>", { desc = '[G]lobel Snippets' })
                 neomap("n", "<leader>rsT", ":<C-U>e C:/Users/ThinkPad/AppData/Roaming/Code/User/snippets/typst.json<CR>", { desc = 'VSC Snippets: [T]ypst' })
                 neomap("n", "<leader>rsL", ":<C-U>e C:/Users/ThinkPad/AppData/Roaming/Code/User/snippets/latex.json<CR>", { desc = 'VSC Snippets: [L]aTeX' })
