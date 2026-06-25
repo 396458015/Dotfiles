@@ -642,7 +642,8 @@
         "绪论"
     ],
     "[typst]": {
-        "editor.wordSeparators": "`~!@#$%^&*()=+[{]}\\|;:'\",.<>/?"
+        "editor.wordSeparators": "`~!@#$%^&*()=+[{]}\\|;:'\",.<>/?",
+        "editor.formatOnSave": true
     },
     "[typst-code]": {
         "editor.wordSeparators": "`~!@#$%^&*()=+[{]}\\|;:'\",.<>/?"
@@ -656,5 +657,6 @@
     "[matlab]": {
         "files.encoding": "cp936"
     },
-    "matlab.linterEncoding": "cp936"
+    "matlab.linterEncoding": "cp936",
+    "tinymist.exportPdf": "onSave"
 }

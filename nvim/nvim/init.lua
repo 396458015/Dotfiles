@@ -905,7 +905,7 @@ require("lazy").setup({
         " au FileType typst nnoremap <C-g> :FloatermNew --height=1.0 typst watch %:p<CR>
 
         " au FileType typst command! TypstPDF execute "FloatermNew! sumatrapdf %:p<C-h><C-h><C-h>pdf<CR>"
-        au FileType typst nnoremap <silent> <F5> :call jobstart(['sumatrapdf', expand('%:r') . '.pdf'], {'detach': v:true})<CR>
+        au FileType typst nnoremap <silent> <M-v> :call jobstart(['sumatrapdf', expand('%:r') . '.pdf'], {'detach': v:true})<CR>
 
         augroup END
         " Git
@@ -948,8 +948,17 @@ require("lazy").setup({
 -- {{{ OXY2DEV/markview.nvim
   {
     "OXY2DEV/markview.nvim",
-    -- lazy = false,
     ft = {"markdown", "typst"},
+    opts = {
+      typst = {
+        symbols = { enable = false },          -- 数学符号（β、∑、∇ 等）
+        subscripts = { enable = false },       -- 下标
+        superscripts = { enable = false },     -- 上标
+        math_blocks = { enable = false },      -- 块公式
+        math_spans = { enable = false },       -- 行内公式
+        reference_links = { enable = false },  -- 文献/标签引用
+      },
+    },
   },
 -- }}}
 -- {{{ lervag/vimtex

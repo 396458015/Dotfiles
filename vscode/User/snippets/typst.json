@@ -1,40 +1,36 @@
 {
     "Templates": {
-        "prefix": "tem",
+        "prefix": "im-t",
         "body": [
-            "#show: article.with(",
-            "// #show: book.with(",
+            "#import \"@local/template:1.0.0\": *",
+            "#import \"@local/gb7714-bilingual:0.2.3\": init-gb7714, gb7714-bibliography, multicite",
+            "#show: init-gb7714.with(read(\"ref.bib\"), style: \"numeric\", version: \"2025\")",
+            "#show: template.with(",
+            "chapter-numbering: false,",
+            "section-symbol: false,",
+            "outline-enable: false,",
+            "",
             "    title: \"标题\",",
             "    authors: \"作者1, 作者2, 作者3\",",
             "    date: \"XXXX-XX-XX\",",
             "",
             "    abstract: [摘要内容。],",
-            "    // abstract: none,",
-            "",
             "    keywords: (",
             "      \"关键词1\",",
             "      \"关键词2\",",
             "    ),",
-            "    // keywords:(),",
-            "",
-            "    bibliography-file: bibliography(\"refs.bib\"),",
-            ")"
+            ")",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+            "#pagebreak()",
+            "#gb7714-bibliography()"
         ],
         "description": "Insert an article template with metadata"
-    },
-    "import-template:article": {
-        "prefix": "im-a",
-        "body": [
-            "#import \"@local/article:1.0.0\": *,"
-        ],
-        "description": "import article template"
-    },
-    "import-template:book": {
-        "prefix": "im-b",
-        "body": [
-            "#import \"@local/book:1.0.0\": *,"
-        ],
-        "description": "import book template"
     },
     "Figure1": {
         "prefix": "fig1",
@@ -129,12 +125,22 @@
     },
     "bib": {
         "prefix": "bib",
-        "body": ["bibliography(\"${0: name}.bib\")"],
-        "description": "This function yields a Latin-like Lorem Ipsum blind text with the given number of words."
+        "body": [
+            "#pagebreak()",
+            "#gb7714-bibliography()"
+        ],
+        "description": "Insert bibliography"
     },
 	"temp": {
 		"prefix": "temp",
 		"body": ["°C" ],
 		"description": "Temp"
 	},
+    "mc": {
+        "prefix": "mc",
+        "body": [
+            "#multicite[@${1:key1}, @${2:key2}]"
+        ],
+        "description": "Insert multicite"
+    }
 }

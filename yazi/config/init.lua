@@ -46,6 +46,7 @@ require("mime-ext.local"):setup {
         norg = "text/plain",
         ps1  = "text/plain",
         tex  = "text/plain",
+        bib  = "text/plain",
 	},
 	fallback_file1 = false,
 }

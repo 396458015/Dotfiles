@@ -208,4 +208,14 @@
       "command": "editor.unfold",
       "when": "editorTextFocus"
     },
+    {
+        "key": "alt+v",
+        "command": "typst-preview.preview",
+        "when": "editorLangId == 'typst'"
+    },
+    {
+        "key": "ctrl+k v",
+        "command": "-typst-preview.preview",
+        "when": "editorLangId == 'typst'"
+    },
 ]
