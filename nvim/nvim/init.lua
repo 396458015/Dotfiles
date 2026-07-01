@@ -1889,8 +1889,8 @@ require("lazy").setup({
               single_file_support = true,
               settings = {
                   formatterMode = 'typstyle',
-                  -- exportPdf = 'onSave',  --pdf保存预览
-                  exportPdf = 'onType',  --pdf实时预览
+                  exportPdf = 'onSave',  --pdf保存预览
+                  -- exportPdf = 'onType',  --pdf实时预览
               },
           },
           lua_ls = {
