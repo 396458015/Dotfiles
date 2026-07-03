@@ -20,7 +20,7 @@ IsTargetApp() {
         or WinActive("ahk_exe Listary.exe")          ; Listary
         or WinActive("ahk_exe ABQcaeG.exe")          ; Abaqus
         or WinActive("ahk_exe MathType.exe")         ; MathType
-        ; or WinActive("ahk_exe dopus.exe")            ; Directory Opus
+        or WinActive("ahk_exe dopus.exe")            ; Directory Opus
 }
 
 #If IsTargetApp()
