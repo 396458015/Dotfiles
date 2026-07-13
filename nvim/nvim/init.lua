@@ -2294,6 +2294,23 @@ require("lazy").setup({
    },
   },
 -- }}}
+-- {{{ 396458015/foldmarker.nvim
+  {
+    "396458015/foldmarker.nvim",
+    keys = {
+        { "<leader>mm", mode = "x", desc = "Add fold marker" },
+        { "<leader>mi", mode = "n", desc = "Delete fold marker" },
+    },
+    config = function()
+        require("foldmarker").setup({
+            enable_title = true,
+            title_prompt = "Fold title: ",
+            add_mapping = "<leader>mm",
+            delete_mapping = "<leader>mi",
+        })
+    end,
+  },
+-- }}}
 
 -- {{{ Eandrju/cellular-automaton.nvim
   {
@@ -2389,6 +2406,7 @@ require("lazy").setup({
 	config = function()
     require('nvim-toggler').setup({
       inverses = {
+        ['True'] = 'False',
         ['true'] = 'false',
         ['yes'] = 'no',
         ['on'] = 'off',
