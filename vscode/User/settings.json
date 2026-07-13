@@ -658,5 +658,7 @@
         "files.encoding": "cp936"
     },
     "matlab.linterEncoding": "cp936",
-    "tinymist.exportPdf": "onSave"
+    "tinymist.exportPdf": "onSave",
+    "todo-tree.general.tagGroups": {},
+    "todo-tree.ripgrep.ripgrep": "C:\\Users\\ThinkPad\\scoop\\shims\\rg.exe"
 }
