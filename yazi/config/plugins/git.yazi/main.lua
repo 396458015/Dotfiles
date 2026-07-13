@@ -19,34 +19,17 @@ local function set_status_color(status)
 	elseif status == "M" then
 		return "#ec613f"
 	elseif status == "A" then
-		return "#98c379"
+		return "#ec613f"
 	elseif status == "." then
-		return "#7f848e"
+		return "#ae96ee"
 	elseif status == "?" then
-		return "#e5c07b"
+		return "#D4BB91"
 	elseif status == "R" then
-		return "#61afef"
+		return "#ec613f"
 	else
 		return "#ec613f"
 	end
-end
-
-local function set_status_icon(status)
-	if status == nil then      -- clean 无状态
-		return "✓"
-	elseif status == "M" then  -- 修改
-		return ""
-	elseif status == "A" then  -- 增加
-		return ""
-	elseif status == "." then  -- 被.gitignore忽略
-		return "󰘓"
-	elseif status == "?" then  -- 未跟踪
-		return ""
-	elseif status == "R" then  -- 重命名
-		return "→"
-	else
-		return "○"  -- ◌
-	end
+	
 end
 
 local function make_git_table(git_status_str)
@@ -61,7 +44,7 @@ local function make_git_table(git_status_str)
 	for _, value in ipairs(split_table) do
 		label,filename = split_label_filename(value)
 
-		if label == "??" then
+		if label == "??" then 
 			git_status = "?"
 			is_dirty = true
 		elseif label == "!!" then
@@ -86,7 +69,7 @@ local function make_git_table(git_status_str)
 		multi_path = string_split(filename,"/")
 		if (multi_path[#multi_path] == "" and #multi_path == 2) or git_status ~= "." then
 			filename = multi_path[1]
-		else
+		else 
 			filename = filename
 		end
 
@@ -114,7 +97,7 @@ local clear_state = ya.sync(function(st)
 end)
 
 local function update_git_status(path)
-	ya.emit("plugin", { "git"})
+	ya.emit("plugin", { "git"})	
 end
 
 local is_in_git_dir = ya.sync(function(st)
@@ -126,7 +109,7 @@ local flush_empty_folder_status = ya.sync(function(st)
 	local folder = cx.active.current
 	if #folder.window == 0 then
 		clear_state()
-		ya.emit("plugin", { "git", ya.quote(tostring(cwd))})
+		ya.emit("plugin", { "git", ya.quote(tostring(cwd))})		
 	end
 end)
 
@@ -155,25 +138,16 @@ local M = {
 					git_status = "?"
 				elseif st.git_file_status and st.git_file_status[name] then
 					git_status = st.git_file_status[name]
-				else
+				else 
 					git_status = nil
 				end
-
-				-- local color = set_status_color(git_status)
-				-- if f.is_hovered then
-				-- 	git_span = (git_status ) and ui.Span(git_status .." ") or ui.Span("✓ ")
-				-- else
-				-- 	git_span = (git_status) and ui.Span(git_status .." "):fg(color) or ui.Span("✓ "):fg(color)
-				-- end
-
-                local color = set_status_color(git_status)
-                local icon = set_status_icon(git_status)
-                if f.is_hovered then
-                	git_span = ui.Span(icon .. " "):fg(color)
-                else
-                	git_span = ui.Span(icon .. " "):fg(color)
-                end
-
+			
+				local color = set_status_color(git_status)
+				if f.is_hovered then
+					git_span = (git_status ) and ui.Span(git_status .." ") or ui.Span("✓ ")	
+				else
+					git_span = (git_status) and ui.Span(git_status .." "):fg(color) or ui.Span("✓ "):fg(color)	
+				end
 			end
 			return git_span
 		end
@@ -185,15 +159,15 @@ local M = {
 			if st.cwd ~= cwd then
 				st.cwd = cwd
 				clear_state()
-				ya.emit("plugin", { "git"})
+				ya.emit("plugin", { "git"})		
 			end
-			return ui.Line{}
+			return ui.Line{}				
 		end
 		Header:children_add(cwd_change_detect,8000,Header.LEFT)
 
-		-- add git branch status in header
+		-- add git branch status in header 
 		local function header_git(self)
-			return (st.git_branch and st.git_branch ~= "") and ui.Line {ui.Span(" <".. st.git_branch .. st.git_is_dirty .. ">"):fg("#f6a6da")} or ui.Line{}
+			return (st.git_branch and st.git_branch ~= "") and ui.Line {ui.Span(" <".. st.git_branch .. st.git_is_dirty .. ">"):fg("#f6a6da")} or ui.Line{}				
 		end
 		if st.opt_show_brach then
 			Header:children_add(header_git,1400,Header.LEFT)
@@ -220,14 +194,14 @@ local M = {
 		output = result.stdout
 		if output ~= nil and  output ~= "" then
 			local split_output = string_split(output:sub(1,-2),"refs/heads/")
-
+			
 			git_branch = split_output[2]
 		elseif is_in_git_dir() then
 			git_branch = nil
 		else
 			return
 		end
-
+		
 		local git_status_str = ""
 		local git_file_status = nil
 		local result, _ = Command("git")
@@ -247,7 +221,7 @@ local M = {
 function M:fetch()
 	local path = is_in_git_dir()
 	if path then
-		update_git_status(path)
+		update_git_status(path)	
 	end
 	return false
 end

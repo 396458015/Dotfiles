@@ -91,7 +91,7 @@ padding = { open = "", close = "" }
 sep_left  = { open = "", close = "" }
 sep_right = { open = "", close = "" }
 separator_style = { fg = "darkgray", bg = "#2e3436" }  # Frappe
-overall = { fg = "#dddddd", bg = "#1e1e2e" }
+overall = { fg = "#dddddd" }
 
 # Progress
 progress_label  = { bold = true }
