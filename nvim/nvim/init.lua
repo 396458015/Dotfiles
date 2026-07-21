@@ -2098,6 +2098,7 @@ require("lazy").setup({
                 max_height = 15,
                 draw = {
                     columns = { { "label", "label_description", gap = 1 }, { "kind_icon", "kind" } },
+                    cursorline_priority = 0,
                 },
             },
             documentation = {
