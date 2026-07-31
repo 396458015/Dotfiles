@@ -961,6 +961,12 @@ require("lazy").setup({
     },
   },
 -- }}}
+-- {{{ phanen/skip-conceal.nvim  note: 在conceallevel=2时避免光标停留在conceal掉的字符上
+  {
+    "phanen/skip-conceal.nvim",
+    ft = "markdown",
+  },
+-- }}}
 -- {{{ lervag/vimtex
   { "lervag/vimtex",
     ft = {"tex", "latex", "bib"},
@@ -1748,12 +1754,6 @@ require("lazy").setup({
        maxkeys = 5,
        position = 'top-center',  -- bottom-left, bottom-right, bottom-center, top-left, top-right, top-center
    },
-  },
--- }}}
--- {{{ phanen/skip-conceal.nvim  note: 在conceallevel=2时避免光标停留在conceal掉的字符上
-  {
-    "phanen/skip-conceal.nvim",
-    ft = "markdown",
   },
 -- }}}
 
