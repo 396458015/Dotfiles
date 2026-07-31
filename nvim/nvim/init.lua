@@ -1750,6 +1750,12 @@ require("lazy").setup({
    },
   },
 -- }}}
+-- {{{ phanen/skip-conceal.nvim  note: 在conceallevel=2时避免光标停留在conceal掉的字符上
+  {
+    "phanen/skip-conceal.nvim",
+    ft = "markdown",
+  },
+-- }}}
 
 -- {{{ nvim-treesitter/nvim-treesitter --- kickstart
   { -- Highlight, edit, and navigate code
