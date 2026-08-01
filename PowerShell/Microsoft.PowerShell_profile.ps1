@@ -110,7 +110,7 @@ function list_tree{ tree /F }
 Set-Alias -Name lt -Value list_tree
 
 # Computer info
-Set-Alias fetch winfetch
+Set-Alias f winfetch
 
 # Basic commands
 function touch($file) { "" | Out-File $file -Encoding ASCII }
