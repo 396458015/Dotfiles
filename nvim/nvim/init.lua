@@ -1,5 +1,5 @@
--- Last Modified Date: 2023.04.24
--- Desc              : NEOVIM 0.11.2(support Python, Lua)
+-- Last Modified Date: <2026-08-16 Sun>
+-- Desc              : NEOVIM 0.12.4(support Python, Lua)
 --                          __
 --  __  ____   __   __  __ /\_\    ___ ___     ____   ____
 -- |  \/  \ \ / /  /\ \/\ \\/\ \ /'' __` _`\  |  _ \ / ___|
@@ -7,9 +7,6 @@
 -- | |  | | | |     \ \___/  \ \_\ \_\ \_\ \_\|  _ <| |___
 -- |_|  |_| |_|      \/__/    \/_/\/_/\/_/\/_/|_| \_\\____|
 -- ========================================================
-
--- Starup random config
-math.randomseed(os.time())
 
 -- {{{ mapping - original neovim
 vim.g.mapleader      = " "
@@ -178,19 +175,6 @@ function Smart_split()
     end
 end
 neomap('n', '<leader>\\', ':lua Smart_split()<CR>', { desc = 'Smart split' })
--- neomap('n', '<C-\\>', [[:set splitright<CR>:vsplit<CR>]], key_opts_ns)
--- neomap('n', '<C-\\>', [[:set splitbelow<CR>:split<CR>]], key_opts_ns)
--------------------- Configuration file --------------------
-vim.cmd[[
-command! Psconfig execute "edit C:/Users/ThinkPad/Documents/PowerShell/Microsoft.PowerShell_profile.ps1"
-command! Alconfig execute "edit C:/Users/ThinkPad/AppData/Roaming/alacritty/alacritty.toml"
-command! Weconfig execute "edit C:/Users/ThinkPad/.config/wezterm/config/appearance.lua"
-command! Yzconfig execute "edit C:/Users/ThinkPad/AppData/Roaming/yazi/config/yazi.toml"
-command! Ssconfig execute "edit C:/Users/ThinkPad/Documents/PowerShell/starship.toml"
-command! Wfconfig execute "edit C:/Users/ThinkPad/.config/winfetch/config.ps1"
-command! Lgconfig execute "edit C:/Users/ThinkPad/AppData/Roaming/lazygit/config.yml"
-command! Riconfig execute "edit C:/Users/ThinkPad/AppData/Roaming/Rime/default.custom.yaml"
-]]
 -- }}}
 
 -- {{{ font
@@ -234,92 +218,79 @@ neomap("i", "<C-ScrollWheelDown>", "<ESC>:call AdjustFontSize(-1)<CR>a", key_opt
 
 -- {{{ options
 vim.g.have_nerd_font = true
-local vim_opts = {
-    autochdir = true,  -- 设定文件浏览器目录为当前目录
-    autoindent = true,  -- 自动对齐
-    autoread = true,  -- 自动读取
-    backspace = "indent,eol,start",
-    backup = false,
-    backupskip = "/tmp/*,$TMPDIR/*,$TMP/*,$TEMP/*,*/shm/*,/private/var/*,.vault.vim",
-    clipboard = "unnamedplus",  -- Sync with system clipboard
-    cmdheight = 1,
-    confirm = true,
-    cursorline = false,
-    encoding = "utf-8",
-    errorbells = false,
-    expandtab = true,  -- 在输入tab后,vim用个空格来填充这个tab
-    fileencoding = "utf-8",
-    fileencodings = "utf-8,gbk,gb18030,big5,ucs-bom,euc-jp,latin1",
-    foldenable = true,
-    foldlevel = 33,
-    foldmethod = 'marker',  -- 折叠类型---对文中标志折叠
-    formatoptions = "1jcroql",
-    hidden = true,  -- 允许在有未保存的修改时切换缓冲区
-    showmode = false,
-    hlsearch = true,
-    ignorecase = true,  -- 忽略大小写
-    incsearch = true,  -- 开启实时搜索功能
-    laststatus = 2,  -- 3:global Statusline, default is 2
-    linebreak = true,
-    list = true,
-    listchars = { tab = '» ', trail = '·', nbsp = '␣' },
-    magic = true,
-    mouse = "a",
-    number = true,
-    relativenumber = true,
-    ruler = false,  -- 右下角显示光标位置的状态行
-    scrolloff = 5,  -- 设置目标行与顶部底部的距离(5行)
-    sessionoptions = "buffers,curdir,help,tabpages,winsize",
-    shiftround = true,
-    shiftwidth = 4,  -- Size of an indent
-    showcmd = true,
-    showcmdloc = "statusline",
-    showmatch = true,  -- 显示括号配对情况
-    sidescroll = 5,
-    sidescrolloff = 15,
-    signcolumn = "yes",
-    smartcase = true,
-    smartindent = true,  -- Insert indents automatically
-    softtabstop = 4,  -- 退格键的长度
-    spelllang = "en_us",
-    splitbelow = true,
-    splitright = true,
-    startofline = false,
-    swapfile = false,
-    tabstop = 4,  -- 设置tab键的宽度
-    termguicolors = true,
-    ttimeoutlen = 0,
-    breakindent = true,
-    undofile = true,
-    timeout = true,
-    updatetime = 250,
-    timeoutlen = 300,
-    visualbell = true,
-    whichwrap = "h,l,<,>,[,],~",  -- 允许backspace和光标键跨越行边界
-    wildignore = ".git,.hg,.svn,*.pyc,*.o,*.out,*.jpg,*.jpeg,*.png,*.gif,*.zip,**/tmp/**,*.DS_Store,**/node_modules/**,**/bower_modules/**",
-    wildignorecase = true,
-    wildmenu = true,
-    wildmode = "longest:full,full",  -- Command-line completion mode
-    wrap = true,
-    writebackup = false,
-    inccommand="nosplit",
-    winborder = 'rounded',
-    -- shell = "C:/PROGRA~1/PowerShell/7/pwsh.exe" -- pwsh7,启动速度200+ms, 与yazi.nvim冲突
-}
-for k, v in pairs(vim_opts) do
-    vim.opt[k] = v
-end
+vim.opt.autochdir = false  -- 设定文件浏览器目录为当前目录  --wenti
+vim.opt.autoindent = true  -- 自动对齐
+vim.opt.autoread = true  -- 自动读取
+vim.opt.backspace = "indent,eol,start"
+vim.opt.backup = false
+vim.opt.backupskip = "/tmp/*,$TMPDIR/*,$TMP/*,$TEMP/*,*/shm/*,/private/var/*,.vault.vim"
+vim.opt.clipboard = "unnamedplus"  -- Sync with system clipboard
+vim.opt.cmdheight = 1
+vim.opt.confirm = true
+vim.opt.cursorline = false
+vim.opt.encoding = "utf-8"
+vim.opt.errorbells = false
+vim.opt.expandtab = true  -- 在输入tab后,vim用个空格来填充这个tab
+vim.opt.fileencoding = "utf-8"
+vim.opt.fileencodings = "utf-8,gbk,gb18030,big5,ucs-bom,euc-jp,latin1"
+vim.opt.foldenable = true
+vim.opt.foldlevel = 33
+vim.opt.foldmethod = 'marker'  -- 折叠类型---对文中标志折叠
+vim.opt.formatoptions = "1jcroql"
+vim.opt.hidden = true  -- 允许在有未保存的修改时切换缓冲区
+vim.opt.showmode = false
+vim.opt.hlsearch = true
+vim.opt.ignorecase = true  -- 忽略大小写
+vim.opt.incsearch = true  -- 开启实时搜索功能
+vim.opt.laststatus = 2  -- 3:global Statusline, default is 2
+vim.opt.linebreak = true
+vim.opt.list = true
+vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
+vim.opt.magic = true
+vim.opt.mouse = "a"
+vim.opt.number = true
+vim.opt.relativenumber = true
+vim.opt.ruler = false  -- 右下角显示光标位置的状态行
+vim.opt.scrolloff = 5  -- 设置目标行与顶部底部的距离(5行)
+vim.opt.sessionoptions = "buffers,curdir,help,tabpages,winsize"
+vim.opt.shiftround = true
+vim.opt.shiftwidth = 4  -- Size of an indent
+vim.opt.showcmd = true
+vim.opt.showcmdloc = "statusline"
+vim.opt.showmatch = true  -- 显示括号配对情况
+vim.opt.sidescroll = 5
+vim.opt.sidescrolloff = 15
+vim.opt.signcolumn = "yes"
+vim.opt.smartcase = true
+vim.opt.smartindent = true  -- Insert indents automatically
+vim.opt.softtabstop = 4  -- 退格键的长度
+vim.opt.spelllang = "en_us"
+vim.opt.splitbelow = true
+vim.opt.splitright = true
+vim.opt.startofline = false
+vim.opt.swapfile = false
+vim.opt.tabstop = 4  -- 设置tab键的宽度
+vim.opt.termguicolors = true
+-- vim.opt.ttimeoutlen = 0  --wenti
+vim.opt.breakindent = true
+vim.opt.undofile = true
+vim.opt.timeout = true
+vim.opt.updatetime = 250
+vim.opt.timeoutlen = 300
+vim.opt.visualbell = true
+vim.opt.whichwrap = "h,l,<,>,[,],~"  -- 允许backspace和光标键跨越行边界
+vim.opt.wildignore = ".git,.hg,.svn,*.pyc,*.o,*.out,*.jpg,*.jpeg,*.png,*.gif,*.zip,**/tmp/**,*.DS_Store,**/node_modules/**,**/bower_modules/**"
+vim.opt.wildignorecase = true
+vim.opt.wildmenu = true
+vim.opt.wildmode = "longest:full,full"  -- Command-line completion mode
+vim.opt.wrap = true
+vim.opt.writebackup = false
+vim.opt.inccommand="nosplit"
+vim.opt.winborder = 'rounded'
+vim.opt.foldcolumn = "2"
+vim.opt.splitkeep = "screen"
+vim.opt.shortmess:append({ C = true })
 
-vim.cmd[[
-language en
-filetype indent on
-filetype plugin on
-set foldcolumn=2
-]]
-if vim.fn.has("nvim-0.9.5") == 1 then
-  vim.opt.splitkeep = "screen"
-  vim.opt.shortmess:append({ C = true })
-end
 -- Windows or WSL2: Requires equalsraf/win32yank.  try: choco install win32yank
 vim.g.clipboard = {
     name = 'win32yank',
@@ -334,9 +305,11 @@ vim.g.clipboard = {
     cache_enabled = 0,
 }
 -- ENV-Python
-vim.g.python_host_prog  = 'C:/Python/Python311/python.exe'
-vim.g.python3_host_prog = 'C:/Python/Python311/python.exe'
+vim.g.python3_host_prog = vim.fn.has("unix") == 1
+    and "/usr/bin/python3"
+    or "C:/Python/Python311/python.exe"
 vim.cmd([[ let $PYTHONUNBUFFERED=1 ]]) -- 禁用python stdout缓冲 ]
+
 -- Return to last edit position when opening files (You want this!)
 vim.cmd([[ au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif ]])
 
@@ -437,7 +410,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 
 -- }}}
 
--- {{{ Lazy.nvim
+-- {{{ plugins
 -- {{{ Lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
@@ -473,12 +446,7 @@ require("lazy").setup({
     end,
   },
 -- }}}
--- Local plugins
--- {{{ Dir = vim-speeddating-master
-  { dir = "C:/Users/ThinkPad/AppData/Local/nvim-data/Maxl/Local_Plugins/vim-speeddating-master", ft = { "markdown", "org" } }, --modified
--- }}}
 
--- Github plugins
 -- {{{ nvim-lualine/lualine.nvim
   {
     'nvim-lualine/lualine.nvim',
@@ -633,28 +601,6 @@ require("lazy").setup({
     end,
   },
 -- }}}
--- {{{ mbbill/undotree
-  {
-    "mbbill/undotree",
-    cmd = "UndotreeToggle",
-    keys = { { "<leader>u", mode={"n"}, ":UndotreeToggle<CR>", desc = "[U]ndotree" } },
-    init = function()
-    if vim.fn.has('persistent_undo') then
-      vim.cmd('set undofile')
-      vim.cmd('set undodir=C:/Users/ThinkPad/AppData/Local/nvim-data/Maxl/cache/undodir')
-    end
-    vim.g.undotree_DiffAutoOpen = 1
-    vim.g.undotree_HelpLine = 1
-    vim.g.undotree_SetFocusWhenToggle = 1
-    vim.g.undotree_ShortIndicators = 1
-    vim.g.undotree_TreeNodeShape = "├"
-    vim.g.undotree_TreeVertShape = "│"
-    vim.g.undotree_TreeSplitShape = "─┘"
-    vim.g.undotree_TreeReturnShape = "─┐"
-    end,
-    -- 增加系统环境变量Path"D:\Program Files\Git\usr\bin",解决打开插件报错的问题.
-  },
--- }}}
 -- {{{ dstein64/vim-startuptime
   {
     "dstein64/vim-startuptime",
@@ -727,16 +673,16 @@ require("lazy").setup({
         -- { "<leader>fs", mode = { "n" }, ":LeaderfFile :/<left><left>", desc = "File by Path" },
         -- { "<leader>fp", mode = { "n" }, "<cmd>Leaderf rg<cr>", desc = "Fuzzy word" },
         -- { "<leader>ff", mode = { "n" }, "<cmd>Leaderf file<cr>", desc = "[F]ile" },
-        { "<leader>fg", mode = { "n" }, "<cmd>Leaderf git<cr>", desc = "[G]it" },
-        { "<leader>fl", mode = { "n" }, "<cmd>Leaderf line<cr>", desc = "[L]ine" },
-        { "<leader>fc", mode = { "n" }, "<cmd>Leaderf colorscheme<cr>", desc = "[C]olorscheme" },
-        { "<leader>fh", mode = { "n" }, "<cmd>Leaderf searchHistory<cr>", desc = "Search [H]istory" },
+        -- { "<leader>fg", mode = { "n" }, "<cmd>Leaderf git<cr>", desc = "[G]it" },
+        -- { "<leader>fl", mode = { "n" }, "<cmd>Leaderf line<cr>", desc = "[L]ine" },
+        -- { "<leader>fc", mode = { "n" }, "<cmd>Leaderf colorscheme<cr>", desc = "[C]olorscheme" },
+        -- { "<leader>fh", mode = { "n" }, "<cmd>Leaderf searchHistory<cr>", desc = "Search [H]istory" },
         { "<localleader>T", mode = { "n" }, "<cmd>Leaderf bufTag<cr>", desc = "[T]ag" },
         { "<localleader>F", mode = { "n" }, "<cmd>Leaderf function<cr>", desc = "[F]unction" },
         { "<leader>fr", mode = { "n" }, "<cmd>Leaderf mru<cr>", desc = "[R]ecently Files" },
         { "<localleader>r", mode = { "n" }, "<cmd>Leaderf mru<cr>", desc = "[R]ecently Files" },
-        { "<leader>fb", mode = { "n" }, "<cmd>Leaderf buffer<cr>", desc = "[B]uffer" },
-        { "<leader>fq", mode = { "n" }, "<cmd>Leaderf quickfix<cr>", desc = "[Q]uickfix list" },
+        -- { "<leader>fb", mode = { "n" }, "<cmd>Leaderf buffer<cr>", desc = "[B]uffer" },
+        -- { "<leader>fq", mode = { "n" }, "<cmd>Leaderf quickfix<cr>", desc = "[Q]uickfix list" },
     },
     init = function()
     vim.g.Lf_ShortcutF = ""
@@ -744,8 +690,8 @@ require("lazy").setup({
     end,
     config = function()
     require('leaderf_PopupTheme_and_Icons')  -- 修改leaderf主题配色和icon
-    vim.g.Lf_Ctags = "C:/Users/ThinkPad/scoop/shims/ctags.exe"
-    vim.g.Lf_Rg = 'C:/Users/ThinkPad/scoop/shims/rg.exe'
+    vim.g.Lf_Ctags = vim.fn.exepath("ctags")
+    vim.g.Lf_Rg = vim.fn.exepath("rg")
 	vim.g.Lf_CursorBlink  = 0
     vim.g.Lf_ShowDevIcons = 1
     vim.g.Lf_SpacesAfterIcon = ' '
@@ -775,7 +721,9 @@ require("lazy").setup({
         Gtags       = 0,
     }-- 0:不自动预览; 1:自动预览
     vim.g.Lf_NeedCacheTime = 0.1  -- cache the files list,if time > 0.1s.
-    vim.g.Lf_CacheDirectory = "C:/Users/ThinkPad/AppData/Local/nvim-data/Maxl/cache/leaderf_mru_cache"
+    vim.g.Lf_CacheDirectory = vim.fn.has("unix") == 1
+        and vim.fn.expand("~/.config/nvim/support/.cache")
+        or "D:/Dotfiles/nvim/nvim/support/.cache"
     vim.g.Lf_MruMaxFiles = 2048
     vim.g.Lf_MruEnableFrecency = 0
     vim.g.Lf_ShowRelativePath = 1
@@ -787,7 +735,7 @@ require("lazy").setup({
     vim.cmd([[command! -bar -nargs=? -complete=dir LeaderfRg Leaderf! rg "" <q-args>]])
 
     -- 修改预览窗口移动,默认为<C-Up>和<C-Down>,修改为<C-b>和<C-f>,竖直分屏打开文件由<C-]>修改为<C-\>.
-    -- 水平分屏打开文件为<C-x>,tab打开文件为<C-t>.
+    -- 水平分屏打开文件为<C-x>, 竖直分屏为<c-\>, tab打开文件为<C-t>.
     vim.g.Lf_CommandMap = { ['<C-Up>'] = { '<C-b>' }, ['<C-Down>'] = { '<C-f>' }, ['<C-]>'] = { '<C-\\>' } }
 
     -- Bottom mode & Change statusline color (not popup mode)
@@ -828,18 +776,6 @@ require("lazy").setup({
             vim.api.nvim_set_hl(0, "Lf_hl_stlCwd",          { bg=nil, fg="#de6d78" } )                              --4 domain
         end
     end
-
-    -- Popup mode
-    --[[ vim.g.Lf_WindowPosition       = 'popup'
-    vim.g.Lf_WindowHeight         = 0.4
-    vim.g.Lf_PopupHeight          = 0.4
-    vim.g.Lf_PopupWidth           = 0.8
-    vim.g.Lf_PopupPosition        = { 1, 0 }
-    vim.g.Lf_PopupPreviewPosition = 'bottom'
-    vim.g.Lf_PreviewPosition      = 'center'
-	vim.g.Lf_PopupShowStatusline  = 0
-	vim.g.Lf_PopupShowBorder      = 1
-	vim.g.Lf_PopupBorders         = { '─', '│', '─', '│', '╭', '╮', '╯', '╰' } ]]
     end,
   },
 -- }}}
@@ -861,7 +797,9 @@ require("lazy").setup({
         vim.g.floaterm_autoclose = 0
         vim.g.floaterm_keymap_kill = '<C-q>'
         vim.g.floaterm_keymap_next = '<leader>tn'
-        vim.g.floaterm_shell="C:/PROGRA~1/PowerShell/7/pwsh.exe"
+        vim.g.floaterm_shell = vim.fn.has("unix") == 1
+            and "/bin/bash"
+            or "C:/PROGRA~1/PowerShell/7/pwsh.exe"
         -- 从':terminal '中打开外部nvim中的文件的命令。
         vim.g.floaterm_opener = 'edit'  -- 'edit', 'split', 'vsplit', 'tabe', 'drop'
         neomap("n","<leader>to",":FloatermNew --position=center --width=0.9 --height=0.9<CR>", { desc = 'New Term' })
@@ -931,15 +869,19 @@ require("lazy").setup({
     init = function()
     vim.g.mkdp_auto_close = 0
     --设置预览代码高亮(绝对路径)
-    vim.g.mkdp_markdown_css = "C:/Users/ThinkPad/AppData/Local/nvim-data/Maxl/github-markdown.css"
-    vim.g.mkdp_highlight_css = "C:/Users/ThinkPad/AppData/Local/nvim-data/Maxl/markdown.css"
-    --vim.g.mkdp_highlight_css = "C:/Users/ThinkPad/AppData/Local/nvim-data/Maxl/markdown_highlight_solarized_dark.css"
+    if vim.fn.has("unix") == 1 then
+        vim.g.mkdp_markdown_css = "~/.config/nvim/support/github-markdown.css"
+        vim.g.mkdp_highlight_css = "~/.config/nvim/support/markdown.css"
+    else
+        vim.g.mkdp_markdown_css = "D:/Dotfiles/nvim/nvim/support/github-markdown.css"
+        vim.g.mkdp_highlight_css = "D:/Dotfiles/nvim/nvim/support/markdown.css"
+        -- vim.g.mkdp_highlight_css = "D:/Dotfiles/nvim/nvim/support/markdown_highlight_solarized_dark.css"
+    end
     vim.g.mkdp_theme = 'light'  --'dark', 若不设置则和系统一致
     vim.cmd[[
     augroup markdown_preview
         au!
         au FileType markdown nnoremap <silent><C-CR> <Plug>MarkdownPreview
-        " au FileType markdown nnoremap <C-g> <Plug>MarkdownPreview
     augroup END
     ]]
     end,
@@ -959,6 +901,30 @@ require("lazy").setup({
         reference_links = { enable = false },  -- 文献/标签引用
       },
     },
+  },
+-- }}}
+-- {{{ chomosuke/typst-preview.nvim
+  {
+    'chomosuke/typst-preview.nvim',
+    ft = 'typst',
+    version = '1.*',
+    keys = {
+        { "<leader>p", "<cmd>TypstPreview<CR>", ft = "typst", desc = "typst-preview" },
+    },
+    config = function()
+        require("typst-preview").setup {
+            invert_colors = 'never',  -- never, always, auto
+            dependencies_bin = {
+                tinymist = vim.fn.has("win32") == 1 and 'tinymist.cmd' or 'tinymist',
+            },
+        }
+        if vim.fn.has("win32") == 1 then
+            local typst_utils = require("typst-preview.utils")
+            typst_utils.visit = function(link)
+                vim.fn.jobstart({"explorer.exe", "http://" .. link})
+            end
+        end
+    end,
   },
 -- }}}
 -- {{{ phanen/skip-conceal.nvim  note: 在conceallevel=2时避免光标停留在conceal掉的字符上
@@ -1148,16 +1114,20 @@ require("lazy").setup({
       vim.api.nvim_set_hl(0, 'NeovimDashboardLogo3', { fg = '#9d6ff0' })
       vim.api.nvim_set_hl(0, 'NeovimDashboardLogo4', { fg = '#c77dff' })
       vim.api.nvim_set_hl(0, 'NeovimDashboardLogo5', { fg = '#e38fff' })
-
-      -- vim.api.nvim_set_hl(0, 'NeovimDashboardLogo1', { fg = '#ffff00' })
-      -- vim.api.nvim_set_hl(0, 'NeovimDashboardLogo2', { fg = '#ffff00' })
-      -- vim.api.nvim_set_hl(0, 'NeovimDashboardLogo3', { fg = '#ffff00' })
-      -- vim.api.nvim_set_hl(0, 'NeovimDashboardLogo4', { fg = '#ffff00' })
-      -- vim.api.nvim_set_hl(0, 'NeovimDashboardLogo5', { fg = '#ffff00' })
     end,
-    ---@type snacks.Config
     opts = {
-        picker = { enabled = true },
+        picker = {
+            enabled = true,
+            win = {
+                input = {
+                    keys = {
+                        ["\\"] = { "edit_vsplit", mode = { "i", "n" } },
+                        ["|"] = { "edit_split", mode = { "i", "n" } },
+                        ["<c-t>"] = { "edit_tab", mode = { "i", "n" } },
+                    },
+                },
+            },
+            },
         bigfile = { enabled = true },
         quickfile = { enabled = true },
         indent = {
@@ -1211,8 +1181,14 @@ require("lazy").setup({
         },
     },
     keys = {
-        { "<leader>ff", ":lua Snacks.dashboard.pick('files')<CR>",   mode = { "n" }, desc = '[F]ile' },
-        { "<leader>fs", ":lua Snacks.dashboard.pick('live_grep')<CR>", mode = { "n" }, desc = 'Fuzzy word' },
+        { "<leader>ff", ":lua Snacks.picker.files()<CR>",   mode = { "n" }, desc = '[F]ile' },
+        { "<leader>fs", ":lua Snacks.picker('live_grep')<CR>", mode = { "n" }, desc = 'Fuzzy word' },
+        { "<leader>fc", ":lua Snacks.picker.colorschemes()<CR>", mode = { "n" }, desc = "Colorschemes" },
+        { "<leader>fl", ":lua Snacks.picker.lines()<CR>", mode = { "n" }, desc = "[L]ine" },
+        -- { "<leader>fh", ":lua Snacks.picker.search_history()<CR>", mode = { "n" }, desc = "Search [H]istory" },
+        { "<leader>fh", ":lua Snacks.picker.help()<CR>", mode = { "n" }, desc = "Search in [H]elp" },
+        { "<leader>fg", ":lua Snacks.picker.git_diff()<CR>", mode = { "n" }, desc = "[G]it diff" },
+        { "<leader>fk", ":lua Snacks.picker.keymaps()<CR>", mode = { "n" }, desc = "[K]eymaps" },
     },
   },
 -- }}}
@@ -1232,7 +1208,7 @@ require("lazy").setup({
     "karb94/neoscroll.nvim",
     event = "BufReadPre",
     config = function()
-    neoscroll = require('neoscroll')
+    local neoscroll = require('neoscroll')
     local scroll_keymap = {
       ["<C-u>"] = function() neoscroll.ctrl_u({ duration = 45; easing = 'sine' }) end;
       ["<C-d>"] = function() neoscroll.ctrl_d({ duration = 45; easing = 'sine' }) end;
@@ -1406,7 +1382,19 @@ require("lazy").setup({
   {
     'stevearc/oil.nvim',
     keys = {
-        { '<leader>e', function() require('oil').toggle_float() end, mode = 'n', desc = "Oil File Explorer", },
+        -- { '<leader>e', function() require('oil').toggle_float() end, mode = 'n', desc = "Oil File Explorer", },
+        {
+          "<leader>e",
+          function()
+              if vim.bo.filetype == "oil" then
+                  require("oil.actions").close.callback()
+              else
+                  vim.cmd("Oil")
+              end
+          end,
+          mode = "n",
+          desc = "Oil File Explorer"
+        },
      },
     cmd = "Oil",
     opts = {},
@@ -1416,11 +1404,23 @@ require("lazy").setup({
     },
     -- lazy = false,
     config = function()
+
+    function _G.get_oil_winbar()   -- 显示当前目录
+      local bufnr = vim.api.nvim_win_get_buf(vim.g.statusline_winid)
+      local dir = require("oil").get_current_dir(bufnr)
+      if dir then
+        return vim.fn.fnamemodify(dir, ":~")
+      else
+        -- If there is no current directory (e.g. over ssh), just show the buffer name
+        return vim.api.nvim_buf_get_name(0)
+      end
+    end
+
     local oil_detail = false
     require("oil").setup({
       default_file_explorer = true,
       delete_to_trash = true,
-      skip_confirm_for_simple_edits = true,
+      skip_confirm_for_simple_edits = false,
       use_default_keymaps = false,
       view_options = {
         show_hidden = false,
@@ -1429,17 +1429,17 @@ require("lazy").setup({
       win_options = {
         wrap = true,
         signcolumn = "yes:1",  -- 隐藏了git的index,只显示git的working_tree,1就够了
+        winbar = "%!v:lua.get_oil_winbar()",
       },
       keymaps = {
         ["g?"] = { "actions.show_help", mode = "n" },
         ["<CR>"] = "actions.select",
-        ["<C-s>"] = { "actions.select", opts = { vertical = true } },
-        ["<C-h>"] = { "actions.select", opts = { horizontal = true } },
+        ["\\"] = { "actions.select", opts = { vertical = true } },
+        ["|"] = { "actions.select", opts = { horizontal = true } },
         ["<C-t>"] = { "actions.select", opts = { tab = true } },
         ["<C-p>"] = "actions.preview",
-        -- ["<C-c>"] = { "actions.close", mode = "n" },
         ["q"] = { "actions.close", mode = "n" },
-        ["<C-l>"] = "actions.refresh",
+        ["<C-r>"] = "actions.refresh",
         ["<BS>"] = { "actions.parent", mode = "n" },
         ["_"] = { "actions.open_cwd", mode = "n" },
         -- ["`"] = { "actions.cd", mode = "n" },
@@ -1448,6 +1448,10 @@ require("lazy").setup({
         ["gx"] = "actions.open_external",
         ["g."] = { "actions.toggle_hidden", mode = "n" },
         ["g\\"] = { "actions.toggle_trash", mode = "n" },
+        ["<C-h>"] = false,
+        ["<C-j>"] = false,
+        ["<C-k>"] = false,
+        ["<C-l>"] = false,
         ["gd"] = {
           desc = "Toggle file detail view",
           callback = function()
@@ -1702,12 +1706,16 @@ require("lazy").setup({
         end
         },
     },
+
     config = function()
-    local orgmode = require('orgmode')
-    -- orgmode.setup_ts_grammar()
+        local orgmode = require('orgmode')
+        local org_dir = vim.fn.has("unix") == 1
+            and vim.fn.expand("~/.config/nvim/support/Org")
+            or "D:/Dotfiles/nvim/nvim/support/Org"
+
     orgmode.setup({
-       org_agenda_files = 'C:/Users/ThinkPad/AppData/Local/nvim-data/Maxl/Org/**/*',
-       org_default_notes_file = 'C:/Users/ThinkPad/AppData/Local/nvim-data/Maxl/Org/index.org',
+       org_agenda_files = org_dir .. '/**/*',
+       org_default_notes_file = org_dir .. '/index.org',
        org_hide_leading_stars = true,
        org_hide_emphasis_markers = true,
        org_todo_keywords = { 'TODO(t)', 'WAITING', 'IN-PROGRESS', '|', 'DONE(d)', 'CANCELLED' },
@@ -1741,8 +1749,13 @@ require("lazy").setup({
     vim.api.nvim_set_hl(0, "@org.headline.level8", { fg = "#e2c770" })
     end,
     init = function()
-    vim.cmd([[au FileType org setlocal nofoldenable]]) -- 关闭打开org默认folding
-    neomap("n", "<leader>od", ":Oil C:/Users/ThinkPad/AppData/Local/nvim-data/Maxl/Org/<CR>", { desc = 'Org [D]irectories' })
+        vim.cmd([[au FileType org setlocal nofoldenable]])
+    
+        if vim.fn.has("unix") == 1 then
+            neomap("n", "<leader>od", ":Oil ~/.config/nvim/support/Org/<CR>", { desc = 'Org [D]irectories' })
+        else
+            neomap("n", "<leader>od", ":Oil D:/Dotfiles/nvim/nvim/support/Org/<CR>", { desc = 'Org [D]irectories' })
+        end
     end,
   },
 -- }}}
@@ -1768,7 +1781,7 @@ require("lazy").setup({
         "hiphish/rainbow-delimiters.nvim",
     },
     config = function()
-      local parsers = { 'bash', 'python', 'fortran', 'c', 'vim', 'vimdoc', 'query', 'lua', 'bibtex', 'markdown', 'matlab', 'json', 'toml', 'yaml', 'typst', 'ini', 'bibtex', 'latex' }
+      local parsers = { 'bash', 'python', 'fortran', 'c', 'vim', 'vimdoc', 'query', 'lua', 'bibtex', 'markdown', 'matlab', 'json', 'toml', 'yaml', 'typst', 'ini', 'latex' }
       require('nvim-treesitter').install(parsers)
 
       ---@param buf integer
@@ -1929,6 +1942,7 @@ require("lazy").setup({
 
       require('mason').setup()
 
+      -- LSP
       local ensure_installed = vim.tbl_keys(servers or {})
       require("mason-lspconfig").setup({
           ensure_installed = ensure_installed
@@ -1999,20 +2013,36 @@ require("lazy").setup({
         { "saghen/blink.compat", opts = {} },
         { "L3MON4D3/LuaSnip",
             config = function()
-                require("luasnip/loaders/from_vscode").lazy_load({ paths = {"C:/Users/ThinkPad/AppData/Local/nvim-data/Maxl/friendly-snippets"}})
+                if vim.fn.has("unix") == 1 then
+                require("luasnip/loaders/from_vscode").lazy_load({ paths = {"~/.config/nvim/support/friendly-snippets"}})
+                else
+                require("luasnip/loaders/from_vscode").lazy_load({ paths = {"D:/Dotfiles/nvim/nvim/support/friendly-snippets"}})
+                end
             end,
             init = function()
-                neomap("n", "<leader>rsm", ":<C-U>e C:/Users/ThinkPad/AppData/Local/nvim-data/Maxl/friendly-snippets/add_snippets/Maxl_matlab.json<CR>", { desc = 'Snippets: [M]atlab' })
-                neomap("n", "<leader>rsp", ":<C-U>e C:/Users/ThinkPad/AppData/Local/nvim-data/Maxl/friendly-snippets/add_snippets/Maxl_python.json<CR>", { desc = 'Snippets: [P]ython' })
-                neomap("n", "<leader>rso", ":<C-U>e C:/Users/ThinkPad/AppData/Local/nvim-data/Maxl/friendly-snippets/add_snippets/Maxl_org.json<CR>", { desc = 'Snippets: [O]rg' })
-                neomap("n", "<leader>rst", function()
-                    Snacks.picker.files({
-                        cwd = "C:/Users/ThinkPad/AppData/Local/nvim-data/Maxl/friendly-snippets/add_snippets/Typst",
-                    })
-                end, { desc = "Snippets: [T]ypst" })
-                neomap("n", "<leader>rsg", ":<C-U>e C:/Users/ThinkPad/AppData/Local/nvim-data/Maxl/friendly-snippets/snippets/global.json<CR>", { desc = '[G]lobel Snippets' })
-                neomap("n", "<leader>rsT", ":<C-U>e C:/Users/ThinkPad/AppData/Roaming/Code/User/snippets/typst.json<CR>", { desc = 'VSC Snippets: [T]ypst' })
-                neomap("n", "<leader>rsL", ":<C-U>e C:/Users/ThinkPad/AppData/Roaming/Code/User/snippets/latex.json<CR>", { desc = 'VSC Snippets: [L]aTeX' })
+                if vim.fn.has("unix") == 1 then
+                    neomap("n", "<leader>rsm", ":<C-U>e ~/.config/nvim/support/friendly-snippets/add_snippets/Maxl_matlab.json<CR>", { desc = 'Snippets: [M]atlab' })
+                    neomap("n", "<leader>rsp", ":<C-U>e ~/.config/nvim/support/friendly-snippets/add_snippets/Maxl_python.json<CR>", { desc = 'Snippets: [P]ython' })
+                    neomap("n", "<leader>rso", ":<C-U>e ~/.config/nvim/support/friendly-snippets/add_snippets/Maxl_org.json<CR>", { desc = 'Snippets: [O]rg' })
+                    neomap("n", "<leader>rst", function()
+                        Snacks.picker.files({
+                            cwd = "~/.config/nvim/support/friendly-snippets/add_snippets/Typst",
+                        })
+                    end, { desc = "Snippets: [T]ypst" })
+                    neomap("n", "<leader>rsg", ":<C-U>e ~/.config/nvim/support/friendly-snippets/snippets/global.json<CR>", { desc = '[G]lobel Snippets' })
+                else
+                    neomap("n", "<leader>rsm", ":<C-U>e D:/Dotfiles/nvim/nvim/support/friendly-snippets/add_snippets/Maxl_matlab.json<CR>", { desc = 'Snippets: [M]atlab' })
+                    neomap("n", "<leader>rsp", ":<C-U>e D:/Dotfiles/nvim/nvim/support/friendly-snippets/add_snippets/Maxl_python.json<CR>", { desc = 'Snippets: [P]ython' })
+                    neomap("n", "<leader>rso", ":<C-U>e D:/Dotfiles/nvim/nvim/support/friendly-snippets/add_snippets/Maxl_org.json<CR>", { desc = 'Snippets: [O]rg' })
+                    neomap("n", "<leader>rst", function()
+                        Snacks.picker.files({
+                            cwd = "D:/Dotfiles/nvim/nvim/support/friendly-snippets/add_snippets/Typst",
+                        })
+                    end, { desc = "Snippets: [T]ypst" })
+                    neomap("n", "<leader>rsg", ":<C-U>e D:/Dotfiles/nvim/nvim/support/friendly-snippets/snippets/global.json<CR>", { desc = '[G]lobel Snippets' })
+                    neomap("n", "<leader>rsT", ":<C-U>e C:/Users/ThinkPad/AppData/Roaming/Code/User/snippets/typst.json<CR>", { desc = 'VSC Snippets: [T]ypst' })
+                    neomap("n", "<leader>rsL", ":<C-U>e C:/Users/ThinkPad/AppData/Roaming/Code/User/snippets/latex.json<CR>", { desc = 'VSC Snippets: [L]aTeX' })
+                end
             end,
         },
         { "mstanciu552/cmp-matlab" },
@@ -2021,11 +2051,16 @@ require("lazy").setup({
           branch = "main",
           commit = "93f3e2c",
           config = function()
+              local dic = {}
+              if vim.fn.has("unix") == 1 then
+                  dic["*"] = "~/.config/nvim/support/Directionary-8813.dic"
+                  -- ["*"] = { "~/.config/nvim/support/Directionary-69903.dic" },
+              else
+                  dic["*"] = "D:/Dotfiles/nvim/nvim/support/Directionary-8813.dic"
+                  -- ["*"] = { "D:/Dotfiles/nvim/nvim/support/Directionary-69903.dic" },
+              end
               require("cmp_dictionary").setup({
-                  dic = {
-                      ["*"] = { "C:/Users/ThinkPad/AppData/Local/nvim-data/Maxl/Directionary-8813.dic" },
-                      -- ["*"] = { "C:/Users/ThinkPad/AppData/Local/nvim-data/Maxl/Directionary-69903.dic" },
-                  },
+                  dic = dic,
                   exact = 2,
                   first_case_insensitive = true,
                   document = false,
@@ -2035,7 +2070,6 @@ require("lazy").setup({
                   capacity = 5,
                   debug = false,
               })
-              --require("cmp_dictionary").update() -- THIS
               vim.cmd("CmpDictionaryUpdate")
           end,
         },
@@ -2176,26 +2210,8 @@ require("lazy").setup({
                     name = 'Snippets',
                     module = 'blink.cmp.sources.snippets',
                     score_offset = -3,
-
-                    -- For `snippets.preset == 'default'`
-                    -- opts = {
-                    --     friendly_snippets = true,
-                    --     search_paths = { 'C:/Users/ThinkPad/AppData/Local/nvim-data/Maxl/friendly-snippets/' },
-                    --     global_snippets = { 'all' },
-                    --     extended_filetypes = {},
-                    --     ignored_filetypes = {},
-                    --     get_filetype = function(context)
-                    --         return vim.bo.filetype
-                    --     end,
-                    --     -- Set to '+' to use the system clipboard, or '"' to use the unnamed register
-                    --     clipboard_register = nil,
-                    -- },
-
-                    -- For `snippets.preset == 'luasnip'`
                     opts = {
-                        -- Whether to use show_condition for filtering snippets
                         use_show_condition = true,
-                        -- Whether to show autosnippets in the completion list
                         show_autosnippets = true,
                     },
                 },
@@ -2283,23 +2299,26 @@ require("lazy").setup({
   },
 -- }}}
 
+-- {{{ 396458015/vim-speeddating-modified
+  { "396458015/vim-speeddating-modified", ft = { "markdown", "org" } }, --modified
+-- }}}
 -- {{{ 396458015/imeflow.nvim
-  {
-   "396458015/imeflow.nvim",
-   lazy = true,
-   event = "InsertEnter",
-   opts = {
-       -- path = "C:/Users/ThinkPad/AppData/Local/nvim-data/Maxl/im-select.exe",
-       enabled = false,   -- Start enabled (default: true)
-       mapping = "<F2>", -- Optional toggle mapping
+ {
+  "396458015/imeflow.nvim",
+  lazy = true,
+  event = "InsertEnter",
+  opts = {
+      path = vim.fn.has("unix") == 1 and "/mnt/c/Users/ThinkPad/AppData/Local/nvim-data/Maxl/im-select.exe" or nil,
+      enabled = false,   -- Start enabled (default: true)
+      mapping = "<F2>", -- Optional toggle mapping
 
-       -- Optional per-event enable/disable
-       VimEnter    = false,
-       InsertEnter = true,
-       InsertLeave = true,
-       VimLeave    = false,
-   },
+      -- Optional per-event enable/disable
+      VimEnter    = false,
+      InsertEnter = true,
+      InsertLeave = true,
+      VimLeave    = false,
   },
+ },
 -- }}}
 -- {{{ 396458015/foldmarker.nvim
   {
@@ -2518,6 +2537,9 @@ end
 -- }}}
 
 -- {{{ highlihgt (origin neovim & plugins)
+-- folded color
+vim.api.nvim_set_hl(0, "Folded", { fg = "#c9a0a9", bg = "#403940", bold = true, italic = true })
+
 -- cmp color
 local fgdark = "#2E3440"
 vim.api.nvim_set_hl(0, "Pmenu",    { fg = "#5b678f", bg = nil}) -- cmp documentation font color
@@ -2591,6 +2613,9 @@ vim.api.nvim_set_hl(0, "DiagnosticSignWarn",  { fg = "#ffa500" })
 vim.api.nvim_set_hl(0, "DiagnosticSignHint",  { fg = "#1d6a70" })
 vim.api.nvim_set_hl(0, "DiagnosticSignInfo",  { fg = "#FFCC66" })
 
+-- snacks.picker
+vim.api.nvim_set_hl(0, "SnacksPickerMatch", { fg = "#d3366f", bold = true })
+
 -- dark & light colorscheme
 if vim.fn.exists('&bg') and vim.fn.eval('&bg') == 'dark' then
     -- search color
@@ -2622,17 +2647,17 @@ end
 
 -- {{{ GUI&TERM
 if vim.g.neovide then-- neovide
-    vim.g.neovide_cursor_vfx_mode = "railgun"  -- "torpedo", "pixiedust", "ripple"
-    vim.g.neovide_cursor_vfx_particle_density = 7.0
+    vim.g.neovide_cursor_vfx_mode = "pixiedust"  -- "railgun", torpedo", "pixiedust", "ripple"
+    vim.g.neovide_cursor_vfx_particle_density = 3.0
     vim.g.neovide_cursor_trail_length = 0.05
     vim.g.neovide_refresh_rate = 60
 
     vim.g.neovide_cursor_antialiasing = true
     vim.g.neovide_cursor_animation_length = 0.02
-    vim.g.neovide_cursor_animate_in_insert_mode = true
-    vim.g.neovide_scroll_animation_length = 0.3
+    vim.g.neovide_cursor_animate_in_insert_mode = false
+    vim.g.neovide_scroll_animation_length = 0
 
-    vim.g.neovide_opacity = 0.9
+    vim.g.neovide_opacity = 1.0  -- 0.9
     vim.g.neovide_fullscreen = false
     vim.g.neovide_remember_window_size = true
     vim.g.neovide_remember_window_position = true
@@ -2640,10 +2665,10 @@ if vim.g.neovide then-- neovide
     vim.g.neovide_hide_mouse_when_typing = true    -- 输入时隐藏鼠标
     -- vim.g.neovide_profiler = true               -- 左上角显示帧数
     -- Adjust transparency
-    neomap('n', '<C-_>', ':let g:neovide_opacity -= 0.25<CR>:let g:neovide_opacity<CR>', {})
-    neomap('n', '<C-+>', ':let g:neovide_opacity += 0.25<CR>:let g:neovide_opacity<CR>', {})
-    neomap('i', '<C-_>', '<C-o>:let g:neovide_opacity -= 0.25<CR><C-o>:let g:neovide_opacity<CR>', {})
-    neomap('i', '<C-+>', '<C-o>:let g:neovide_opacity += 0.25<CR><C-o>:let g:neovide_opacity<CR>', {})
+    neomap('n', '<C-_>', ':let g:neovide_opacity -= 0.05<CR>:let g:neovide_opacity<CR>', {})
+    neomap('n', '<C-+>', ':let g:neovide_opacity += 0.05<CR>:let g:neovide_opacity<CR>', {})
+    neomap('i', '<C-_>', '<C-o>:let g:neovide_opacity -= 0.05<CR><C-o>:let g:neovide_opacity<CR>', {})
+    neomap('i', '<C-+>', '<C-o>:let g:neovide_opacity += 0.05<CR><C-o>:let g:neovide_opacity<CR>', {})
     -- Toggle fullscreen
     neomap("n", "<m-CR>", function()
         vim.g.neovide_fullscreen = vim.g.neovide_fullscreen == 1 and 0 or 1

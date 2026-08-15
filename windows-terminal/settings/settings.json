@@ -126,16 +126,16 @@
             "keys": "f9"
         },
         {
+            "id": null,
+            "keys": "ctrl+numpad0"
+        },
+        {
             "id": "Terminal.SwitchToTab3",
             "keys": "alt+4"
         },
         {
             "id": null,
             "keys": "ctrl+shift+pgup"
-        },
-        {
-            "id": null,
-            "keys": "ctrl+numpad0"
         },
         {
             "id": null,
@@ -499,6 +499,15 @@
                 "hidden": false,
                 "name": "Developer PowerShell for VS 2022",
                 "source": "Windows.Terminal.VisualStudio"
+            },
+            {
+                "commandline": "C:\\WINDOWS\\system32\\wsl.exe -d Ubuntu",
+                "guid": "{73982e5f-0f72-44d8-88de-33167770ae51}",
+                "hidden": false,
+                "icon": "ms-appx:///ProfileIcons/{9acb9455-ca41-5af7-950f-6bca1bc9722f}.png",
+                "name": "Ubuntu (\u590d\u5236)",
+                "pathTranslationStyle": "wsl",
+                "startingDirectory": "~"
             }
         ]
     },

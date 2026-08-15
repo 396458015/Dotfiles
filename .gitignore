@@ -3,10 +3,16 @@ yazi/state/*
 lazygit/state.yml
 
 nvim/nvim-data/*
-!nvim/nvim-data/Maxl
-nvim/nvim-data/Maxl/cache
-nvim/nvim-data/Maxl/Org
-nvim/nvim-data/Maxl/openai_apikey
+
+nvim/nvim/support/*
+!nvim/nvim/support/FONT
+!nvim/nvim/support/friendly-snippets
+!nvim/nvim/support/Directionary-8813.dic
+!nvim/nvim/support/Directionary-69903.dic
+!nvim/nvim/support/github-markdown.css
+!nvim/nvim/support/im-select.exe
+!nvim/nvim/support/markdown.css
+!nvim/nvim/support/markdown_highlight_solarized_dark.css
 
 nvim/nvim/lazy-lock.json
 
