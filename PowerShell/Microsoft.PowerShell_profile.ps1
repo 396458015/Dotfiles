@@ -65,6 +65,7 @@ Set-PSReadLineKeyHandler -Key "Ctrl+z" -Function Undo
 Set-PSReadLineKeyHandler -Key Ctrl+Backspace -Function BackwardKillWord
 Set-PSReadLineKeyHandler -Chord "Ctrl+j" -Function HistorySearchForward
 Set-PSReadLineKeyHandler -Chord "Ctrl+k" -Function HistorySearchBackward
+Set-PSReadLineKeyHandler -Chord "Ctrl+u" -Function BackwardDeleteLine
 # }}}
 
 # {{{ Alias
