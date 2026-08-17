@@ -153,7 +153,8 @@ hovered = { underline = true }
 
 [which]
 cols            = 3
-mask            = { bg = "#2c2b42" }  # Frappe
+border          = { fg = "#8b949e" }
+mask            = { bg = "reset" }  # Frappe
 cand            = { fg = "#9cdcfe" }  # Frappe
 rest            = { fg = "darkgray" }
 desc            = { fg = "#ae6485" }
@@ -215,7 +216,7 @@ icon_error = ""
 [git]
 unknown   = { fg = "#ec613f" }
 modified  = { fg = "#ec613f" }
-added     = { fg = "#ec613f" }
+added     = { fg = "#98c379" }
 untracked = { fg = "#FFD700" }
 ignored   = { fg = "#ae96ee" }
 deleted   = { fg = "#ec613f" }
