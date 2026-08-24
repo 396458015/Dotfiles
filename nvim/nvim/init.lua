@@ -148,8 +148,8 @@ neomap('c', '<C-k>', '<up>', key_opts_n)
 -- 在命令行粘贴的快捷键
 neomap('c', '<C-V>', '<C-R>+', key_opts_n)
 -- -------------------- function --------------------
--- open Startify
-neomap('n', '<leader>st', ':Startify<CR>', { desc = 'Startify' })
+-- 删除空行
+neomap('n', '<leader>dd', '<cmd>g/^$/d<CR>', { desc = '[D]elete empty lines' })
 -- diff this
 neomap('n', '<leader>dt', ':windo diffthis<CR>', { desc = '[D]iff [T]his' })
 -- vimrc
@@ -291,7 +291,7 @@ vim.opt.splitkeep = "screen"
 vim.opt.shortmess:append({ C = true })
 vim.opt.undofile = true
 if vim.fn.has("unix") == 1 then
-    vim.opt.undodir = vim.fn.expand("~/.config/nvim/support/.cache/undodir//")
+    vim.opt.undodir = vim.fn.expand("~/dotfiles_wsl/.config/nvim/support/.cache/undodir//")
 else
     vim.opt.undodir = "D:/Dotfiles/nvim/nvim/support/.cache/undodir//"
 end
@@ -727,7 +727,7 @@ require("lazy").setup({
     }-- 0:不自动预览; 1:自动预览
     vim.g.Lf_NeedCacheTime = 0.1  -- cache the files list,if time > 0.1s.
     vim.g.Lf_CacheDirectory = vim.fn.has("unix") == 1
-        and vim.fn.expand("~/.config/nvim/support/.cache")
+        and vim.fn.expand("~/dotfiles_wsl/.config/nvim/support/.cache")
         or "D:/Dotfiles/nvim/nvim/support/.cache"
     vim.g.Lf_MruMaxFiles = 2048
     vim.g.Lf_MruEnableFrecency = 0
@@ -874,8 +874,8 @@ require("lazy").setup({
     vim.g.mkdp_auto_close = 0
     --设置预览代码高亮(绝对路径)
     if vim.fn.has("unix") == 1 then
-        vim.g.mkdp_markdown_css = vim.fn.expand("~/.config/nvim/support/github-markdown.css")
-        vim.g.mkdp_highlight_css = vim.fn.expand("~/.config/nvim/support/markdown.css")
+        vim.g.mkdp_markdown_css = vim.fn.expand("~/dotfiles_wsl/.config/nvim/support/github-markdown.css")
+        vim.g.mkdp_highlight_css = vim.fn.expand("~/dotfiles_wsl/.config/nvim/support/markdown.css")
     else
         vim.g.mkdp_markdown_css = "D:/Dotfiles/nvim/nvim/support/github-markdown.css"
         vim.g.mkdp_highlight_css = "D:/Dotfiles/nvim/nvim/support/markdown.css"
@@ -1009,7 +1009,7 @@ require("lazy").setup({
   {
     "ntpeters/vim-better-whitespace",
     event = "InsertEnter",
-	keys = { { "<leader>si", mode = { "n" }, ":StripWhitespace<CR>", desc = "WhiteSpace" } },
+	keys = { { "<leader>di", mode = { "n" }, ":StripWhitespace<CR>", desc = "[D]elete WhiteSpace" } },
     config = function()
     vim.g.better_whitespace_guicolor='red'
     vim.g.strip_whitespace_on_save=0
@@ -1714,7 +1714,7 @@ require("lazy").setup({
     config = function()
         local orgmode = require('orgmode')
         local org_dir = vim.fn.has("unix") == 1
-            and vim.fn.expand("~/.config/nvim/support/Org")
+            and vim.fn.expand("~/dotfiles_wsl/.config/nvim/support/Org")
             or "D:/Dotfiles/nvim/nvim/support/Org"
 
     orgmode.setup({
@@ -1756,7 +1756,7 @@ require("lazy").setup({
         vim.cmd([[au FileType org setlocal nofoldenable]])
 
         if vim.fn.has("unix") == 1 then
-            neomap("n", "<leader>od", ":Oil ~/.config/nvim/support/Org/<CR>", { desc = 'Org [D]irectories' })
+            neomap("n", "<leader>od", ":Oil ~/dotfiles_wsl/.config/nvim/support/Org/<CR>", { desc = 'Org [D]irectories' })
         else
             neomap("n", "<leader>od", ":Oil D:/Dotfiles/nvim/nvim/support/Org/<CR>", { desc = 'Org [D]irectories' })
         end
@@ -2060,7 +2060,7 @@ require("lazy").setup({
                 if vim.fn.has("unix") == 1 then
                     require("luasnip/loaders/from_vscode").lazy_load({
                         paths = {
-                            vim.fn.expand("~/.config/nvim/support/friendly-snippets")
+                            vim.fn.expand("~/dotfiles_wsl/.config/nvim/support/friendly-snippets")
                         }
                     })
                 else
@@ -2069,15 +2069,15 @@ require("lazy").setup({
             end,
             init = function()
                 if vim.fn.has("unix") == 1 then
-                    neomap("n", "<leader>rsm", ":<C-U>e ~/.config/nvim/support/friendly-snippets/add_snippets/Maxl_matlab.json<CR>", { desc = 'Snippets: [M]atlab' })
-                    neomap("n", "<leader>rsp", ":<C-U>e ~/.config/nvim/support/friendly-snippets/add_snippets/Maxl_python.json<CR>", { desc = 'Snippets: [P]ython' })
-                    neomap("n", "<leader>rso", ":<C-U>e ~/.config/nvim/support/friendly-snippets/add_snippets/Maxl_org.json<CR>", { desc = 'Snippets: [O]rg' })
+                    neomap("n", "<leader>rsm", ":<C-U>e ~/dotfiles_wsl/.config/nvim/support/friendly-snippets/add_snippets/Maxl_matlab.json<CR>", { desc = 'Snippets: [M]atlab' })
+                    neomap("n", "<leader>rsp", ":<C-U>e ~/dotfiles_wsl/.config/nvim/support/friendly-snippets/add_snippets/Maxl_python.json<CR>", { desc = 'Snippets: [P]ython' })
+                    neomap("n", "<leader>rso", ":<C-U>e ~/dotfiles_wsl/.config/nvim/support/friendly-snippets/add_snippets/Maxl_org.json<CR>", { desc = 'Snippets: [O]rg' })
                     neomap("n", "<leader>rst", function()
                         Snacks.picker.files({
-                            cwd = "~/.config/nvim/support/friendly-snippets/add_snippets/Typst",
+                            cwd = "~/dotfiles_wsl/.config/nvim/support/friendly-snippets/add_snippets/Typst",
                         })
                     end, { desc = "Snippets: [T]ypst" })
-                    neomap("n", "<leader>rsg", ":<C-U>e ~/.config/nvim/support/friendly-snippets/snippets/global.json<CR>", { desc = '[G]lobel Snippets' })
+                    neomap("n", "<leader>rsg", ":<C-U>e ~/dotfiles_wsl/.config/nvim/support/friendly-snippets/snippets/global.json<CR>", { desc = '[G]lobel Snippets' })
                 else
                     neomap("n", "<leader>rsm", ":<C-U>e D:/Dotfiles/nvim/nvim/support/friendly-snippets/add_snippets/Maxl_matlab.json<CR>", { desc = 'Snippets: [M]atlab' })
                     neomap("n", "<leader>rsp", ":<C-U>e D:/Dotfiles/nvim/nvim/support/friendly-snippets/add_snippets/Maxl_python.json<CR>", { desc = 'Snippets: [P]ython' })
@@ -2101,8 +2101,8 @@ require("lazy").setup({
           config = function()
               local dic = {}
               if vim.fn.has("unix") == 1 then
-                  dic["*"] = vim.fn.expand("~/.config/nvim/support/Directionary-8813.dic")
-                  -- dic["*"] = vim.fn.expand("~/.config/nvim/support/Directionary-69903.dic")
+                  dic["*"] = vim.fn.expand("~/dotfiles_wsl/.config/nvim/support/Directionary-8813.dic")
+                  -- dic["*"] = vim.fn.expand("~/dotfiles_wsl/.config/nvim/support/Directionary-69903.dic")
               else
                   dic["*"] = "D:/Dotfiles/nvim/nvim/support/Directionary-8813.dic"
                   -- dic["*"] = "D:/Dotfiles/nvim/nvim/support/Directionary-69903.dic"
@@ -2356,7 +2356,8 @@ require("lazy").setup({
   lazy = true,
   event = "InsertEnter",
   opts = {
-      path = vim.fn.has("unix") == 1 and "/mnt/c/Users/ThinkPad/AppData/Local/nvim-data/Maxl/im-select.exe" or nil,
+      -- wsl2需要调用windows下的im-select.exe，插件才能正常运行。
+      path = vim.fn.has("unix") == 1 and "/mnt/d/Dotfiles/nvim/nvim/support/im-select.exe" or nil,
       enabled = false,   -- Start enabled (default: true)
       mapping = "<F2>", -- Optional toggle mapping
 
