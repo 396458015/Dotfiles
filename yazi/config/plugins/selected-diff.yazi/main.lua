@@ -1,5 +1,5 @@
 --- @sync entry
---- @since 26.5.6
+--- @since 26.8.15
 
 local NVIM = "nvim"
 
@@ -7,8 +7,8 @@ return {
 	entry = function()
 		local files = {}
 
-		for _, url in pairs(cx.active.selected) do
-			table.insert(files, tostring(url))
+		for _, file in pairs(cx.active.selected) do
+			table.insert(files, tostring(file.url))
 		end
 
 		if #files ~= 2 then
