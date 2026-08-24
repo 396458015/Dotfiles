@@ -362,7 +362,6 @@ nvim_create_augroups({
     file_options = {
         { "BufNewFile,BufRead", "*.py", "set fileformat=unix" },
         { "BufNewFile,BufRead", "*.m", "set fileencoding=cp936" },  -- matlab中文乱码
-        { "BufRead", "*.md", "set conceallevel=2" },
     },
     autosave_shada = {
         { "VimLeave", "*", "wshada!" },
@@ -896,6 +895,46 @@ require("lazy").setup({
     "OXY2DEV/markview.nvim",
     ft = {"markdown", "typst"},
     opts = {
+      preview = {
+        callbacks = {
+          -- Markview 默认使用 conceallevel=3。
+          -- Markdown 为了显示反引号、链接标记等原始语法，强制设为 0；
+          -- Typst 等其他文件类型保持 Markview 默认的 conceallevel=3。
+          on_attach = function(buf, wins)
+            local level = vim.bo[buf].filetype == "markdown" and 0 or 3
+
+            for _, win in ipairs(wins) do
+              vim.wo[win].conceallevel = level
+            end
+          end,
+
+          -- Markview 重新启用预览时重新设置，
+          -- 避免窗口从 Markdown 切换到 Typst 后继承 conceallevel=0。
+          on_enable = function(buf, wins)
+            local level = vim.bo[buf].filetype == "markdown" and 0 or 3
+
+            for _, win in ipairs(wins) do
+              vim.wo[win].conceallevel = level
+            end
+          end,
+
+          -- 模式切换时保持：
+          -- Markdown = 0，其他文件类型 = 3。
+          on_mode_change = function(buf, wins, _)
+            local level = vim.bo[buf].filetype == "markdown" and 0 or 3
+
+            for _, win in ipairs(wins) do
+              vim.wo[win].conceallevel = level
+            end
+          end,
+        },
+      },
+      markdown = {
+        code_blocks = { enable = false },       -- 保留 ``` 代码块原始形式
+      },
+      markdown_inline = {
+        inline_codes = { enable = false },      -- 保留 `行内代码` 的反引号
+      },
       typst = {
         symbols = { enable = false },          -- 数学符号（β、∑、∇ 等）
         subscripts = { enable = false },       -- 下标
@@ -929,12 +968,6 @@ require("lazy").setup({
             end
         end
     end,
-  },
--- }}}
--- {{{ phanen/skip-conceal.nvim  note: 在conceallevel=2时避免光标停留在conceal掉的字符上
-  {
-    "phanen/skip-conceal.nvim",
-    ft = "markdown",
   },
 -- }}}
 -- {{{ lervag/vimtex
