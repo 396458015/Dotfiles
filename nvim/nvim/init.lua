@@ -153,7 +153,10 @@ neomap('n', '<leader>dd', '<cmd>g/^$/d<CR>', { desc = '[D]elete empty lines' })
 -- diff this
 neomap('n', '<leader>dt', ':windo diffthis<CR>', { desc = '[D]iff [T]his' })
 -- vimrc
-neomap('n', '<leader>rc', ':edit $MYVIMRC<CR>', { desc = 'Edit VIMRC' })
+neomap('n', '<leader>rc', function()
+    local path = vim.fn.resolve(vim.fn.expand("$MYVIMRC"))
+    vim.cmd.edit(vim.fn.fnameescape(path))
+end, { desc = 'Edit VIMRC' })
 neomap('n', '<leader>rr', ':restart<CR>', { desc = '[R]eload VIMRC' })
 -- 取消高亮
 neomap('n', '<BS>', ':nohlsearch<CR>', key_opts_ns)
@@ -1151,10 +1154,113 @@ require("lazy").setup({
       vim.api.nvim_set_hl(0, 'NeovimDashboardLogo3', { fg = '#9d6ff0' })
       vim.api.nvim_set_hl(0, 'NeovimDashboardLogo4', { fg = '#c77dff' })
       vim.api.nvim_set_hl(0, 'NeovimDashboardLogo5', { fg = '#e38fff' })
+
+      -- 软链接icon颜色
+      vim.api.nvim_set_hl(0, "SnacksPickerSymlink", { fg = "#99d1db" })
     end,
     opts = {
         picker = {
             enabled = true,
+        sources = {
+            files = {
+                hidden = true, -- 文件搜索包含隐藏文件/目录
+                exclude = {
+                  -- Local cache / runtime data
+                  ".cache",
+                  ".local/share",
+                  ".local/state",
+                  ".local/lib",
+
+                  -- Development environments / toolchains
+                  ".npm",
+                  ".nvm",
+                  ".cargo",
+                  ".rustup",
+                  ".vscode-server",
+
+                  -- SDK / system tools
+                  ".texlive2024",
+                  ".dotnet",
+                  ".landscape",
+
+                  -- Project dependencies / environments
+                  "node_modules",
+                  "__pycache__",
+                  ".venv",
+                  "venv",
+
+                  -- Git / build artifacts
+                  ".git",
+                  "target",
+                  "build",
+                  "dist",
+                },
+                -- 文件搜索中显示软连接icon
+                format = function(item, picker)
+                    local ret = Snacks.picker.format.file(item, picker)
+
+                    local path = Snacks.picker.util.path(item)
+                    local stat = path and vim.uv.fs_lstat(path)
+
+                    if stat and stat.type == "link" then
+                        table.insert(ret, 1, { " ", "SnacksPickerSymlink", })
+                    end
+                    return ret
+                end,
+
+                -- Oil 采用懒加载，Snacks 直接打开目录时 Oil 尚未加载，因此手动交给 Oil 处理
+                confirm = function(picker, item, action)
+                    local path = Snacks.picker.util.path(item)
+                    local stat = path and vim.uv.fs_stat(path)
+
+                    if stat and stat.type == "directory" then
+                        picker:close()
+
+                        vim.schedule(function()
+                            vim.cmd("Oil " .. vim.fn.fnameescape(path))
+                        end)
+
+                        return
+                    end
+                    Snacks.picker.actions.jump(picker, item, action)
+                end,
+
+            },
+            grep = {
+                hidden = true, -- 全文搜索包含隐藏文件/目录
+                exclude = {
+                  -- Local cache / runtime data
+                  ".cache",
+                  ".local/share",
+                  ".local/state",
+                  ".local/lib",
+
+                  -- Development environments / toolchains
+                  ".npm",
+                  ".nvm",
+                  ".cargo",
+                  ".rustup",
+                  ".vscode-server",
+
+                  -- SDK / system tools
+                  ".texlive2024",
+                  ".dotnet",
+                  ".landscape",
+
+                  -- Project dependencies / environments
+                  "node_modules",
+                  "__pycache__",
+                  ".venv",
+                  "venv",
+
+                  -- Git / build artifacts
+                  ".git",
+                  "target",
+                  "build",
+                  "dist",
+                },
+            },
+        },
             win = {
                 input = {
                     keys = {
@@ -1199,7 +1305,18 @@ require("lazy").setup({
                     { icon = "  ", key = "s", desc = "Find Text", action = ":lua Snacks.dashboard.pick('live_grep')" },
                     { icon = "  ", key = "r", desc = "Recently Files", action = ":Leaderf mru" },
                     { icon = "💤 ", key = "l", desc = "Manage Plugins", action = ":Lazy", enabled = package.loaded.lazy ~= nil },  --  鈴💤
-                    { icon = "  ", key = "d", desc = "Dotfiles", action = ":lua Snacks.dashboard.pick('files', {cwd = vim.fn.stdpath('config')})" },
+                    {
+                        icon = "  ",
+                        key = "d",
+                        desc = "Dotfiles",
+                        action = function()
+                            local init = vim.fn.resolve(vim.fn.expand("$MYVIMRC"))
+                            local config_dir = vim.fs.dirname(init)
+                            Snacks.dashboard.pick("files", {
+                                cwd = config_dir,
+                            })
+                        end,
+                    },
                     { icon = "  ", key = "q", desc = "Quit", action = ":qa" },  --  
                   },
                 },
@@ -1645,6 +1762,7 @@ require("lazy").setup({
                     latte = {
                         base = '#e1e2e7',
                         mantle = "#e1e2e7",
+                        overlay2 = "#8c8fa1",  -- 对应comment颜色,浅一点
                     },
                     frappe = {
                         text   = "#abb2bf",
@@ -2605,13 +2723,13 @@ if vim.fn.has('gui_running') == 1 then
     local randomIndex_CS = math.random(1,#colorscheme_list)
     vim.cmd('colorscheme ' .. colorscheme_list[randomIndex_CS])
 else
-    if term_sign == "alacritty_sign" then          -- alacritty
-        vim.cmd('colorscheme catppuccin-frappe')
-    elseif term_sign == "wezterm_sign" then        -- wezterm
-        vim.cmd('colorscheme catppuccin-frappe')
-    elseif term_sign == "wt_sign" then             -- windows-terminal
+    if term_sign == "wt_sign" then                     -- windows-terminal
         vim.cmd('colorscheme catppuccin-frappe')
         -- vim.cmd('colorscheme catppuccin-latte')
+    elseif term_sign == "alacritty_sign" then          -- alacritty
+        vim.cmd('colorscheme catppuccin-frappe')
+    elseif term_sign == "wezterm_sign" then            -- wezterm
+        vim.cmd('colorscheme catppuccin-frappe')
     else
         vim.cmd('colorscheme catppuccin-frappe')
     end
