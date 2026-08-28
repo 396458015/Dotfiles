@@ -25,8 +25,8 @@ neomap("v", "x", "\"_x", key_opts_ns)
 neomap("n", "c", "\"_c", key_opts_ns)
 neomap("v", "c", "\"_c", key_opts_ns)
 neomap("n", "Y", "y$", key_opts_ns)
-neomap("v", "p", "pgvy", key_opts_ns)
-neomap("v", "P", "Pgvy", key_opts_ns)
+neomap("x", "p", "pgvy", key_opts_ns)
+neomap("x", "P", "Pgvy", key_opts_ns)
 -- 光标移动
 neomap("i", "<m-h>", "<Left>", key_opts_ns)
 neomap("i", "<m-j>", "<Down>", key_opts_ns)
@@ -39,8 +39,8 @@ neomap("i", "<C-l>", "<C-Right>", key_opts_ns)
 neomap("n", "<", "<<", key_opts_ns)
 neomap("n", ">", ">>", key_opts_ns)
 -- marks
-neomap("n", "mc", ":delmarks!<cr>", key_opts_ns)  --删除所有小写marks
-neomap("n", "mC", ":delmarks A-Z<cr>", key_opts_ns)  --删除所有大写marks
+neomap("n", "<leader>mc", ":delmarks!<cr>", key_opts_ns)  --删除所有小写marks
+neomap("n", "<leader>mC", ":delmarks A-Z<cr>", key_opts_ns)  --删除所有大写marks
 -- 单词的 选/改/删
 --[[ neomap("n", "vi", "viw", key_opts_ns)
 neomap("n", "ci", "ciw", key_opts_ns)
@@ -1687,17 +1687,16 @@ require("lazy").setup({
     keys = {
         { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
         { "S", mode = { "n", "o", "x" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
-        { "f", mode = { "n" } },
-        { "F", mode = { "n" } },
-        { "t", mode = { "n" } },
-        { "T", mode = { "n" } },
+        -- { "f", mode = { "n" } },
+        -- { "F", mode = { "n" } },
+        -- { "t", mode = { "n" } },
+        -- { "T", mode = { "n" } },
         -- { "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
         -- { "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
         -- { "<C-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
     },
 	opts = {
         jump = {
-            -- automatically jump when there is only one match
             autojump = false,
         },
 		label = {
@@ -1708,9 +1707,8 @@ require("lazy").setup({
             },
 		},
 		modes = {
-            -- `f`, `F`, `t`, `T`, `;` and `,` motions
             char = {
-                enabled = true,
+                enabled = false,  -- 不接管 f/F/t/T/;/,
                 jump_labels = true,
                 autohide = true,
                 char_actions = function()
@@ -1720,9 +1718,8 @@ require("lazy").setup({
                   }
                 end,
             },
-            -- a regular search with `/` or `?`
 			search = {
-				enabled = false,
+				enabled = false,  -- 不接管 / 和 ?
 			},
 		},
 	},
@@ -1820,19 +1817,16 @@ require("lazy").setup({
     -- commit = "b0c9896",  -- 最新commit: 1ab7b45
     dependencies = {
         {
-          "akinsho/org-bullets.nvim",
+          "nvim-orgmode/org-bullets.nvim",
           ft = "org",
           config = function()
           require('org-bullets').setup({
-              show_current_line = false,
-              concealcursor = true,
-              indent = true,
+              concealcursor = false,
               symbols = {
                   list = "•",
                   headlines = { "⦿", "●", "◈", "◆", "◇", "▶", "○", "⤷" },  -- neorg level1: ◉⦿
                   --  { "◉", "○", "✸", "✺", "♦", "▶", "◇", "⤷" }, {"🌸","🌱","💧","✨","💗" }, ♠, ♣, ♦, ❀, ▼,󰼏󰎨󰼑󰎲󰼓󰎴
                   checkboxes = {
-                      cancelled = { '', 'OrgCancelled' },
                       half = { '', 'OrgTSCheckboxHalfChecked' },  --   
                       done = { '', 'OrgDone' },--✓
                       todo = { '', 'OrgTODO' },--×
@@ -1847,7 +1841,6 @@ require("lazy").setup({
         config = function()
           require("org-list").setup({
             mapping = {
-              -- key = "<leader>o-",  -- nvim-orgmode users: you might want to change this to <leader>olt
               key = "<localleader>a",  -- nvim-orgmode users: you might want to change this to <leader>olt
               desc = "Toggle: Cycle through list types"
             },
@@ -1863,45 +1856,109 @@ require("lazy").setup({
     },
 
     config = function()
+        -- 固定 LC_TIME 为 C，使插入的日期统一为英文。
+        if vim.fn.has("win32") == 1 then
+            vim.cmd("language time C")
+        end
+
         local orgmode = require('orgmode')
         local org_dir = vim.fn.has("unix") == 1
             and vim.fn.expand("~/dotfiles_wsl/.config/nvim/support/Org")
             or "D:/Dotfiles/nvim/nvim/support/Org"
-
-    orgmode.setup({
-       org_agenda_files = org_dir .. '/**/*',
-       org_default_notes_file = org_dir .. '/index.org',
-       org_hide_leading_stars = true,
-       org_hide_emphasis_markers = true,
-       org_todo_keywords = { 'TODO(t)', 'WAITING', 'IN-PROGRESS', '|', 'DONE(d)', 'CANCELLED' },
-       org_todo_keyword_faces = {
-           ['TODO'] = ':background cyan :foreground black',
-           ['WAITING'] = ':background darkyellow :foreground black',
-           ['IN-PROGRESS'] = ':background coral :foreground black',
-           ['DONE'] = ':background chartreuse :foreground black',
-           ['CANCELLED'] = ':background red :foreground black',
-       },
-       mappings = {
-           org = {
-               org_change_date = 'cid',
-               org_todo = 'cit',
-               org_agenda_show_help = 'g?',  -- show help
-               org_toggle_checkbox = '<cr>',
+        orgmode.setup({
+           org_agenda_files = org_dir .. '/**/*',
+           org_default_notes_file = org_dir .. '/index.org',
+           org_hide_leading_stars = true,
+           org_hide_emphasis_markers = true,
+           org_adapt_indentation = true,                         -- 实际空格缩进
+           org_startup_indented = true,                          -- 虚拟缩进
+           org_indent_mode_turns_off_org_adapt_indentation = false,
+           org_todo_keywords = { 'TODO(t)', 'WAITING', 'IN-PROGRESS', '|', 'DONE(d)', 'CANCELLED' },
+           org_todo_keyword_faces = {
+               ['TODO'] = ':background cyan :foreground black',
+               ['WAITING'] = ':background darkyellow :foreground black',
+               ['IN-PROGRESS'] = ':background coral :foreground black',
+               ['DONE'] = ':background chartreuse :foreground black',
+               ['CANCELLED'] = ':background red :foreground black',
            },
-       },
-    })
-    vim.api.nvim_set_hl(0, "@org.checkbox",             { fg = "#f23f42" })
-    vim.api.nvim_set_hl(0, "@org.checkbox.halfchecked", { fg = "#0AC40A" })
-    vim.api.nvim_set_hl(0, "@org.checkbox.checked",     { fg = "#0AC40A" })
-    -- org-colors-doom-molokai
-    vim.api.nvim_set_hl(0, "@org.headline.level1", { fg = "#fb2874" })
-    vim.api.nvim_set_hl(0, "@org.headline.level2", { fg = "#fd971f" })
-    vim.api.nvim_set_hl(0, "@org.headline.level3", { fg = "#9c91e4" })
-    vim.api.nvim_set_hl(0, "@org.headline.level4", { fg = "#268bd2" })
-    vim.api.nvim_set_hl(0, "@org.headline.level5", { fg = "#e74c3c" })
-    vim.api.nvim_set_hl(0, "@org.headline.level6", { fg = "#b6e63e" })
-    vim.api.nvim_set_hl(0, "@org.headline.level7", { fg = "#66d9ef" })
-    vim.api.nvim_set_hl(0, "@org.headline.level8", { fg = "#e2c770" })
+           mappings = {
+               org = {
+                   -- 常用
+                   org_todo = '<leader>ot',
+                   org_schedule = '<leader>os',
+                   org_deadline = '<leader>od',
+
+                   org_change_date = '<leader>oD',
+
+                   org_time_stamp = '<leader>oi',
+                   org_time_stamp_inactive = '<leader>oI',
+                   org_toggle_timestamp_type = '<leader>ox',
+
+                   org_open_at_point = '<leader>oo',
+                   org_insert_link = '<leader>ol',
+
+                   org_toggle_checkbox = '<cr>',
+
+                   org_agenda_show_help = 'g?',
+
+                   -- 不使用
+                   -- 日期/时间增减交给 vim-speeddating-modified
+                   org_timestamp_up = false,
+                   org_timestamp_down = false,
+
+                   -- Babel
+                   org_babel_tangle = false,
+
+                   -- Archive / Refile
+                   org_archive_subtree = false,
+                   org_toggle_archive_tag = false,
+                   org_refile = false,
+
+                   -- Tags / Priority
+                   org_set_tags_command = false,
+                   org_priority = false,
+                   org_priority_up = false,
+                   org_priority_down = false,
+
+                   -- Headline 辅助
+                   org_toggle_heading = false,
+                   org_insert_heading_respect_content = false,
+                   org_insert_todo_heading = false,
+                   org_insert_todo_heading_respect_content = false,
+
+                   -- Link 辅助
+                   org_store_link = false,
+
+                   -- 其他
+                   org_add_note = false,
+                   org_edit_special = false,
+                   org_export = false,
+
+                   -- Subtree 移动
+                   org_move_subtree_up = false,
+                   org_move_subtree_down = false,
+
+                   -- Clock
+                   org_clock_in = false,
+                   org_clock_out = false,
+                   org_clock_cancel = false,
+                   org_clock_goto = false,
+                   org_set_effort = false,
+               },
+           },
+        })
+        vim.api.nvim_set_hl(0, "@org.checkbox",             { fg = "#f23f42" })
+        vim.api.nvim_set_hl(0, "@org.checkbox.halfchecked", { fg = "#0AC40A" })
+        vim.api.nvim_set_hl(0, "@org.checkbox.checked",     { fg = "#0AC40A" })
+        -- org-colors-doom-molokai
+        vim.api.nvim_set_hl(0, "@org.headline.level1", { fg = "#fb2874" })
+        vim.api.nvim_set_hl(0, "@org.headline.level2", { fg = "#fd971f" })
+        vim.api.nvim_set_hl(0, "@org.headline.level3", { fg = "#9c91e4" })
+        vim.api.nvim_set_hl(0, "@org.headline.level4", { fg = "#268bd2" })
+        vim.api.nvim_set_hl(0, "@org.headline.level5", { fg = "#e74c3c" })
+        vim.api.nvim_set_hl(0, "@org.headline.level6", { fg = "#b6e63e" })
+        vim.api.nvim_set_hl(0, "@org.headline.level7", { fg = "#66d9ef" })
+        vim.api.nvim_set_hl(0, "@org.headline.level8", { fg = "#e2c770" })
     end,
     init = function()
         vim.cmd([[au FileType org setlocal nofoldenable]])
@@ -2208,6 +2265,20 @@ require("lazy").setup({
         { "saghen/blink.compat", opts = {} },
         { "L3MON4D3/LuaSnip",
             config = function()
+                -- 自定义日期变量 DATE_DAY_SHORT：
+                -- 固定生成英文星期缩写（Sun~Sat），避免 Windows locale 导致星期乱码。
+                -- 供 global.json 中的 date / time snippets 使用。
+                require("luasnip").env_namespace("DATE", {
+                    init = function()
+                        local weekdays = {
+                            "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"
+                        }
+                        return {
+                            DAY_SHORT = weekdays[tonumber(os.date("%w")) + 1],
+                        }
+                    end,
+                })
+
                 if vim.fn.has("unix") == 1 then
                     require("luasnip/loaders/from_vscode").lazy_load({
                         paths = {

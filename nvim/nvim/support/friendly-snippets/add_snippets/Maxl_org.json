@@ -114,6 +114,15 @@
       ""
     ]
   },
+  "code": {
+      "description": "Org source code block",
+      "prefix": "code",
+      "body": [
+          "#+BEGIN_SRC ${1:LANG}",
+          "$0",
+          "#+END_SRC"
+      ]
+  },
   "table": {
     "prefix": [
       "tbl"

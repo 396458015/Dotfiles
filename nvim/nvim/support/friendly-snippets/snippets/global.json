@@ -15,12 +15,12 @@
     },
     "date": {
         "prefix": "date",
-        "body": ["<${CURRENT_YEAR}-${CURRENT_MONTH}-${CURRENT_DATE} ${CURRENT_DAY_NAME_SHORT}>"],
+        "body": ["<${CURRENT_YEAR}-${CURRENT_MONTH}-${CURRENT_DATE} ${DATE_DAY_SHORT}>"],
         "description": "Put the date in <Y-m-D Day> format"
     },
     "time": {
         "prefix": "time",
-        "body": ["<${CURRENT_YEAR}-${CURRENT_MONTH}-${CURRENT_DATE} ${CURRENT_DAY_NAME_SHORT} ${CURRENT_HOUR}:${CURRENT_MINUTE}>"],
+        "body": ["<${CURRENT_YEAR}-${CURRENT_MONTH}-${CURRENT_DATE} ${DATE_DAY_SHORT} ${CURRENT_HOUR}:${CURRENT_MINUTE}>"],
         "description": "Put full timestamp <Y-m-D Day H:M>"
     },
     "uuid": {

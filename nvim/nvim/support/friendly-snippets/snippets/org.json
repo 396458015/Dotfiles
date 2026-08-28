@@ -59,11 +59,6 @@
             "$0"
         ]
     },
-    "code": {
-        "description": "code",
-        "prefix": "code",
-        "body": ["#+BEGIN_${1:LANG} ${2:options}", "$0", "#+END_$1"]
-    },
     "dot": {
         "description": "dot",
         "prefix": "dot",
