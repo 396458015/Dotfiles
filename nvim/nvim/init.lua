@@ -1879,11 +1879,11 @@ require("lazy").setup({
            org_indent_mode_turns_off_org_adapt_indentation = false,
            org_todo_keywords = { 'TODO(t)', 'WAITING', 'IN-PROGRESS', '|', 'DONE(d)', 'CANCELLED' },
            org_todo_keyword_faces = {
-               ['TODO'] = ':background cyan :foreground black',
-               ['WAITING'] = ':background darkyellow :foreground black',
-               ['IN-PROGRESS'] = ':background coral :foreground black',
-               ['DONE'] = ':background chartreuse :foreground black',
-               ['CANCELLED'] = ':background red :foreground black',
+               ['TODO']        = ':foreground #e06c75 :background #4a3038 :weight bold',
+               ['WAITING']     = ':foreground #d9b26f :background #4a4332 :weight bold',
+               ['IN-PROGRESS'] = ':foreground #a9a1e1 :background #403d52 :weight bold',
+               ['DONE']        = ':foreground #98be65 :background #394534 :weight bold',
+               ['CANCELLED']   = ':foreground #8b9098 :background #3d4047 :weight bold',
            },
            mappings = {
                org = {
@@ -1954,15 +1954,31 @@ require("lazy").setup({
         vim.api.nvim_set_hl(0, "@org.checkbox",             { fg = "#f23f42" })
         vim.api.nvim_set_hl(0, "@org.checkbox.halfchecked", { fg = "#0AC40A" })
         vim.api.nvim_set_hl(0, "@org.checkbox.checked",     { fg = "#0AC40A" })
-        -- org-colors-doom-molokai
-        vim.api.nvim_set_hl(0, "@org.headline.level1", { fg = "#fb2874" })
-        vim.api.nvim_set_hl(0, "@org.headline.level2", { fg = "#fd971f" })
-        vim.api.nvim_set_hl(0, "@org.headline.level3", { fg = "#9c91e4" })
-        vim.api.nvim_set_hl(0, "@org.headline.level4", { fg = "#268bd2" })
-        vim.api.nvim_set_hl(0, "@org.headline.level5", { fg = "#e74c3c" })
-        vim.api.nvim_set_hl(0, "@org.headline.level6", { fg = "#b6e63e" })
-        vim.api.nvim_set_hl(0, "@org.headline.level7", { fg = "#66d9ef" })
-        vim.api.nvim_set_hl(0, "@org.headline.level8", { fg = "#e2c770" })
+
+        -- Planning keywords: SCHEDULED / DEADLINE / CLOSED
+        vim.api.nvim_set_hl(0, "@org.plan", { fg = "#73797e" })
+
+        -- org-colors-doom-soft
+        vim.api.nvim_set_hl(0, "@org.headline.level1", { fg = "#d16d9e" })
+        vim.api.nvim_set_hl(0, "@org.headline.level2", { fg = "#c9824f" })
+        vim.api.nvim_set_hl(0, "@org.headline.level3", { fg = "#51afef" })
+        vim.api.nvim_set_hl(0, "@org.headline.level4", { fg = "#7faa68" })
+
+        vim.api.nvim_set_hl(0, "@org.headline.level5", { fg = "#e29abc" })
+        vim.api.nvim_set_hl(0, "@org.headline.level6", { fg = "#edc5a0" })
+        vim.api.nvim_set_hl(0, "@org.headline.level7", { fg = "#8dcef6" })
+        vim.api.nvim_set_hl(0, "@org.headline.level8", { fg = "#b9d7a5" })
+
+        -- Org headline colors: Doom Emacs / doom-one
+        -- vim.api.nvim_set_hl(0, "@org.headline.level1", { fg = "#51afef" })
+        -- vim.api.nvim_set_hl(0, "@org.headline.level2", { fg = "#c678dd" })
+        -- vim.api.nvim_set_hl(0, "@org.headline.level3", { fg = "#a9a1e1" })
+        -- vim.api.nvim_set_hl(0, "@org.headline.level4", { fg = "#7cc3f3" })
+        -- vim.api.nvim_set_hl(0, "@org.headline.level5", { fg = "#d499e5" })
+        -- vim.api.nvim_set_hl(0, "@org.headline.level6", { fg = "#a8d7f7" })
+        -- vim.api.nvim_set_hl(0, "@org.headline.level7", { fg = "#e2bbee" })
+        -- vim.api.nvim_set_hl(0, "@org.headline.level8", { fg = "#dceffb" })
+
     end,
     init = function()
         vim.cmd([[au FileType org setlocal nofoldenable]])
