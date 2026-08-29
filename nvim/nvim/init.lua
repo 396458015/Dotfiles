@@ -1,5 +1,5 @@
--- Last Modified Date: <2026-08-16 Sun>
--- Desc              : NEOVIM 0.12.4(support Python, Lua)
+-- Last Modified Date: <2026-08-30 Sun>
+-- Desc              : NEOVIM 0.12.5(support Python, Lua)
 --                          __
 --  __  ____   __   __  __ /\_\    ___ ___     ____   ____
 -- |  \/  \ \ / /  /\ \/\ \\/\ \ /'' __` _`\  |  _ \ / ___|
@@ -39,6 +39,10 @@ neomap("i", "<C-l>", "<C-Right>", key_opts_ns)
 neomap("n", "<", "<<", key_opts_ns)
 neomap("n", ">", ">>", key_opts_ns)
 -- marks
+-- ma        设置 mark a
+-- mb        设置 mark b
+-- `a 或 'a  跳到 mark a 的精确位置
+-- `b 或 'b  跳到 mark b 的精确位置
 neomap("n", "<leader>mc", ":delmarks!<cr>", key_opts_ns)  --删除所有小写marks
 neomap("n", "<leader>mC", ":delmarks A-Z<cr>", key_opts_ns)  --删除所有大写marks
 -- 单词的 选/改/删
@@ -2766,6 +2770,7 @@ require("lazy").setup({
 
       -- set function icon
             { "<leader> ",      desc = "Calculator",   icon = { icon = "", color = "cyan" } }, -- bug
+            { "<leader> ",      mode = "x", desc = "Calculator",   icon = { icon = "", color = "cyan" } }, -- bug
             { "<leader>\\",     desc = "Smart split",  icon = { icon = "", color = "yellow" } },
             { "<leader>z",      desc = "Replace Word", icon = { icon = "", color = "red" } },
             { "<leader>b",      desc = "Columns Num",  icon = { icon = "", color = "cyan" } },
@@ -2776,6 +2781,53 @@ require("lazy").setup({
             { "<localleader>T",  desc = "[T]ag",  icon = { icon = "ﰠ", color = "purple" } },
             { "<localleader>F",  desc = "[F]unction",  icon = { icon = "", color = "cyan" } },
             { "<localleader>r",  desc = "[R]ecently Files",  icon = { icon = "", color = "green" } },
+
+            { "<leader>d",  mode = "x", desc = "Diff",      icon = { icon = "", color = "orange" } },
+            { "<leader>dl",  mode = "x", desc = "Diff [L]ine",      icon = { icon = "", color = "orange" } },
+            { "<leader>d",  desc = "[D]elete / Diff",      icon = { icon = "󰆴", color = "orange" } },
+            { "<leader>dd", desc = "[D]elete Empty Lines", icon = { icon = "󰆴", color = "red" } },
+            { "<leader>di", desc = "Delete Wh[I]tespace",  icon = { icon = "󰃢", color = "red" } },
+            { "<leader>dl", desc = "Diff [L]ine",           icon = { icon = "", color = "orange" } },
+            { "<leader>dt", desc = "Diff [T]his",           icon = { icon = "", color = "orange" } },
+
+            { "<leader>a", mode = "x", desc = "[A]lign",             icon = { icon = "", color = "cyan" } },
+            { "<leader>A", mode = "x", desc = "Interactive [A]lign", icon = { icon = "", color = "cyan" } },
+
+            { "<leader>z", mode = "x", desc = "Replace Word",        icon = { icon = "󰛔", color = "orange" } },
+
+     -- Org
+            { "<leader>o",      desc = "[O]rg",                    icon = { icon = "", color = "green" } },
+            -- Date / Time
+            { "<leader>od",     desc = "Org [D]eadline",           icon = { icon = "󰅐", color = "red" } },
+            { "<leader>oD",     desc = "Org Change [D]ate",        icon = { icon = "", color = "yellow" } },
+            { "<leader>os",     desc = "Org [S]chedule",           icon = { icon = "", color = "blue" } },
+            { "<leader>oi",     desc = "Org Timestamp",            icon = { icon = "", color = "green" } },
+            { "<leader>oI",     desc = "Org Timestamp (Inactive)", icon = { icon = "󰔛", color = "grey" } },
+            { "<leader>ox",     desc = "Org Toggle Timestamp",     icon = { icon = "󰁔", color = "yellow" } },
+            -- Task
+            { "<leader>ot",     desc = "Org Next [T]odo State",    icon = { icon = "", color = "green" } },
+            -- Link
+            { "<leader>ol",     desc = "Org Insert [L]ink",        icon = { icon = "", color = "cyan" } },
+            { "<leader>oo",     desc = "Org [O]pen",               icon = { icon = "", color = "blue" } },
+            -- Global
+            { "<leader>oa",     desc = "Org [A]genda",             icon = { icon = "󰃭", color = "purple" } },
+            { "<leader>oc",     desc = "Org [C]apture",            icon = { icon = "", color = "cyan" } },
+
+     -- Marker
+            { "<leader>m",  desc = "[M]arker",             icon = { icon = "", color = "yellow" } },
+            { "<leader>mc", desc = "Clear Local Marks",    icon = { icon = "󰆴", color = "grey" } },
+            { "<leader>mC", desc = "Clear Global Marks",   icon = { icon = "󰆴", color = "red" } },
+            { "<leader>mi", desc = "Delete Fold Marker",   icon = { icon = "", color = "orange" } },
+            { "<leader>m",  mode = "x", desc = "Add Fold Marker", icon = { icon = "", color = "green" } },
+            { "<leader>mm", mode = "x", desc = "Add Fold Marker", icon = { icon = "", color = "green" } },
+
+     -- Comment
+            { "<leader>c",  desc = "[C]omment", icon = { icon = "󰅺", color = "cyan" } },
+            { "<leader>cc", desc = "[C]omment", icon = { icon = "󰆈", color = "green" } },
+            { "<leader>ci", desc = "Uncomment", icon = { icon = "󰅙", color = "red" } },
+            { "<leader>c",  mode = "x", desc = "[C]omment", icon = { icon = "󰅺", color = "cyan" } },
+            { "<leader>cc", mode = "x", desc = "[C]omment", icon = { icon = "󰆈", color = "green" } },
+            { "<leader>ci", mode = "x", desc = "Uncomment", icon = { icon = "󰅙", color = "red" } },
         },
     },
   },
