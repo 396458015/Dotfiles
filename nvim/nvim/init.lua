@@ -1891,6 +1891,10 @@ require("lazy").setup({
                    org_agenda = '<leader>oa',
                    org_capture = '<leader>oc',
                },
+               capture = {
+                   org_capture_finalize = '<C-c>', -- Insert 模式下按 <C-c>：保存并结束 Capture
+                   org_capture_kill = '<C-q>',     -- Normal 模式下按 <C-q>：放弃 Capture；:q 会保存到 index.org，:q! 不保存
+               },
                agenda = {
                    org_agenda_show_help = 'g?',
                },
