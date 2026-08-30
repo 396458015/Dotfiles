@@ -981,16 +981,16 @@ require("lazy").setup({
   { "lervag/vimtex",
     ft = {"tex", "latex", "bib"},
     keys = {
-        { "<localleader>li", "<plug>(vimtex-info)", mode = "n" },
-        { "<localleader>lt", "<plug>(vimtex-toc-open)", mode = "n" },
-        { "<localleader>lT", "<plug>(vimtex-toc-toggle)", mode = "n" },
-        { "<localleader>lv", "<plug>(vimtex-view)", mode = "n" },
-        { "<localleader>ll", "<plug>(vimtex-compile)", mode = "n", desc = 'Compile' },
-        { "<localleader>lo", "<plug>(vimtex-compile-output)", mode = "n" },
-        { "<localleader>lg", "<plug>(vimtex-status)", mode = "n" },
-        { "<localleader>lG", "<plug>(vimtex-status-all)", mode = "n" },
-        { "<localleader>lc", "<plug>(vimtex-clean)", mode = "n" },
-        { "<localleader>lC", "<plug>(vimtex-clean-full)", mode = "n" },
+        { "<localleader>li", "<plug>(vimtex-info)", mode = "n" ,ft = { "tex", "latex", "bib" }},
+        { "<localleader>lt", "<plug>(vimtex-toc-open)", mode = "n" ,ft = { "tex", "latex", "bib" } },
+        { "<localleader>lT", "<plug>(vimtex-toc-toggle)", mode = "n" ,ft = { "tex", "latex", "bib" } },
+        { "<localleader>lv", "<plug>(vimtex-view)", mode = "n" ,ft = { "tex", "latex", "bib" } },
+        { "<localleader>ll", "<plug>(vimtex-compile)", mode = "n", desc = 'Compile' ,ft = { "tex", "latex", "bib" } },
+        { "<localleader>lo", "<plug>(vimtex-compile-output)", mode = "n" ,ft = { "tex", "latex", "bib" } },
+        { "<localleader>lg", "<plug>(vimtex-status)", mode = "n" ,ft = { "tex", "latex", "bib" } },
+        { "<localleader>lG", "<plug>(vimtex-status-all)", mode = "n" ,ft = { "tex", "latex", "bib" } },
+        { "<localleader>lc", "<plug>(vimtex-clean)", mode = "n" ,ft = { "tex", "latex", "bib" } },
+        { "<localleader>lC", "<plug>(vimtex-clean-full)", mode = "n" ,ft = { "tex", "latex", "bib" } },
     },
     config = function()
     vim.g.tex_flavor = "latex"
@@ -1872,6 +1872,7 @@ require("lazy").setup({
         orgmode.setup({
            org_agenda_files = org_dir .. '/**/*',
            org_default_notes_file = org_dir .. '/index.org',
+           org_tags_column = 0,
            org_hide_leading_stars = true,
            org_hide_emphasis_markers = true,
            org_adapt_indentation = true,                         -- 实际空格缩进
@@ -1886,26 +1887,53 @@ require("lazy").setup({
                ['CANCELLED']   = ':foreground #8b9098 :background #3d4047 :weight bold',
            },
            mappings = {
+               global = {
+                   org_agenda = '<leader>oa',
+                   org_capture = '<leader>oc',
+               },
+               agenda = {
+                   org_agenda_show_help = 'g?',
+               },
                org = {
-                   -- 常用
+                   -- 启用功能:
+                   -- State
                    org_todo = '<leader>ot',
                    org_schedule = '<leader>os',
                    org_deadline = '<leader>od',
 
-                   org_change_date = '<leader>oD',
-
+                   -- Time / Date
                    org_time_stamp = '<leader>oi',
                    org_time_stamp_inactive = '<leader>oI',
                    org_toggle_timestamp_type = '<leader>ox',
+                   org_change_date = '<leader>oD',
 
-                   org_open_at_point = '<leader>oo',
+                   -- Tags
+                   org_set_tags_command = '<leader>ogi',
+
+                   -- Priority
+                   org_priority = '<leader>op',
+
+                   -- Link
                    org_insert_link = '<leader>ol',
+                   org_store_link = '<leader>oL',
+                   org_open_at_point = '<leader>oo',
 
+                   -- Code
+                   org_edit_special = '<leader>oe',
+
+                   -- Clock
+                   org_clock_in = '<leader>oki',
+                   org_clock_out = '<leader>oko',
+                   org_clock_cancel = '<leader>okc',
+
+                   -- Refile
+                   org_refile = '<leader>or',
+
+                   -- Checkbox
                    org_toggle_checkbox = '<cr>',
 
-                   org_agenda_show_help = 'g?',
+                   -- 禁用功能:
 
-                   -- 不使用
                    -- 日期/时间增减交给 vim-speeddating-modified
                    org_timestamp_up = false,
                    org_timestamp_down = false,
@@ -1913,14 +1941,11 @@ require("lazy").setup({
                    -- Babel
                    org_babel_tangle = false,
 
-                   -- Archive / Refile
+                   -- Archive
                    org_archive_subtree = false,
                    org_toggle_archive_tag = false,
-                   org_refile = false,
 
-                   -- Tags / Priority
-                   org_set_tags_command = false,
-                   org_priority = false,
+                   -- Priority
                    org_priority_up = false,
                    org_priority_down = false,
 
@@ -1930,12 +1955,8 @@ require("lazy").setup({
                    org_insert_todo_heading = false,
                    org_insert_todo_heading_respect_content = false,
 
-                   -- Link 辅助
-                   org_store_link = false,
-
                    -- 其他
                    org_add_note = false,
-                   org_edit_special = false,
                    org_export = false,
 
                    -- Subtree 移动
@@ -1943,27 +1964,51 @@ require("lazy").setup({
                    org_move_subtree_down = false,
 
                    -- Clock
-                   org_clock_in = false,
-                   org_clock_out = false,
-                   org_clock_cancel = false,
                    org_clock_goto = false,
                    org_set_effort = false,
                },
            },
         })
+
+        -- Org tags
+        neomap("n", "<leader>ogt", function()
+            require("orgmode").action("org_mappings.set_tags", { "TEACHING" })
+        end, { desc = "[t]eaching" })
+
+        neomap("n", "<leader>ogr", function()
+            require("orgmode").action("org_mappings.set_tags", { "RESEARCH" })
+        end, { desc = "[r]esearch" })
+
+        neomap("n", "<leader>ogo", function()
+            require("orgmode").action("org_mappings.set_tags", { "OFFICE" })
+        end, { desc = "[o]ffice" })
+
+        neomap("n", "<leader>ogp", function()
+            require("orgmode").action("org_mappings.set_tags", { "PRIVATE" })
+        end, { desc = "[p]rivate" })
+
+        -- color
+        -- Planning keywords: SCHEDULED / DEADLINE / CLOSED
+        vim.api.nvim_set_hl(0, "@org.plan", { fg = "#73797e" })
+
+        -- Priority: A / B / C
+        vim.api.nvim_set_hl(0, "@org.priority.highest", { fg = "#e06c75", bg = "#4a3038", bold = true, })
+        vim.api.nvim_set_hl(0, "@org.priority.default", { fg = "#d9b26f", bg = "#4a4332", bold = true, })
+        vim.api.nvim_set_hl(0, "@org.priority.lowest", { fg = "#a9b4c2", bg = "#3d4652", bold = true, })
+
+        -- Checkbox
         vim.api.nvim_set_hl(0, "@org.checkbox",             { fg = "#f23f42" })
         vim.api.nvim_set_hl(0, "@org.checkbox.halfchecked", { fg = "#0AC40A" })
         vim.api.nvim_set_hl(0, "@org.checkbox.checked",     { fg = "#0AC40A" })
 
-        -- Planning keywords: SCHEDULED / DEADLINE / CLOSED
-        vim.api.nvim_set_hl(0, "@org.plan", { fg = "#73797e" })
+        -- Tags
+        vim.api.nvim_set_hl(0, "@org.tag", { fg = "#73797e", italic = true, })
 
         -- org-colors-doom-soft
         vim.api.nvim_set_hl(0, "@org.headline.level1", { fg = "#d16d9e" })
         vim.api.nvim_set_hl(0, "@org.headline.level2", { fg = "#c9824f" })
         vim.api.nvim_set_hl(0, "@org.headline.level3", { fg = "#51afef" })
         vim.api.nvim_set_hl(0, "@org.headline.level4", { fg = "#7faa68" })
-
         vim.api.nvim_set_hl(0, "@org.headline.level5", { fg = "#e29abc" })
         vim.api.nvim_set_hl(0, "@org.headline.level6", { fg = "#edc5a0" })
         vim.api.nvim_set_hl(0, "@org.headline.level7", { fg = "#8dcef6" })
@@ -1984,9 +2029,9 @@ require("lazy").setup({
         vim.cmd([[au FileType org setlocal nofoldenable]])
 
         if vim.fn.has("unix") == 1 then
-            neomap("n", "<leader>od", ":Oil ~/dotfiles_wsl/.config/nvim/support/Org/<CR>", { desc = 'Org [D]irectories' })
+            neomap("n", "<leader>oO", ":Oil ~/dotfiles_wsl/.config/nvim/support/Org/<CR>", { desc = '[O]rg Directories' })
         else
-            neomap("n", "<leader>od", ":Oil D:/Dotfiles/nvim/nvim/support/Org/<CR>", { desc = 'Org [D]irectories' })
+            neomap("n", "<leader>oO", ":Oil D:/Dotfiles/nvim/nvim/support/Org/<CR>", { desc = '[O]rg Directories' })
         end
     end,
   },
@@ -2770,7 +2815,6 @@ require("lazy").setup({
             { "<leader>g",      desc = "[G]it",                icon = { icon = "", color = "orange" } },
             { "<leader>s",      desc = "[S]pell",              icon = { icon = "", color = "red" } },
             { "<leader>o",      desc = "[O]rg",                icon = { icon = "", color = "green" } },
-            { "<leader>w",      desc = "Python Send",          icon = { icon = "", color = "yellow" } },
             { "<leader>l",      desc = "[L]SP",                icon = { icon = "ﲳ", color = "orange" } },
 
             { "<leader>r",      desc = "VIM[R]C & [S]nippets", icon = { icon = "", color = "green" } },
@@ -2781,7 +2825,6 @@ require("lazy").setup({
             { "<leader>tp",     desc = "I[P]yhon",             icon = { icon = "", color = "yellow" } },
             { "<leader>ta",     desc = "Term([A]dmin)",        icon = { icon = "", color = "yellow" } },
 
-            { "<localleader>l", desc = "[L]atex",              icon = { icon = "ﭨ", color = "green" } },
             { "<localleader>w", desc = "Count Chinese [W]ords",   icon = { icon = "", color = "blue" }, mode = { "n", "v" } }, -- 
 
       -- set function icon
@@ -2800,7 +2843,7 @@ require("lazy").setup({
 
             { "<leader>d",  mode = "x", desc = "Diff",      icon = { icon = "", color = "orange" } },
             { "<leader>dl",  mode = "x", desc = "Diff [L]ine",      icon = { icon = "", color = "orange" } },
-            { "<leader>d",  desc = "[D]elete / Diff",      icon = { icon = "󰆴", color = "orange" } },
+            { "<leader>d",  desc = "[D]elete & Diff",      icon = { icon = "󰆴", color = "orange" } },
             { "<leader>dd", desc = "[D]elete Empty Lines", icon = { icon = "󰆴", color = "red" } },
             { "<leader>di", desc = "Delete Wh[I]tespace",  icon = { icon = "󰃢", color = "red" } },
             { "<leader>dl", desc = "Diff [L]ine",           icon = { icon = "", color = "orange" } },
@@ -2810,24 +2853,6 @@ require("lazy").setup({
             { "<leader>A", mode = "x", desc = "Interactive [A]lign", icon = { icon = "", color = "cyan" } },
 
             { "<leader>z", mode = "x", desc = "Replace Word",        icon = { icon = "󰛔", color = "orange" } },
-
-     -- Org
-            { "<leader>o",      desc = "[O]rg",                    icon = { icon = "", color = "green" } },
-            -- Date / Time
-            { "<leader>od",     desc = "Org [D]eadline",           icon = { icon = "󰅐", color = "red" } },
-            { "<leader>oD",     desc = "Org Change [D]ate",        icon = { icon = "", color = "yellow" } },
-            { "<leader>os",     desc = "Org [S]chedule",           icon = { icon = "", color = "blue" } },
-            { "<leader>oi",     desc = "Org Timestamp",            icon = { icon = "", color = "green" } },
-            { "<leader>oI",     desc = "Org Timestamp (Inactive)", icon = { icon = "󰔛", color = "grey" } },
-            { "<leader>ox",     desc = "Org Toggle Timestamp",     icon = { icon = "󰁔", color = "yellow" } },
-            -- Task
-            { "<leader>ot",     desc = "Org Next [T]odo State",    icon = { icon = "", color = "green" } },
-            -- Link
-            { "<leader>ol",     desc = "Org Insert [L]ink",        icon = { icon = "", color = "cyan" } },
-            { "<leader>oo",     desc = "Org [O]pen",               icon = { icon = "", color = "blue" } },
-            -- Global
-            { "<leader>oa",     desc = "Org [A]genda",             icon = { icon = "󰃭", color = "purple" } },
-            { "<leader>oc",     desc = "Org [C]apture",            icon = { icon = "", color = "cyan" } },
 
      -- Marker
             { "<leader>m",  desc = "[M]arker",             icon = { icon = "", color = "yellow" } },
@@ -2844,6 +2869,49 @@ require("lazy").setup({
             { "<leader>c",  mode = "x", desc = "[C]omment", icon = { icon = "󰅺", color = "cyan" } },
             { "<leader>cc", mode = "x", desc = "[C]omment", icon = { icon = "󰆈", color = "green" } },
             { "<leader>ci", mode = "x", desc = "Uncomment", icon = { icon = "󰅙", color = "red" } },
+
+     -- LaTeX
+            { "<localleader>l", group = "[L]atex", icon = { icon = "ﭨ", color = "green" } },
+
+     -- Org
+            { "<leader>o",      group = "[O]rg",               icon = { icon = "", color = "green" } },
+            -- Open
+            { "<leader>oO",     desc = '[O]rg Directories',    icon = { icon = "󰙅", color = "orange" } },
+            -- Date / Time
+            { "<leader>od",     desc = "[d]eadline",           icon = { icon = "", color = "red" } },
+            { "<leader>oD",     desc = "Change [D]ate",        icon = { icon = "", color = "yellow" } },
+            { "<leader>os",     desc = "[s]chedule",           icon = { icon = "", color = "blue" } },
+            { "<leader>oi",     desc = "Timestamp",            icon = { icon = "", color = "green" } },
+            { "<leader>oI",     desc = "Timestamp (Inactive)", icon = { icon = "", color = "grey" } },
+            { "<leader>ox",     desc = "Toggle Timestamp",     icon = { icon = "", color = "yellow" } },
+            -- Task
+            { "<leader>ot",     desc = "[t]odo State",         icon = { icon = "", color = "green" } },
+            -- Link
+            { "<leader>ol",     desc = "Insert [l]ink",        icon = { icon = "", color = "cyan" } },
+            { "<leader>oL",     desc = "Store [L]ink",         icon = { icon = "", color = "yellow" } },
+            { "<leader>oo",     desc = "[o]pen",               icon = { icon = "", color = "blue" } },
+            -- Global
+            { "<leader>oa",     desc = "[a]genda",             icon = { icon = "󰃭", color = "purple" } },
+            { "<leader>oc",     desc = "[c]apture",            icon = { icon = "", color = "cyan" } },
+            -- Tag
+            { "<leader>og",  group = "Ta[g]s",    icon = { icon = "", color = "yellow" } },
+            { "<leader>ogt", desc = "[t]eaching", icon = { icon = "", color = "blue" } },
+            { "<leader>ogr", desc = "[r]esearch", icon = { icon = "", color = "purple" } },
+            { "<leader>ogo", desc = "[o]ffice",   icon = { icon = "", color = "orange" } },
+            { "<leader>ogp", desc = "[p]rivate",  icon = { icon = "󰌾", color = "grey" } },
+            -- Priority
+            { "<leader>op", desc = "[p]riority", icon = { icon = "", color = "red" } },
+            -- Code
+            { "<leader>oe", desc = "[e]dit Code", icon = { icon = "", color = "cyan" } },
+            -- Clock
+            { "<leader>ok",  group = "Cloc[k]",       icon = { icon = "󰔛", color = "yellow" } },
+            { "<leader>oki", desc = "Clock [i]n",     icon = { icon = "󰔟", color = "green" } },
+            { "<leader>oko", desc = "Clock [o]ut",    icon = { icon = "󰔞", color = "red" } },
+            { "<leader>okc", desc = "Clock [c]ancel", icon = { icon = "󰜺", color = "grey" } },
+            -- Refile
+            { "<leader>or", desc = "[R]efile", icon = { icon = "", color = "orange" } },
+      -- python
+            { "<leader>w", group = "Python Send", icon = { icon = "", color = "yellow" } },
         },
     },
   },
