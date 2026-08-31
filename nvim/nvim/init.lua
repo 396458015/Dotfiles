@@ -2653,6 +2653,7 @@ require("lazy").setup({
 -- {{{ 396458015/imeflow.nvim
   {
     "396458015/imeflow.nvim",
+    -- event = "InsertEnter",  -- start_enabled = true 时启用
     keys = { { "<F2>", "<cmd>ImeflowToggle<CR>", mode = { "n", "i" }, desc = "Toggle imeflow.nvim" } },
     opts = {
         -- WSL2 需要调用 Windows 下的 im-select.exe
