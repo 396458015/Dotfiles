@@ -1823,6 +1823,10 @@ require("lazy").setup({
   {
     "nvim-orgmode/orgmode",  -- orgmode 会自动安装org parser,无需设置nvim-treesitter安装org
     ft = "org",
+    keys = {
+        { "<leader>oa", "<cmd>Org agenda<CR>",  mode = "n", desc = "[a]genda" },
+        { "<leader>oc", "<cmd>Org capture<CR>", mode = "n", desc = "[c]apture" },
+    },
     -- commit = "b0c9896",  -- 最新commit: 1ab7b45
     dependencies = {
         {
