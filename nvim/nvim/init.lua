@@ -2651,39 +2651,43 @@ require("lazy").setup({
   { "396458015/vim-speeddating-modified", ft = { "markdown", "org" } }, --modified
 -- }}}
 -- {{{ 396458015/imeflow.nvim
- {
-  "396458015/imeflow.nvim",
-  lazy = true,
-  event = "InsertEnter",
-  opts = {
-      -- wsl2需要调用windows下的im-select.exe，插件才能正常运行。
-      path = vim.fn.has("unix") == 1 and "/mnt/d/Dotfiles/nvim/nvim/support/im-select.exe" or nil,
-      enabled = false,   -- Start enabled (default: true)
-      mapping = "<F2>", -- Optional toggle mapping
-
-      -- Optional per-event enable/disable
-      VimEnter    = false,
-      InsertEnter = true,
-      InsertLeave = true,
-      VimLeave    = false,
+  {
+    "396458015/imeflow.nvim",
+    keys = {
+        {
+            "<F2>",
+            function()
+                require("input_switching").toggle()
+            end,
+            mode = { "n", "i" },
+            desc = "Toggle imeflow.nvim",
+        },
+    },
+    opts = {
+        -- WSL2 需要调用 Windows 下的 im-select.exe，插件才能正常运行
+        path = vim.fn.has("unix") == 1
+            and "/mnt/d/Dotfiles/nvim/nvim/support/im-select.exe"
+            or nil,
+        enabled = false,
+        -- 自动切换事件
+        VimEnter    = false,
+        InsertEnter = true,  -- 进入 Insert → 中文
+        InsertLeave = true,  -- 离开 Insert → 英文
+        VimLeave    = false,
+    },
   },
- },
 -- }}}
 -- {{{ 396458015/foldmarker.nvim
   {
     "396458015/foldmarker.nvim",
     keys = {
-        { "<leader>mm", mode = "x", desc = "Add fold marker" },
-        { "<leader>mi", mode = "n", desc = "Delete fold marker" },
+        { "<leader>mm", "<cmd>FoldmarkerAdd<CR>", mode = "x", desc = "Add fold marker" },
+        { "<leader>mi", "<cmd>FoldmarkerDelete<CR>", mode = "n", desc = "Delete fold marker" },
     },
-    config = function()
-        require("foldmarker").setup({
-            enable_title = true,
-            title_prompt = "Fold title: ",
-            add_mapping = "<leader>mm",
-            delete_mapping = "<leader>mi",
-        })
-    end,
+    opts = {
+        enable_title = true,
+        title_prompt = "Fold title: ",
+    },
   },
 -- }}}
 
