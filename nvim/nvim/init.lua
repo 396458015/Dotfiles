@@ -2653,23 +2653,13 @@ require("lazy").setup({
 -- {{{ 396458015/imeflow.nvim
   {
     "396458015/imeflow.nvim",
-    keys = {
-        {
-            "<F2>",
-            function()
-                require("input_switching").toggle()
-            end,
-            mode = { "n", "i" },
-            desc = "Toggle imeflow.nvim",
-        },
-    },
+    keys = { { "<F2>", "<cmd>ImeflowToggle<CR>", mode = { "n", "i" }, desc = "Toggle imeflow.nvim" } },
     opts = {
-        -- WSL2 需要调用 Windows 下的 im-select.exe，插件才能正常运行
+        -- WSL2 需要调用 Windows 下的 im-select.exe
         path = vim.fn.has("unix") == 1
             and "/mnt/d/Dotfiles/nvim/nvim/support/im-select.exe"
             or nil,
-        enabled = false,
-        -- 自动切换事件
+        start_enabled = false,
         VimEnter    = false,
         InsertEnter = true,  -- 进入 Insert → 中文
         InsertLeave = true,  -- 离开 Insert → 英文
