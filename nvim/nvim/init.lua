@@ -52,8 +52,13 @@ neomap("n", "di", "diw", key_opts_ns) ]]
 -- IDE like delete
 neomap("i", "<C-BS>", "<Esc>b\"_dei", key_opts_ns)
 -- 代码折叠
-neomap("n", "<Tab>", "@=((foldclosed(line('.')) < 0) ? 'zc' : 'zo')<CR>", key_opts_ns)
 -- zf:创建折叠;zd:删除折叠,仅在manual/marker中有效;zD:删除嵌套折叠,仅在manual/marker中有效;za:打开/关闭当前折叠;zM:关闭所有折叠;zR:打开所有折叠
+neomap("n", "<Tab>", "@=((foldclosed(line('.')) < 0) ? 'zc' : 'zo')<CR>", key_opts_ns)
+-- 相对行号绝对行号切换
+neomap("n", "<F5>", function()
+    vim.opt.relativenumber = not vim.opt.relativenumber:get()
+    vim.opt.number = true
+end, { desc = "Toggle Relative Line Number" })
 -------------------- copy path(file) --------------------
 -- path without filename
 -- neomap("n", "<leader>y", [[:let @+=('cd ' .. expand('%:p:h'))<CR>:echo "File path in clipboard"<CR>]], { desc = 'Copy Path(file)' }) -- 路径没有引号
