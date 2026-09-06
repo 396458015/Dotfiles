@@ -400,8 +400,20 @@ nvim_create_augroups({
 
 -- 当 Neovim 重新获得焦点、进入 buffer 或停留时，检测文件是否被外部修改
 vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "CursorHold" }, {
-  pattern = "*",
-  command = "checktime",
+    pattern = "*",
+    callback = function(args)
+        -- 跳过 q: / q/ / q? 等 command-line window
+        if vim.fn.getcmdwintype() ~= "" then
+            return
+        end
+
+        -- 跳过 terminal、help、quickfix、插件窗口等特殊 buffer
+        if vim.bo[args.buf].buftype ~= "" then
+            return
+        end
+
+        vim.cmd("checktime")
+    end,
 })
 -- 当文件被外部更改后，提示代码已修改
 vim.api.nvim_create_autocmd("FileChangedShellPost", {
