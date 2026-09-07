@@ -105,7 +105,7 @@ neomap('n', '<S-down>', ':resize +3<CR>', key_opts_ns)
 neomap('n', '<S-left>', ':vertical resize +3<CR>', key_opts_ns)
 neomap('n', '<S-right>', ':vertical resize -3<CR>', key_opts_ns)
 -------------------- Quickfix list --------------------
-function toggle_quickfix()
+local function toggle_quickfix()
     local qf_exists = false
     for _, win in pairs(vim.fn.getwininfo()) do
         if win["quickfix"] == 1 then
@@ -119,7 +119,7 @@ function toggle_quickfix()
         vim.cmd("copen")
     end
 end
-neomap('n', '<leader>Q', '<cmd>lua toggle_quickfix()<CR>', { desc = '[Q]uickfix list toggle' })
+neomap("n", "<leader>Q", toggle_quickfix, { desc = "[Q]uickfix list toggle" })
 -------------------- 标签页 --------------------
 -- 将新的空白缓冲区替换当前页
 neomap('n', '<c-w>e', ':enew<cr>', key_opts_ns)
@@ -177,7 +177,7 @@ neomap('c', '<F3>', '<C-c>:set list!<CR>', key_opts_ns)
 neomap('n', '<F4>', ':set cuc! cul!<CR>', key_opts_ns)
 neomap('i', '<F4>', '<C-o>:set cuc! cul!<CR>', key_opts_ns)
 -- smart split
-function Smart_split()
+local function smart_split()
     if vim.api.nvim_win_get_width(0) > vim.api.nvim_win_get_height(0) * 3 then
         -- vim.cmd("vsplit")  --当前文件分屏
         vim.cmd("vnew")  --空白分屏
@@ -186,46 +186,44 @@ function Smart_split()
         vim.cmd("new")  --空白分屏
     end
 end
-neomap('n', '<leader>\\', ':lua Smart_split()<CR>', { desc = 'Smart split' })
+neomap("n", "<leader>\\", smart_split, { desc = "Smart split" })
 -- }}}
 
 -- {{{ font
--- English (all have Nerd): 'Delugia Mono' ≈ Cascadia Code; 'CodeNewRoman NFM'; 'OperatorMono NF'; 'ComicMono NF'
--- 中文: 'Noto Sans Mono CJK SC' (whitout Nerd); LXGW WenKai Mono (whitout Nerd); 'inconsolatago qihei nf' (Nerd)
-vim.opt.guifont     = "Delugia Mono:h12"
--- vim.opt.guifontwide = "Noto Sans Mono CJK SC:h12"
-vim.opt.guifontwide = "LXGW WenKai Mono:h12"
--- Adjust fontsize
-vim.cmd[[
-let s:guifontsize=12
-let s:guifont="Delugia\\ Mono"
-"let s:guifontwide="Noto\\ Sans\\ Mono\\ CJK\\ SC"
-let s:guifontwide="LXGW\\ WenKai\\ Mono"
+-- 英文 (all have Nerd): 'Delugia Mono' ≈ Cascadia Code; 'CodeNewRoman NFM'; 'OperatorMono NF'; 'ComicMono NF'
+-- 中文: 'Noto Sans Mono CJK SC'(whitout Nerd); 'LXGW WenKai Mono'(whitout Nerd); 'inconsolatago qihei nf'(Nerd)
+local default_guifont_size = 12
+local guifont_size = default_guifont_size
+local guifont = "Delugia Mono,LXGW WenKai Mono"
 
-function! AdjustFontSize(amount)
-    let s:guifontsize = s:guifontsize + a:amount
-    execute "set guifont=" .. s:guifont .. ":h" .. s:guifontsize
-    execute "set guifontwide=" .. s:guifontwide .. ":h" .. s:guifontsize
-endfunction
+local function set_guifont()
+    vim.opt.guifont = guifont .. ":h" .. guifont_size
+end
 
-function!  AdjustFontSize_0()
-    execute "set guifont=" .. s:guifont .. ":h12"
-    execute "set guifontwide=" .. s:guifontwide .. ":h12"
-endfunction
-]]
+local function adjust_font_size(amount)
+    guifont_size = math.max(6, guifont_size + amount)
+    set_guifont()
+end
+
+local function reset_font_size()
+    guifont_size = default_guifont_size
+    set_guifont()
+end
+
+set_guifont()
+
 -- keyboard
-neomap("n", "<C-->", ":call AdjustFontSize(-1)<CR>", key_opts_ns)
-neomap("n", "<C-=>", ":call AdjustFontSize(1)<CR>", key_opts_ns)
-neomap("n", "<C-0>", ":call AdjustFontSize_0()<CR>", key_opts_ns)
+neomap("n", "<C-->", function() adjust_font_size(-1) end, key_opts_ns)
+neomap("n", "<C-=>", function() adjust_font_size(1) end, key_opts_ns)
+neomap("n", "<C-0>", reset_font_size, key_opts_ns)
 
-neomap("i", "<C-->", "<C-o>:call AdjustFontSize(-1)<CR>", key_opts_ns)
-neomap("i", "<C-=>", "<C-o>:call AdjustFontSize(1)<CR>", key_opts_ns)
-neomap("i", "<C-0>", "<C-o>:call AdjustFontSize_0()<CR>", key_opts_ns)
--- mouse
-neomap("n", "<C-ScrollWheelUp>", ":call AdjustFontSize(1)<CR>", key_opts_ns)
-neomap("n", "<C-ScrollWheelDown>", ":call AdjustFontSize(-1)<CR>", key_opts_ns)
-neomap("i", "<C-ScrollWheelUp>", "<ESC>:call AdjustFontSize(1)<CR>a", key_opts_ns)
-neomap("i", "<C-ScrollWheelDown>", "<ESC>:call AdjustFontSize(-1)<CR>a", key_opts_ns)
+neomap("i", "<C-->", function() adjust_font_size(-1) end, key_opts_ns)
+neomap("i", "<C-=>", function() adjust_font_size(1) end, key_opts_ns)
+neomap("i", "<C-0>", reset_font_size, key_opts_ns)
+
+    -- mouse
+neomap({ "n", "i" }, "<C-ScrollWheelUp>", function() adjust_font_size(1) end, key_opts_ns)
+neomap({ "n", "i" }, "<C-ScrollWheelDown>", function() adjust_font_size(-1) end, key_opts_ns)
 -- }}}
 
 -- {{{ options
@@ -441,7 +439,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 -- {{{ plugins
 -- {{{ Lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
+if not vim.uv.fs_stat(lazypath) then
     vim.fn.system({
     "git",
     "clone",
@@ -642,8 +640,8 @@ require("lazy").setup({
   {
     "arecarn/vim-crunch",
     keys = {
-        { "<leader> ", mode = { "n" }, "<Plug>(crunch-operator-line)", { desc = 'Calculator' } },
-        { "<leader> ", mode = { "x" }, "<Plug>(visual-crunch-operator)", { desc = 'Calculator' } },
+        { "<leader> ", mode = "n", "<Plug>(crunch-operator-line)", desc = "Calculator" },
+        { "<leader> ", mode = "x", "<Plug>(visual-crunch-operator)", desc = "Calculator" },
     },
   },
 -- }}}
@@ -810,7 +808,7 @@ require("lazy").setup({
 -- {{{ voldikss/vim-floaterm
   {
     "voldikss/vim-floaterm",
-    cmd = { "FloatermNew", "FloatermSend" },
+    cmd = { "FloatermNew", "FloatermSend", "FloatermToggle", "FloatermNext", "FloatermPrev" },
     config = function()
         if vim.o.background == 'dark' then
             vim.api.nvim_set_hl(0, "FloatermBorder", { fg = "#89a0c3", bg = "#303446" })
@@ -1027,17 +1025,22 @@ require("lazy").setup({
     vim.g.vimtex_syntax_enabled = 0
     vim.g.vimtex_syntax_conceal_disable = 1
     -- neovim ---(highlight)---> pdf by 'lv'
-    function Open_sumatra_pdf()
-        local pdf_file = vim.fn.expand('%:r') .. '.pdf'
+    local function open_sumatra_pdf()
+        local pdf_file = vim.fn.expand("%:r") .. ".pdf"
         if vim.fn.filereadable(pdf_file) == 0 then
-          pdf_file = ""
+            return
         end
-        local cmd = 'cmd /c start /b "" SumatraPDF -reuse-instance ' .. pdf_file
-        os.execute(cmd)
+        vim.system({
+            "SumatraPDF",
+            "-reuse-instance",
+            pdf_file,
+        }, {
+            detach = true,
+        })
     end
-    vim.api.nvim_create_autocmd({"BufReadPost"}, {
-      pattern = {"*.tex", "*.latex"},
-      callback = Open_sumatra_pdf,
+    vim.api.nvim_create_autocmd("BufReadPost", {
+        pattern = { "*.tex", "*.latex" },
+        callback = open_sumatra_pdf,
     })
     -- Disable conceal
     vim.g.vimtex_syntax_conceal = {
@@ -2086,14 +2089,12 @@ require("lazy").setup({
       local parsers = { 'bash', 'python', 'fortran', 'c', 'vim', 'vimdoc', 'query', 'lua', 'bibtex', 'markdown', 'matlab', 'json', 'toml', 'yaml', 'typst', 'ini', 'latex' }
       require('nvim-treesitter').install(parsers)
 
-      ---@param buf integer
-      ---@param language string
       local function treesitter_try_attach(buf, language)
-        -- check if parser exists and load it
-        if not vim.treesitter.language.add(language) then return end
-        -- enables syntax highlighting and other treesitter features
-        vim.treesitter.start(buf, language)
-        vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+          if not vim.treesitter.language.add(language) then
+              return
+          end
+          vim.treesitter.start(buf, language)
+          vim.bo[buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
       end
 
       local available_parsers = require('nvim-treesitter').get_available()
@@ -2152,43 +2153,24 @@ require("lazy").setup({
                           mode,
                           keys,
                           func,
-                          { buffer = event.buf, desc = "LSP: " .. desc }
+                          { buf = event.buf, desc = "LSP: " .. desc }
                       )
                   end
 
                   map("n", "gd", vim.lsp.buf.definition, "[G]oto [D]efinition")
                   -- map("n", "gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
-                  map("n", "gD", vim.lsp.buf.type_definition, "[G]oto [D]eclaration")
-                  map("n", "K", vim.lsp.buf.hover, "Hover Documentation")
-                  map("n", "gh", vim.lsp.buf.signature_help, "[G]oto signature [H]elp")
+                  map("n", "gD", vim.lsp.buf.type_definition, "[G]oto Type [D]efinition")
+                  map("n", "K", function() vim.lsp.buf.hover({ border = "single" }) end, "Hover Documentation")
+                  map("n", "gh", function() vim.lsp.buf.signature_help({ border = "single" }) end, "[G]oto signature [H]elp")
                   map("n", "gr", vim.lsp.buf.references, "[G]oto [R]eferences")
                   map("n", "gi", vim.lsp.buf.implementation, "[G]oto [I]mplementation")
                   map("n", "<leader>lr", vim.lsp.buf.rename, "[R]ename")
                   map("n", "<leader>la", vim.lsp.buf.code_action, "Code [A]ction")
                   map("n", "<leader>lf", vim.lsp.buf.format, "[F]ormat")
-
                   -- Diagnostic keymaps
-                  map("n", "[d", vim.diagnostic.goto_prev, "Previous [D]iagnostic")
-                  map("n", "]d", vim.diagnostic.goto_next, "Next [D]iagnostic")
                   map("n", "<leader>lq", vim.diagnostic.setqflist, "Diagnostic [Q]uickfix")
               end,
           })
-
-          -- ============================================================
-          -- LSP 浮动窗口
-          -- ============================================================
-          vim.lsp.handlers["textDocument/hover"] = function(_, result, ctx, config)
-              config = config or {}
-              config.border = "single"
-              return vim.lsp.handlers.hover(_, result, ctx, config)
-          end
-
-          vim.lsp.handlers["textDocument/signatureHelp"] = function(_, result, ctx, config)
-              config = config or {}
-              config.border = "single"
-              return vim.lsp.handlers.signature_help(_, result, ctx, config)
-          end
-
           -- ============================================================
           -- LSP capabilities
           -- ============================================================
@@ -2256,12 +2238,11 @@ require("lazy").setup({
           -- ============================================================
           -- Mason
           -- ============================================================
-          require("mason").setup()
-
           local ensure_installed = vim.tbl_keys(servers)
 
           require("mason-lspconfig").setup({
               ensure_installed = ensure_installed,
+              automatic_enable = false,
           })
 
           -- ============================================================
@@ -2279,47 +2260,54 @@ require("lazy").setup({
           end
 
           -- ============================================================
-          -- Diagnostic signs
+          -- Diagnostic signs / config
           -- ============================================================
-          local signs = {
-              Error = "",
-              Warn = "",
-              Hint = "",
-              Info = "",
+          local diagnostic_signs = {
+              [vim.diagnostic.severity.ERROR] = "",
+              [vim.diagnostic.severity.WARN]  = "",
+              [vim.diagnostic.severity.HINT]  = "",
+              [vim.diagnostic.severity.INFO]  = "",
           }
-
-          for type, icon in pairs(signs) do
-              local hl = "DiagnosticSign" .. type
-              vim.fn.sign_define(hl, {
-                  text = icon,
-                  texthl = hl,
-                  numhl = hl,
+          local diagnostic_numhl = {
+              [vim.diagnostic.severity.ERROR] = "DiagnosticSignError",
+              [vim.diagnostic.severity.WARN]  = "DiagnosticSignWarn",
+              [vim.diagnostic.severity.HINT]  = "DiagnosticSignHint",
+              [vim.diagnostic.severity.INFO]  = "DiagnosticSignInfo",
+          }
+          local function diagnostic_on_jump(diagnostic, bufnr)
+              if not diagnostic then
+                  return
+              end
+              vim.diagnostic.open_float({
+                  bufnr = bufnr,
+                  pos = { diagnostic.lnum, diagnostic.col },
+                  scope = "cursor",
               })
           end
 
-          -- ============================================================
-          -- Diagnostic config
-          -- ============================================================
           vim.diagnostic.config({
               virtual_text = {
                   prefix = "●",
               },
               underline = false,
-              signs = true,
+              signs = {
+                  text = diagnostic_signs,
+                  numhl = diagnostic_numhl,
+              },
               update_in_insert = false,
               severity_sort = true,
-
+              jump = {
+                  on_jump = diagnostic_on_jump,
+              },
               float = {
                   focusable = true,
                   style = "minimal",
                   border = "rounded",
-                  show_header = true,
-                  source = "always",
+                  source = true,
                   header = "",
                   prefix = "",
               },
           })
-
           -- ============================================================
           -- Diagnostics 开关
           -- ============================================================
@@ -2940,7 +2928,7 @@ require("lazy").setup({
 -- }}}
 
 -- {{{ colorscheme
-local term_sign = vim.loop.os_getenv("MYSIGN")
+local term_sign = vim.uv.os_getenv("MYSIGN")
 
 if vim.fn.has('gui_running') == 1 then
     local colorscheme_list = {
@@ -2951,14 +2939,14 @@ if vim.fn.has('gui_running') == 1 then
     vim.cmd('colorscheme ' .. colorscheme_list[randomIndex_CS])
 else
     if term_sign == "wt_sign" then                     -- windows-terminal
-        vim.cmd('colorscheme catppuccin-frappe')
-        -- vim.cmd('colorscheme catppuccin-latte')
+        vim.cmd.colorscheme("catppuccin-frappe")
+        -- vim.cmd.colorscheme("catppuccin-latte")
     elseif term_sign == "alacritty_sign" then          -- alacritty
-        vim.cmd('colorscheme catppuccin-frappe')
+        vim.cmd.colorscheme("catppuccin-frappe")
     elseif term_sign == "wezterm_sign" then            -- wezterm
-        vim.cmd('colorscheme catppuccin-frappe')
+        vim.cmd.colorscheme("catppuccin-frappe")
     else
-        vim.cmd('colorscheme catppuccin-frappe')
+        vim.cmd.colorscheme("catppuccin-frappe")
     end
 end
 -- }}}
@@ -3096,19 +3084,20 @@ if vim.g.neovide then-- neovide
     vim.g.neovide_hide_mouse_when_typing = true    -- 输入时隐藏鼠标
     -- vim.g.neovide_profiler = true               -- 左上角显示帧数
     -- Adjust transparency
-    neomap('n', '<C-_>', ':let g:neovide_opacity -= 0.05<CR>:let g:neovide_opacity<CR>', {})
-    neomap('n', '<C-+>', ':let g:neovide_opacity += 0.05<CR>:let g:neovide_opacity<CR>', {})
-    neomap('i', '<C-_>', '<C-o>:let g:neovide_opacity -= 0.05<CR><C-o>:let g:neovide_opacity<CR>', {})
-    neomap('i', '<C-+>', '<C-o>:let g:neovide_opacity += 0.05<CR><C-o>:let g:neovide_opacity<CR>', {})
+    local function adjust_neovide_opacity(amount)
+        vim.g.neovide_opacity = math.min(
+            1.0,
+            math.max(0.0, vim.g.neovide_opacity + amount)
+        )
+    end
+    neomap("n", "<C-_>", function() adjust_neovide_opacity(-0.05) end)
+    neomap("n", "<C-+>", function() adjust_neovide_opacity(0.05) end)
+    neomap("i", "<C-_>", function() adjust_neovide_opacity(-0.05) end)
+    neomap("i", "<C-+>", function() adjust_neovide_opacity(0.05) end)
     -- Toggle fullscreen
     neomap("n", "<m-CR>", function()
-        vim.g.neovide_fullscreen = vim.g.neovide_fullscreen == 1 and 0 or 1
+        vim.g.neovide_fullscreen = not vim.g.neovide_fullscreen
     end, { desc = "Toggle fullscreen" })
-elseif vim.g.nvy then-- nvy
-else-- terminal
-    -- vim.api.nvim_command("hi Normal guibg=NONE")
-    -- vim.api.nvim_command("hi NonText guibg=NONE")
-    -- vim.api.nvim_command("hi SignColumn guibg=NONE")
 end
 -- }}}
 
