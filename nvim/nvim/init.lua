@@ -3067,10 +3067,9 @@ end
 -- {{{ GUI&TERM
 if vim.g.neovide then-- neovide
     vim.g.neovide_cursor_vfx_mode = "pixiedust"  -- "railgun", torpedo", "pixiedust", "ripple"
-    vim.g.neovide_cursor_vfx_particle_density = 3.0
-    vim.g.neovide_cursor_trail_length = 0.05
-    vim.g.neovide_refresh_rate = 60
+    vim.g.neovide_cursor_vfx_particle_density = 0.7
 
+    vim.g.neovide_cursor_trail_size = 0.05
     vim.g.neovide_cursor_antialiasing = true
     vim.g.neovide_cursor_animation_length = 0.02
     vim.g.neovide_cursor_animate_in_insert_mode = false
@@ -3082,7 +3081,7 @@ if vim.g.neovide then-- neovide
     vim.g.neovide_remember_window_position = true
     vim.g.neovide_confirm_quit = true              -- 修改文件后退出提示
     vim.g.neovide_hide_mouse_when_typing = true    -- 输入时隐藏鼠标
-    -- vim.g.neovide_profiler = true               -- 左上角显示帧数
+    vim.g.neovide_profiler = false               -- 左上角显示帧数
     -- Adjust transparency
     local function adjust_neovide_opacity(amount)
         vim.g.neovide_opacity = math.min(
@@ -3098,6 +3097,7 @@ if vim.g.neovide then-- neovide
     neomap("n", "<m-CR>", function()
         vim.g.neovide_fullscreen = not vim.g.neovide_fullscreen
     end, { desc = "Toggle fullscreen" })
+
 end
 -- }}}
 
