@@ -125,17 +125,13 @@ neomap("n", "<leader>Q", toggle_quickfix, { desc = "[Q]uickfix list toggle" })
 neomap('n', '<c-w>e', ':enew<cr>', key_opts_ns)
 -- 新建标签页
 neomap('n', '<leader><Tab>', ':tabnew<CR>', { desc = '[Tab]new' })
--- 支持Alt+n切换标签页
-neomap('n', '<M-1>', '1gt', key_opts_ns)
-neomap('n', '<M-2>', '2gt', key_opts_ns)
-neomap('n', '<M-3>', '3gt', key_opts_ns)
-neomap('n', '<M-4>', '4gt', key_opts_ns)
-neomap('n', '<M-5>', '5gt', key_opts_ns)
-neomap('n', '<M-6>', '6gt', key_opts_ns)
-neomap('n', '<M-7>', '7gt', key_opts_ns)
-neomap('n', '<M-8>', '8gt', key_opts_ns)
-neomap('n', '<M-9>', '9gt', key_opts_ns)
-neomap('n', '<M-0>', ':tablast<CR>', key_opts_ns)
+-- 切换标签页 LocalLeader + 1~7：切换到对应 Tab
+for i = 1, 7 do
+    neomap("n", "<leader>" .. i, i .. "gt", {
+        desc = "Go to Tab " .. i,
+        silent = true,
+    })
+end
 -- Alt+左右键来移动标签顺序
 neomap('n', '<M-left>', [[<Cmd>if tabpagenr() == 1 | execute "tabm " . tabpagenr("$") | else | execute "tabm " . (tabpagenr()-2) | endif<CR>]], key_opts_ns)
 neomap('n', '<M-right>', [[<Cmd>if tabpagenr() == tabpagenr("$") | tabm 0 | else | execute "tabm " . tabpagenr() | endif<CR>]], key_opts_ns)
@@ -434,6 +430,56 @@ vim.api.nvim_create_autocmd('TextYankPost', {
     end,
 })
 
+-- Tab 切换时避免焦点落到 ScrollView 等 UI 浮窗
+local tab_last_win = {}
+local group = vim.api.nvim_create_augroup("TabFocus", { clear = true })
+
+local function is_normal_win(win)
+    return win
+        and vim.api.nvim_win_is_valid(win)
+        and vim.api.nvim_win_get_config(win).relative == ""
+end
+
+-- 记住每个 Tab 最后使用的普通窗口
+vim.api.nvim_create_autocmd("WinEnter", {
+    group = group,
+    callback = function()
+        local win = vim.api.nvim_get_current_win()
+        if is_normal_win(win) then
+            tab_last_win[vim.api.nvim_get_current_tabpage()] = win
+        end
+    end,
+})
+
+-- 切回 Tab 时，如果焦点落在不可聚焦的 float，则恢复普通窗口
+vim.api.nvim_create_autocmd("TabEnter", {
+    group = group,
+    callback = function()
+        local tab = vim.api.nvim_get_current_tabpage()
+
+        vim.schedule(function()
+            if vim.api.nvim_get_current_tabpage() ~= tab then return end
+
+            local win = vim.api.nvim_get_current_win()
+            local cfg = vim.api.nvim_win_get_config(win)
+
+            if cfg.relative == "" or cfg.focusable ~= false then return end
+
+            local target = tab_last_win[tab]
+
+            if not is_normal_win(target)
+                or vim.api.nvim_win_get_tabpage(target) ~= tab
+            then
+                target = vim.iter(vim.api.nvim_tabpage_list_wins(tab))
+                    :find(is_normal_win)
+            end
+
+            if target then
+                vim.api.nvim_set_current_win(target)
+            end
+        end)
+    end,
+})
 -- }}}
 
 -- {{{ plugins
@@ -1129,40 +1175,218 @@ require("lazy").setup({
     "alvarosevilla95/luatab.nvim",
     event = "BufReadPre",
     config = function()
-    require('luatab').setup{
-    	separator = function()
-    		return ""
-    	end,
-        windowCount = function(index) -- 显示buffer数字
-            return index .. ' '
-        end,
-        --windowCount = function() -- 不显示buffer数字
-        --  return ""
-        --end,
-        modified = function(bufnr)
-            return vim.fn.getbufvar(bufnr, '&modified') == 1 and '[+] ' or ''  -- '[+] ', '● ', '🈚 ', ' '
-        end,
-        title = function(bufnr)
-            local file = vim.fn.bufname(bufnr)
-            local buftype = vim.fn.getbufvar(bufnr, '&buftype')
-            local filetype = vim.fn.getbufvar(bufnr, '&filetype')
+        local luatab = require("luatab")
+        local helpers = luatab.helpers
+        local devicons = require("nvim-web-devicons")
 
-            if buftype == 'help' then
-                return 'help:' .. vim.fn.fnamemodify(file, ':t:r')
-            elseif buftype == 'quickfix' then
-                return 'quickfix'
-            elseif filetype == 'TelescopePrompt' then
-                return 'Telescope'
-            elseif buftype == 'terminal' then
-                local _, mtch = string.match(file, "term:(.*):(%a+)")
-                return mtch ~= nil and mtch or vim.fn.fnamemodify(vim.env.SHELL, ':t')
-            elseif file == '' then
-                return '[No Name]'
-            else
-                return vim.fn.fnamemodify(file, ':p:h:t') .. '/' .. vim.fn.fnamemodify(file, ':t')
-            end
+        -- 动态 DevIcon 高亮缓存
+        local icon_hl_cache = {}
+
+        -- ============================================================
+        -- Luatab colors - Catppuccin Frappe
+        -- ============================================================
+        local function set_luatab_highlights()
+            -- 当前 Tab
+            vim.api.nvim_set_hl(0, "LuatabActive", { fg = "#f2d5cf", bg = "#6f4a78", bold = true, })
+
+            -- 当前 Tab 序号
+            vim.api.nvim_set_hl(0, "LuatabActiveIndex", { fg = "#babbf1", bg = "#6f4a78", bold = true, })
+
+            -- 非当前 Tab
+            vim.api.nvim_set_hl(0, "LuatabInactive", { fg = "#838ba7", bg = "#303446", })
+
+            -- 非当前 Tab 序号
+            vim.api.nvim_set_hl(0, "LuatabInactiveIndex", { fg = "#949cbb", bg = "#303446", })
+
+            -- 当前 Tab 已修改
+            vim.api.nvim_set_hl(0, "LuatabModifiedActive", { fg = "#ef9f76", bg = "#6f4a78", bold = true, })
+
+            -- 非当前 Tab 已修改
+            vim.api.nvim_set_hl(0, "LuatabModifiedInactive", { fg = "#e5c890", bg = "#303446", })
+
+            -- Tabline 剩余区域
+            vim.api.nvim_set_hl(0, "TabLineFill", { bg = "#303446", })
+
+            -- colorscheme 重载后需要重新生成 icon 高亮
+            icon_hl_cache = {}
         end
-    }
+
+        set_luatab_highlights()
+
+        vim.api.nvim_create_autocmd("ColorScheme", {
+            group = vim.api.nvim_create_augroup(
+                "LuatabHighlights",
+                { clear = true }
+            ),
+            callback = set_luatab_highlights,
+        })
+
+        -- ============================================================
+        -- DevIcon
+        -- 保留文件类型颜色，但背景与 Tab 完全一致
+        -- ============================================================
+        local function tab_icon(bufnr, is_selected)
+            local file = vim.api.nvim_buf_get_name(bufnr)
+
+            if file == "" then
+                return ""
+            end
+
+            local name = vim.fn.fnamemodify(file, ":t")
+            local ext = vim.fn.fnamemodify(name, ":e")
+
+            local icon, color = devicons.get_icon_color(
+                name,
+                ext,
+                { default = true }
+            )
+
+            if not icon or not color then
+                return ""
+            end
+
+            local bg = is_selected
+                and "#6f4a78"
+                or "#303446"
+
+            -- 每种 icon 颜色分别创建 Active / Inactive 高亮
+            local hl = "LuatabIcon_"
+                .. (is_selected and "Active_" or "Inactive_")
+                .. color:gsub("#", "")
+
+            if not icon_hl_cache[hl] then
+                vim.api.nvim_set_hl(0, hl, {
+                    fg = color,
+                    bg = bg,
+                })
+
+                icon_hl_cache[hl] = true
+            end
+
+            return "%#" .. hl .. "#" .. icon
+        end
+
+        -- ============================================================
+        -- 获取某个 Tab 对应的正常编辑 buffer
+        -- 忽略 ScrollView 等 floating window
+        -- ============================================================
+        local function get_tab_normal_buffer(index)
+            local tab = vim.api.nvim_list_tabpages()[index]
+
+            if not tab then
+                return nil
+            end
+
+            local current_win = vim.api.nvim_tabpage_get_win(tab)
+
+            if vim.api.nvim_win_is_valid(current_win)
+                and vim.api.nvim_win_get_config(current_win).relative == ""
+            then
+                return vim.api.nvim_win_get_buf(current_win)
+            end
+
+            for _, win in ipairs(vim.api.nvim_tabpage_list_wins(tab)) do
+                if vim.api.nvim_win_is_valid(win)
+                    and vim.api.nvim_win_get_config(win).relative == ""
+                then
+                    return vim.api.nvim_win_get_buf(win)
+                end
+            end
+
+            return nil
+        end
+
+        luatab.setup({
+            separator = function()
+                return ""
+            end,
+
+            windowCount = function(index)
+                return index .. " "
+            end,
+
+            modified = function(bufnr)
+                return vim.fn.getbufvar(bufnr, "&modified") == 1
+                    and "[+] "
+                    or ""
+            end,
+
+            title = function(bufnr)
+                local file = vim.fn.bufname(bufnr)
+                local buftype = vim.fn.getbufvar(bufnr, "&buftype")
+                local filetype = vim.fn.getbufvar(bufnr, "&filetype")
+
+                if buftype == "help" then
+                    return "help:" .. vim.fn.fnamemodify(file, ":t:r")
+
+                elseif buftype == "quickfix" then
+                    return "quickfix"
+
+                elseif filetype == "TelescopePrompt" then
+                    return "Telescope"
+
+                elseif buftype == "terminal" then
+                    local _, mtch =
+                        string.match(file, "term:(.*):(%a+)")
+
+                    return mtch ~= nil
+                        and mtch
+                        or vim.fn.fnamemodify(vim.env.SHELL, ":t")
+
+                elseif file == "" then
+                    return "[No Name]"
+
+                else
+                    return vim.fn.fnamemodify(file, ":t")
+                end
+            end,
+
+            -- ========================================================
+            -- 自定义 Tab cell
+            -- ========================================================
+            cell = function(index)
+                local is_selected = vim.fn.tabpagenr() == index
+                local bufnr = get_tab_normal_buffer(index)
+
+                if not bufnr then
+                    return ""
+                end
+
+                local index_hl = is_selected
+                    and "%#LuatabActiveIndex#"
+                    or "%#LuatabInactiveIndex#"
+
+                local text_hl = is_selected
+                    and "%#LuatabActive#"
+                    or "%#LuatabInactive#"
+
+                local modified_hl = is_selected
+                    and "%#LuatabModifiedActive#"
+                    or "%#LuatabModifiedInactive#"
+
+                local modified = ""
+
+                if vim.fn.getbufvar(bufnr, "&modified") == 1 then
+                    modified =
+                        modified_hl
+                        .. "[+] "
+                        .. text_hl
+                end
+
+                return "%"
+                    .. index
+                    .. "T "
+                    .. index_hl
+                    .. helpers.windowCount(index)
+                    .. text_hl
+                    .. helpers.title(bufnr)
+                    .. " "
+                    .. modified
+                    .. tab_icon(bufnr, is_selected)
+                    .. "%T"
+                    .. helpers.separator(index)
+            end,
+        })
     end,
   },
 -- }}}
@@ -3065,39 +3289,94 @@ end
 -- }}}
 
 -- {{{ GUI&TERM
-if vim.g.neovide then-- neovide
+if vim.g.neovide then -- Neovide
+    -- ============================================================
+    -- Cursor VFX：光标粒子特效
+    -- ============================================================
     vim.g.neovide_cursor_vfx_mode = "pixiedust"  -- "railgun", torpedo", "pixiedust", "ripple"
+    -- 粒子生成密度；数值越大粒子越多
     vim.g.neovide_cursor_vfx_particle_density = 0.7
 
+    -- 粒子存活时间，单位：秒
+    vim.g.neovide_cursor_vfx_particle_lifetime = 0.3
+
+    -- ============================================================
+    -- Cursor animation：光标移动动画
+    -- ============================================================
+    -- 光标拖尾长度，范围：0.0 ~ 1.0
     vim.g.neovide_cursor_trail_size = 0.05
-    vim.g.neovide_cursor_antialiasing = true
+
+    -- 普通光标移动动画时间，单位：秒
+    -- 官方默认约 0.150；0.02 非常快，接近瞬移但仍保留少量动画
     vim.g.neovide_cursor_animation_length = 0.02
+
+    -- 1~2 个字符的短距离水平移动动画时间
+    vim.g.neovide_cursor_short_animation_length = 0.02
+
+    -- Insert 模式关闭光标动画，使连续输入更跟手
     vim.g.neovide_cursor_animate_in_insert_mode = false
+
+    -- 编辑区与 : / ? 命令行之间切换时不播放光标移动动画
+    vim.g.neovide_cursor_animate_command_line = false
+
+    -- ============================================================
+    -- Cursor appearance：光标外观
+    -- ============================================================
+    -- 使用光标所在字符格的颜色
+    vim.g.neovide_cursor_cell_color_fallback = true
+
+    -- 光标边缘抗锯齿
+    vim.g.neovide_cursor_antialiasing = true
+
+    -- Neovide 窗口失去焦点时，block cursor 显示为空心框
+    vim.g.neovide_cursor_unfocused_outline_width = 0.125
+
+    -- ============================================================
+    -- Scroll animation：滚动动画
+    -- ============================================================
     vim.g.neovide_scroll_animation_length = 0
 
-    vim.g.neovide_opacity = 1.0  -- 0.9
+    -- ============================================================
+    -- Windows appearance：Windows 窗口外观
+    -- ============================================================
+    vim.g.neovide_opacity = 1.0
+
+    -- ============================================================
+    -- Window behavior：窗口行为
+    -- ============================================================
+    -- 是否全屏启动
     vim.g.neovide_fullscreen = false
+
+    -- 记住上一次退出时的窗口大小
     vim.g.neovide_remember_window_size = true
+
+    -- 记住上一次退出时的窗口位置
     vim.g.neovide_remember_window_position = true
-    vim.g.neovide_confirm_quit = true              -- 修改文件后退出提示
-    vim.g.neovide_hide_mouse_when_typing = true    -- 输入时隐藏鼠标
-    vim.g.neovide_profiler = false               -- 左上角显示帧数
-    -- Adjust transparency
+
+    -- 有未保存修改时关闭 Neovide，需要确认
+    vim.g.neovide_confirm_quit = true
+
+    -- 键盘输入时自动隐藏鼠标，移动鼠标后重新显示
+    vim.g.neovide_hide_mouse_when_typing = true
+
+    -- ============================================================
+    -- Transparency：透明度快捷调节
+    -- ============================================================
     local function adjust_neovide_opacity(amount)
         vim.g.neovide_opacity = math.min(
             1.0,
             math.max(0.0, vim.g.neovide_opacity + amount)
         )
     end
-    neomap("n", "<C-_>", function() adjust_neovide_opacity(-0.05) end)
-    neomap("n", "<C-+>", function() adjust_neovide_opacity(0.05) end)
-    neomap("i", "<C-_>", function() adjust_neovide_opacity(-0.05) end)
-    neomap("i", "<C-+>", function() adjust_neovide_opacity(0.05) end)
-    -- Toggle fullscreen
-    neomap("n", "<m-CR>", function()
+    neomap({ "n", "i" }, "<C-_>", function() adjust_neovide_opacity(-0.05) end)
+    neomap({ "n", "i" }, "<C-+>", function() adjust_neovide_opacity(0.05) end)
+
+    -- ============================================================
+    -- Fullscreen：全屏切换
+    -- ============================================================
+    neomap("n", "<M-CR>", function()
         vim.g.neovide_fullscreen = not vim.g.neovide_fullscreen
     end, { desc = "Toggle fullscreen" })
-
 end
 -- }}}
 
