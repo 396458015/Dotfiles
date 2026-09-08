@@ -2917,7 +2917,7 @@ require("lazy").setup({
             { "<leader>oko", desc = "Clock [o]ut",    icon = { icon = "󰔞", color = "red" } },
             { "<leader>okc", desc = "Clock [c]ancel", icon = { icon = "󰜺", color = "grey" } },
             -- Refile
-            { "<leader>or", desc = "[R]efile", icon = { icon = "", color = "orange" } },
+            { "<leader>or", desc = "[r]efile", icon = { icon = "", color = "orange" } },
       -- python
             { "<leader>w", group = "Python Send", icon = { icon = "", color = "yellow" } },
         },
