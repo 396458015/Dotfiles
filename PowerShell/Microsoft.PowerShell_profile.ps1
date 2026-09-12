@@ -317,7 +317,7 @@ function Invoke-FZF {
     $r = fzf
     if ($r) { nvim $r }
 }
-Set-PSReadLineKeyHandler -Chord alt+x -ScriptBlock {
+Set-PSReadLineKeyHandler -Chord alt+v -ScriptBlock {
     [Microsoft.Powershell.PSConsoleReadline]::RevertLine()
     [Microsoft.Powershell.PSConsoleReadline]::Insert("Invoke-FZF")
     [Microsoft.Powershell.PSConsoleReadline]::AcceptLine()
@@ -331,7 +331,7 @@ function Invoke-FZF-CD {
         if ($dir) { Set-Location $dir }
     }
 }
-Set-PSReadLineKeyHandler -Chord alt+z -ScriptBlock {
+Set-PSReadLineKeyHandler -Chord alt+c -ScriptBlock {
     [Microsoft.Powershell.PSConsoleReadLine]::RevertLine()
     [Microsoft.Powershell.PSConsoleReadLine]::Insert('Invoke-FZF-CD')
     [Microsoft.Powershell.PSConsoleReadLine]::AcceptLine()
