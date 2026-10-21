@@ -8,6 +8,21 @@
 -- |_|  |_| |_|      \/__/    \/_/\/_/\/_/\/_/|_| \_\\____|
 -- ========================================================
 
+-- {{{ 编译和网络配置
+-- Windows 编译treesitter及网络代理配置
+-- if vim.fn.has("win32") == 1 then
+--     -- MinGW 编译器
+--     local mingw_bin = "D:/Scoop/apps/mingw-winlibs-llvm-msvcrt/current/bin"
+--     vim.env.PATH = mingw_bin .. ";" .. vim.env.PATH
+--     vim.env.CC = mingw_bin .. "/gcc.exe"
+
+--     -- GitHub 下载代理
+--     local proxy = "http://127.0.0.1:7890"
+--     vim.env.HTTP_PROXY = proxy
+--     vim.env.HTTPS_PROXY = proxy
+-- end
+-- }}}
+
 -- {{{ mapping - original neovim
 vim.g.mapleader      = " "
 vim.g.maplocalleader = ","
@@ -86,31 +101,47 @@ neomap('n', '<leader>b', [[:put =range(,,1)<left><left><left><left>]], { desc = 
 neomap("n", "<m-,>", "<c-w>_<c-w>|", key_opts_ns)
 neomap("n", "<m-.>", "<c-w>=", key_opts_ns)
 -- 互换分割窗口
-neomap('n', '<S-h>', '<C-w>b<C-w>H', key_opts_ns)
--- neomap('n', 'srh', '<C-w>b<C-w>K', {}) -- 注释掉，因为与 <S-h> 冲突
+neomap('n', '<leader>wm', '<C-w>x', key_opts_ns)
 -- 光标移动
 neomap('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
 neomap('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
 neomap('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 neomap('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
--- 终端分屏窗口移动，split navigations,smart way to move between windows
+-- 终端分屏窗口移动
 neomap('t', '<C-h>', '<C-w><C-h>', key_opts_s)
 neomap('t', '<C-j>', '<C-w><C-j>', key_opts_s)
 neomap('t', '<C-k>', '<C-w><C-k>', key_opts_s)
 neomap('t', '<C-l>', '<C-w><C-l>', key_opts_s)
 neomap('t', '<Esc>', '<C-\\><C-n>', key_opts_s)
--- 调整分屏尺寸
-neomap('n', '<S-up>', ':resize -3<CR>', key_opts_ns)
-neomap('n', '<S-down>', ':resize +3<CR>', key_opts_ns)
-neomap('n', '<S-left>', ':vertical resize +3<CR>', key_opts_ns)
-neomap('n', '<S-right>', ':vertical resize -3<CR>', key_opts_ns)
+-------------------- 调整分屏尺寸 --------------------
+-- 左右分栏：固定移动方向
+local function resize_vsplit(delta)
+    local win = vim.api.nvim_get_current_win()
+    vim.cmd("wincmd h")
+    vim.cmd("vertical resize " .. (delta > 0 and "+" or "") .. delta)
+    vim.api.nvim_set_current_win(win)
+end
+
+-- 上下分栏：固定移动方向
+local function resize_hsplit(delta)
+    local win = vim.api.nvim_get_current_win()
+    vim.cmd("wincmd k")
+    vim.cmd("resize " .. (delta > 0 and "+" or "") .. delta)
+    vim.api.nvim_set_current_win(win)
+end
+
+-- 左右调整
+neomap('n', '<S-h>', function() resize_vsplit(-3) end, key_opts_ns)
+neomap('n', '<S-l>', function() resize_vsplit(3) end, key_opts_ns)
+
+-- 上下调整
+neomap('n', '<S-up>', function() resize_hsplit(-3) end, key_opts_ns)
+neomap('n', '<S-down>', function() resize_hsplit(3) end, key_opts_ns)
 -------------------- Quickfix list --------------------
 local function toggle_quickfix()
     local qf_exists = false
     for _, win in pairs(vim.fn.getwininfo()) do
-        if win["quickfix"] == 1 then
-            qf_exists = true
-            break
+        if win["quickfix"] == 1 then qf_exists = true break
         end
     end
     if qf_exists then
@@ -316,9 +347,20 @@ vim.g.clipboard = {
     cache_enabled = 0,
 }
 -- ENV-Python
-vim.g.python3_host_prog = vim.fn.has("unix") == 1
-    and "/usr/bin/python3"
-    or "C:/Python/Python311/python.exe"
+local is_win = vim.fn.has("win32") == 1
+
+local python_envs = is_win and {
+    general = "C:/Python/Python311/python.exe",
+    nvim    = "C:/Python/Python311/python.exe",
+} or {
+    general = vim.fn.expand("/usr/bin/python3"),
+    nvim    = vim.fn.expand("/usr/bin/python3"),
+}
+
+vim.g.python3_host_prog = python_envs.nvim
+
+local python_exe = python_envs.general
+
 vim.cmd([[ let $PYTHONUNBUFFERED=1 ]]) -- 禁用python stdout缓冲 ]
 
 -- Return to last edit position when opening files (You want this!)
@@ -485,15 +527,18 @@ vim.api.nvim_create_autocmd("TabEnter", {
 -- {{{ plugins
 -- {{{ Lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.uv.fs_stat(lazypath) then
-    vim.fn.system({
-    "git",
-    "clone",
-    "--filter=blob:none",
-    "https://github.com/folke/lazy.nvim.git",
-    "--branch=stable", -- latest stable release
-    lazypath,
-  })
+if not (vim.uv or vim.loop).fs_stat(lazypath) then
+  local lazyrepo = "https://github.com/folke/lazy.nvim.git"
+  local out = vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
+  if vim.v.shell_error ~= 0 then
+    vim.api.nvim_echo({
+      { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
+      { out, "WarningMsg" },
+      { "\nPress any key to exit..." },
+    }, true, {})
+    vim.fn.getchar()
+    os.exit(1)
+  end
 end
 vim.opt.rtp:prepend(lazypath)
 
@@ -738,7 +783,7 @@ require("lazy").setup({
 -- {{{ Yggdroot/LeaderF
   {
     "Yggdroot/LeaderF",
-    build = ":LeaderfInstallCExtension",
+    -- build = ":LeaderfInstallCExtension",
     event = { "BufReadPre", "BufNewFile" },
     cmd = { "Leaderf" },
     keys = {
@@ -896,20 +941,57 @@ require("lazy").setup({
         vim.cmd([[au FileType floaterm nnoremap <buffer> <Esc> :q<CR>]])
 
         -- Python
-        if vim.fn.has("unix") == 1 then
-            vim.cmd([[au FileType python nnoremap <silent><C-CR> :FloatermNew --width=0.8 --height=1.0 python3 "%:p"<CR>]])
-        else
-            vim.cmd([[au FileType python nnoremap <silent><C-CR> :FloatermNew --width=0.8 --height=1.0 py "%:p"<CR>]])
-        end
-        vim.cmd([[au FileType python noremap! <C-CR>  <Esc>:FloatermToggle<CR>]])
+        -- Ctrl + Enter：运行当前 Python 文件
+        vim.cmd(
+            [[au FileType python nnoremap <silent><C-CR> :FloatermNew --width=0.8 --height=1.0 "]]
+            .. python_exe ..
+            [[" "%:p"<CR>]]
+        )
 
-        -- Python REPL
-        vim.cmd([[nnoremap <leader>tp :FloatermNew --width=0.5 --wintype=vsplit --name=repl --position=rightbelow ipython<CR>]])
-        vim.cmd([[au FileType python nnoremap <leader>w :FloatermSend<CR>]])
-        vim.cmd([[au FileType python vnoremap <leader>w :FloatermSend<CR>]])
+        -- Python REPL (IPython)
+        vim.cmd(
+            [[nnoremap <leader>tp :FloatermNew --width=0.5 --wintype=vsplit --name=repl --position=rightbelow ]]
+            .. python_exe ..
+            [[ -m IPython<CR>]]
+        )
+
+        -- 发送代码到 IPython
+        local function send_to_repl(code, multiline)
+            local buf = vim.fn["floaterm#terminal#get_bufnr"]("repl")
+            if buf < 0 then return end
+
+            local chan = vim.bo[buf].channel
+
+            if multiline then
+                -- 多行代码：使用 Bracketed Paste 保留缩进
+                vim.fn.chansend(chan, "\27[200~" .. code .. "\27[201~")
+                vim.defer_fn(function()
+                    vim.fn.chansend(chan, "\r")
+                end, 100)
+            else
+                -- 单行代码
+                vim.fn.chansend(chan, code .. "\r")
+            end
+        end
+
+        -- 普通模式：发送当前行
+        vim.keymap.set("n", "<leader>w", function()
+            send_to_repl(vim.api.nvim_get_current_line(), false)
+        end, { silent = true })
+
+        -- 可视模式：发送选中的代码块
+        vim.keymap.set("x", "<leader>w", function()
+            local start_line = vim.fn.line("v")
+            local end_line = vim.fn.line(".")
+            local lines = vim.api.nvim_buf_get_lines(
+                0, math.min(start_line, end_line) - 1,
+                math.max(start_line, end_line), false
+            )
+            send_to_repl(table.concat(lines, "\n"), true)
+        end, { silent = true })
 
         -- Matlab
-        vim.cmd([[au FileType matlab nnoremap <silent><C-CR> :! matlab -nosplash -nodesktop -r %:r<CR><CR>]])
+        vim.cmd([[au FileType matlab nnoremap <silent><C-CR> :w<CR>:!matlab -nosplash -nodesktop -r "run('%:p')"<CR><CR>]])
 
         -- Fortran
         vim.cmd([[au FileType fortran nnoremap <silent><C-CR> :FloatermNew<CR>compilervars.bat intel64<CR>ifort<Space>]])
@@ -1983,7 +2065,6 @@ require("lazy").setup({
     if vim.fn.has('gui_running') == 1 then
         transparent_TREM = false
     else
-        -- transparent_TREM = true
         transparent_TREM = false
     end
     require("catppuccin").setup({
@@ -3323,7 +3404,7 @@ if vim.g.neovide then -- Neovide
     -- Cursor appearance：光标外观
     -- ============================================================
     -- 使用光标所在字符格的颜色
-    vim.g.neovide_cursor_cell_color_fallback = true
+    vim.g.neovide_cursor_cell_color_fallback = false
 
     -- 光标边缘抗锯齿
     vim.g.neovide_cursor_antialiasing = true
@@ -3339,7 +3420,7 @@ if vim.g.neovide then -- Neovide
     -- ============================================================
     -- Windows appearance：Windows 窗口外观
     -- ============================================================
-    vim.g.neovide_opacity = 1.0
+    vim.g.neovide_opacity = 0.99
 
     -- ============================================================
     -- Window behavior：窗口行为
