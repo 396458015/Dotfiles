@@ -1,18 +1,10 @@
 {
     "$help": "https://aka.ms/terminal-documentation",
     "$schema": "https://aka.ms/terminal-profiles-schema",
-    "actions": 
+    "actions":
     [
         {
-            "command": 
-            {
-                "action": "sendInput",
-                "input": "\u001b[C"
-            },
-            "id": "User.sendInput.86D5A3"
-        },
-        {
-            "command": 
+            "command":
             {
                 "action": "adjustOpacity",
                 "opacity": 25,
@@ -21,15 +13,15 @@
             "id": "User.adjustOpacity.D08B71C0"
         },
         {
-            "command": 
+            "command":
             {
-                "action": "newTab",
-                "profile": "{73982e5f-0f72-44d8-88de-33167770ae51}"
+                "action": "sendInput",
+                "input": "\u001b[C"
             },
-            "id": "User.newTab.C6855C1C"
+            "id": "User.sendInput.86D5A3"
         },
         {
-            "command": 
+            "command":
             {
                 "action": "sendInput",
                 "input": "\u001b[D"
@@ -37,7 +29,15 @@
             "id": "User.sendInput.5AD15B74"
         },
         {
-            "command": 
+            "command":
+            {
+                "action": "newTab",
+                "profile": "{73982e5f-0f72-44d8-88de-33167770ae51}"
+            },
+            "id": "User.newTab.C6855C1C"
+        },
+        {
+            "command":
             {
                 "action": "sendInput",
                 "input": "\u001b[13;5u"
@@ -45,7 +45,7 @@
             "id": "User.sendInput.F8A79DCB"
         },
         {
-            "command": 
+            "command":
             {
                 "action": "sendInput",
                 "input": "\u001b[B"
@@ -53,7 +53,7 @@
             "id": "User.sendInput.42123734"
         },
         {
-            "command": 
+            "command":
             {
                 "action": "sendInput",
                 "input": "\u001b[A"
@@ -61,7 +61,7 @@
             "id": "User.sendInput.4B548C6C"
         },
         {
-            "command": 
+            "command":
             {
                 "action": "adjustOpacity",
                 "opacity": -25,
@@ -70,7 +70,7 @@
             "id": "User.adjustOpacity.6DBF98E3"
         },
         {
-            "command": 
+            "command":
             {
                 "action": "adjustOpacity",
                 "opacity": 0,
@@ -79,19 +79,19 @@
             "id": "User.adjustOpacity.E90BBAB2"
         },
         {
-            "command": 
-            {
-                "action": "splitPane"
-            },
-            "id": "User.splitPane.91AB55B1"
-        },
-        {
-            "command": 
+            "command":
             {
                 "action": "sendInput",
                 "input": "\u001b[13;2u"
             },
             "id": "User.sendInput.8882FD6D"
+        },
+        {
+            "command":
+            {
+                "action": "splitPane"
+            },
+            "id": "User.splitPane.91AB55B1"
         },
         {
             "command": "toggleFocusMode",
@@ -107,15 +107,15 @@
     "initialCols": 120,
     "initialPosition": "250,100",
     "initialRows": 34,
-    "keybindings": 
+    "keybindings":
     [
-        {
-            "id": null,
-            "keys": "alt+shift+up"
-        },
         {
             "id": "User.sendInput.F8A79DCB",
             "keys": "ctrl+enter"
+        },
+        {
+            "id": null,
+            "keys": "alt+shift+up"
         },
         {
             "id": "User.sendInput.8882FD6D",
@@ -134,16 +134,12 @@
             "keys": "f9"
         },
         {
-            "id": null,
-            "keys": "ctrl+shift+pgup"
-        },
-        {
-            "id": null,
-            "keys": "ctrl+shift+pgdn"
-        },
-        {
             "id": "Terminal.SwitchToTab3",
             "keys": "alt+4"
+        },
+        {
+            "id": null,
+            "keys": "ctrl+shift+pgup"
         },
         {
             "id": null,
@@ -151,7 +147,7 @@
         },
         {
             "id": null,
-            "keys": "ctrl+shift+comma"
+            "keys": "ctrl+shift+pgdn"
         },
         {
             "id": "User.sendInput.5AD15B74",
@@ -159,15 +155,23 @@
         },
         {
             "id": null,
-            "keys": "ctrl+shift+5"
+            "keys": "ctrl+shift+comma"
         },
         {
             "id": null,
             "keys": "ctrl+shift+2"
         },
         {
+            "id": null,
+            "keys": "ctrl+shift+5"
+        },
+        {
             "id": "Terminal.ResizePaneUp",
             "keys": "alt+up"
+        },
+        {
+            "id": null,
+            "keys": "ctrl+shift+a"
         },
         {
             "id": "User.sendInput.42123734",
@@ -175,31 +179,27 @@
         },
         {
             "id": null,
-            "keys": "ctrl+shift+a"
-        },
-        {
-            "id": "Terminal.SwitchToTab5",
-            "keys": "alt+6"
+            "keys": "alt+shift+left"
         },
         {
             "id": "User.adjustOpacity.D08B71C0",
             "keys": "ctrl+shift+plus"
         },
         {
-            "id": null,
-            "keys": "alt+shift+left"
+            "id": "Terminal.SwitchToTab5",
+            "keys": "alt+6"
         },
         {
             "id": null,
             "keys": "ctrl+alt+1"
         },
         {
-            "id": null,
-            "keys": "ctrl+comma"
-        },
-        {
             "id": "User.newTab.C6855C1C",
             "keys": "alt+m"
+        },
+        {
+            "id": null,
+            "keys": "ctrl+comma"
         },
         {
             "id": "Terminal.FindText",
@@ -207,23 +207,31 @@
         },
         {
             "id": null,
-            "keys": "alt+space"
-        },
-        {
-            "id": null,
             "keys": "alt+shift+plus"
         },
         {
             "id": null,
-            "keys": "ctrl+tab"
+            "keys": "alt+space"
         },
         {
             "id": null,
             "keys": "alt+shift+down"
         },
         {
+            "id": null,
+            "keys": "ctrl+tab"
+        },
+        {
             "id": "Terminal.CopyToClipboard",
             "keys": "ctrl+c"
+        },
+        {
+            "id": null,
+            "keys": "ctrl+shift+d"
+        },
+        {
+            "id": null,
+            "keys": "ctrl+shift+tab"
         },
         {
             "id": "Terminal.MoveFocusUp",
@@ -231,19 +239,11 @@
         },
         {
             "id": null,
-            "keys": "ctrl+shift+tab"
-        },
-        {
-            "id": null,
-            "keys": "ctrl+shift+d"
+            "keys": "alt+f4"
         },
         {
             "id": "Terminal.SwitchToTab0",
             "keys": "alt+1"
-        },
-        {
-            "id": null,
-            "keys": "alt+f4"
         },
         {
             "id": null,
@@ -266,12 +266,16 @@
             "keys": "enter"
         },
         {
+            "id": "Terminal.DuplicatePaneAuto",
+            "keys": "alt+shift+d"
+        },
+        {
             "id": "Terminal.OpenNewTab",
             "keys": "alt+n"
         },
         {
-            "id": "Terminal.DuplicatePaneAuto",
-            "keys": "alt+shift+d"
+            "id": null,
+            "keys": "ctrl+shift+3"
         },
         {
             "id": "Terminal.ScrollUp",
@@ -279,19 +283,15 @@
         },
         {
             "id": null,
-            "keys": "ctrl+shift+3"
-        },
-        {
-            "id": null,
             "keys": "ctrl+alt+left"
         },
         {
             "id": null,
-            "keys": "ctrl+shift+t"
+            "keys": "ctrl+shift+4"
         },
         {
             "id": null,
-            "keys": "ctrl+shift+4"
+            "keys": "ctrl+shift+t"
         },
         {
             "id": null,
@@ -342,12 +342,12 @@
             "keys": "ctrl+shift+8"
         },
         {
-            "id": "Terminal.MoveFocusRight",
-            "keys": "ctrl+shift+l"
-        },
-        {
             "id": null,
             "keys": "ctrl+shift+9"
+        },
+        {
+            "id": "Terminal.MoveFocusRight",
+            "keys": "ctrl+shift+l"
         },
         {
             "id": null,
@@ -378,16 +378,16 @@
             "keys": "ctrl+alt+3"
         },
         {
-            "id": "User.adjustOpacity.6DBF98E3",
-            "keys": "ctrl+shift+minus"
+            "id": null,
+            "keys": "ctrl+alt+4"
         },
         {
             "id": null,
             "keys": "ctrl+alt+7"
         },
         {
-            "id": null,
-            "keys": "ctrl+alt+4"
+            "id": "User.adjustOpacity.6DBF98E3",
+            "keys": "ctrl+shift+minus"
         },
         {
             "id": null,
@@ -398,20 +398,20 @@
             "keys": "ctrl+alt+8"
         },
         {
-            "id": "Terminal.SwitchToTab7",
-            "keys": "alt+8"
-        },
-        {
             "id": "Terminal.MoveFocusDown",
             "keys": "ctrl+shift+j"
         },
         {
-            "id": "Terminal.ResizePaneLeft",
-            "keys": "alt+left"
+            "id": "Terminal.SwitchToTab7",
+            "keys": "alt+8"
         },
         {
             "id": "Terminal.SwitchToTab2",
             "keys": "alt+3"
+        },
+        {
+            "id": "Terminal.ResizePaneLeft",
+            "keys": "alt+left"
         },
         {
             "id": "Terminal.ScrollDown",
@@ -456,35 +456,35 @@
     ],
     "launchMode": "default",
     "minimizeToNotificationArea": false,
-    "newTabMenu": 
+    "newTabMenu":
     [
         {
             "type": "remainingProfiles"
         }
     ],
-    "profiles": 
+    "profiles":
     {
-        "defaults": 
+        "defaults":
         {
             "colorScheme": "catppuccin-latte",
             "cursorShape": "filledBox",
-            "environment": 
+            "environment":
             {
                 "MYSIGN": "wt_sign"
             },
-            "font": 
+            "font":
             {
                 "face": "Delugia Mono",
                 "size": 13
             }
         },
-        "list": 
+        "list":
         [
             {
                 "colorScheme": "GitHub Dark",
                 "commandline": "C:\\WINDOWS\\system32\\wsl.exe -d Ubuntu",
                 "cursorColor": "#F2D5CF",
-                "font": 
+                "font":
                 {
                     "cellHeight": "1.3"
                 },
@@ -501,8 +501,9 @@
             },
             {
                 "colorScheme": "colors_normal",
+                "commandline": "C:\\Users\\ThinkPad\\scoop\\apps\\pwsh\\current\\pwsh.exe",
                 "cursorShape": "filledBox",
-                "font": 
+                "font":
                 {
                     "cellHeight": "1.3",
                     "face": "Delugia Mono",
@@ -530,10 +531,16 @@
                 "hidden": false,
                 "name": "Developer PowerShell for VS 2022",
                 "source": "Windows.Terminal.VisualStudio"
+            },
+            {
+                "guid": "{fe66f4b8-350f-56bb-adb0-c2ce745f6db5}",
+                "hidden": false,
+                "name": "PowerShell (scoop)",
+                "source": "Windows.Terminal.PowershellCore"
             }
         ]
     },
-    "schemes": 
+    "schemes":
     [
         {
             "background": "#101216",
