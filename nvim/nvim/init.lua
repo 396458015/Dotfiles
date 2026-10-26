@@ -8,8 +8,7 @@
 -- |_|  |_| |_|      \/__/    \/_/\/_/\/_/\/_/|_| \_\\____|
 -- ========================================================
 
--- {{{ 编译和网络配置
--- Windows 编译treesitter及网络代理配置
+-- {{{ windows编译treesitter和网络代理配置
 -- if vim.fn.has("win32") == 1 then
 --     -- MinGW 编译器
 --     local mingw_bin = "D:/Scoop/apps/mingw-winlibs-llvm-msvcrt/current/bin"
@@ -21,6 +20,32 @@
 --     vim.env.HTTP_PROXY = proxy
 --     vim.env.HTTPS_PROXY = proxy
 -- end
+-- }}}
+
+-- {{{ Python 环境
+local is_win = vim.fn.has("win32") == 1
+
+    -- ENV-ThinkBook
+-- local python_envs = is_win and {
+--     general = "D:/Py_Envs/general/Scripts/python.exe",
+--     nvim    = "D:/Py_Envs/nvim/Scripts/python.exe",
+-- } or {
+--     general = vim.fn.expand("~/miniforge3/envs/general/bin/python"),
+--     nvim    = vim.fn.expand("~/miniforge3/envs/nvim/bin/python"),
+-- }
+
+    -- ENV-ThinkPad
+local python_envs = is_win and {
+    general = "C:/Python/Python311/python.exe",
+    nvim    = "C:/Python/Python311/python.exe",
+} or {
+    general = vim.fn.expand("/usr/bin/python3"),
+    nvim    = vim.fn.expand("/usr/bin/python3"),
+}
+
+vim.g.python3_host_prog = python_envs.nvim
+local python_exe = python_envs.general
+vim.cmd([[ let $PYTHONUNBUFFERED=1 ]]) -- 禁用python stdout缓冲 ]
 -- }}}
 
 -- {{{ mapping - original neovim
@@ -91,6 +116,7 @@ neomap('n', '<leader>s?', 'z=', { desc = 'Word Candidate' })
 -- 查找并替换
 neomap('n', '<leader>z', [[:%s/\<<C-R>=expand("<cword>")<CR>\>/<C-R>=expand("<cword>")<CR>/g<left><left>]], { desc = 'Replace Word' })
 neomap('v', '<leader>z', [[:s///g<left><left><left>]], { desc = 'Replace Word' })
+neomap('n', '<leader>Z', [[:<C-u>%s///g<left><left><left>]], { desc = 'Replace Word (whole file)' })
 -- 统计中文字数
 neomap('n', '<localleader>w', [[:s/\v[\u4E00-\u9FFF\u3000-\u303F\uFF00-\uFFEF]//gn<CR>]])
 neomap('v', '<localleader>w', [[:s/\v[\u4E00-\u9FFF\u3000-\u303F\uFF00-\uFFEF]//gn<CR>]])
@@ -221,7 +247,8 @@ neomap("n", "<leader>\\", smart_split, { desc = "Smart split" })
 -- 中文: 'Noto Sans Mono CJK SC'(whitout Nerd); 'LXGW WenKai Mono'(whitout Nerd); 'inconsolatago qihei nf'(Nerd)
 local default_guifont_size = 12
 local guifont_size = default_guifont_size
-local guifont = "Delugia Mono,LXGW WenKai Mono"
+-- local guifont = "Delugia Mono,霞鹜新晰黑＋"
+local guifont = "Delugia Mono,霞鹜新致宋 屏幕阅读版 补全"
 
 local function set_guifont()
     vim.opt.guifont = guifont .. ":h" .. guifont_size
@@ -263,6 +290,7 @@ vim.opt.backup = false
 vim.opt.backupskip = "/tmp/*,$TMPDIR/*,$TMP/*,$TEMP/*,*/shm/*,/private/var/*,.vault.vim"
 vim.opt.clipboard = "unnamedplus"  -- Sync with system clipboard
 vim.opt.cmdheight = 1
+vim.opt.linespace = 4  -- 行高
 vim.opt.confirm = true
 vim.opt.cursorline = false
 vim.opt.encoding = "utf-8"
@@ -346,22 +374,6 @@ vim.g.clipboard = {
     },
     cache_enabled = 0,
 }
--- ENV-Python
-local is_win = vim.fn.has("win32") == 1
-
-local python_envs = is_win and {
-    general = "C:/Python/Python311/python.exe",
-    nvim    = "C:/Python/Python311/python.exe",
-} or {
-    general = vim.fn.expand("/usr/bin/python3"),
-    nvim    = vim.fn.expand("/usr/bin/python3"),
-}
-
-vim.g.python3_host_prog = python_envs.nvim
-
-local python_exe = python_envs.general
-
-vim.cmd([[ let $PYTHONUNBUFFERED=1 ]]) -- 禁用python stdout缓冲 ]
 
 -- Return to last edit position when opening files (You want this!)
 vim.cmd([[ au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif ]])
@@ -460,7 +472,18 @@ vim.api.nvim_create_autocmd("FileChangedShellPost", {
 })
 
 -- 复制时高亮显示文本
-vim.api.nvim_set_hl(0, "MyYankHighlight", { fg = "#000000", bg = "#8fc1cc", bold = true })  -- #c34043
+local function set_yank_hl()
+    if vim.o.background == 'light' then
+        vim.api.nvim_set_hl(0, "MyYankHighlight", { fg = "#4c4f69", bg = "#a8d8e6", bold = true })
+    else
+        vim.api.nvim_set_hl(0, "MyYankHighlight", { fg = "#000000", bg = "#8fc1cc", bold = true })
+    end
+end
+set_yank_hl()
+vim.api.nvim_create_autocmd("ColorScheme", {
+    group = vim.api.nvim_create_augroup("MyYankHl", { clear = true }),
+    callback = set_yank_hl,
+})
 vim.api.nvim_create_autocmd('TextYankPost', {
     desc = 'Highlight when yanking (copying) text',
     group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
@@ -873,21 +896,21 @@ require("lazy").setup({
     vim.api.nvim_set_hl(0, "Lf_hl_stlTotal",        { link = "Statusline" })
 
     if vim.fn.has('gui_running') == 1 then
-        if vim.fn.exists('&bg') and vim.fn.eval('&bg') == 'dark' then
+        if vim.o.background == "dark" then
             vim.api.nvim_set_hl(0, "Lf_hl_stlCategory",     { bg="#303446", fg="#429940", bold=true, italic=true } ) --2 domain
             vim.api.nvim_set_hl(0, "Lf_hl_stlNameOnlyMode", { bg="#303446", fg="#737994" } )                      --3 domain
             vim.api.nvim_set_hl(0, "Lf_hl_stlCwd",          { fg="#b09a6f" } )                                            --4 domain
-        elseif vim.fn.exists('&bg') and vim.fn.eval('&bg') == 'light' then
+        elseif vim.o.background == 'light' then
             vim.api.nvim_set_hl(0, "Lf_hl_stlCategory",     { bg="#e1e2e7", fg="#8839ef", bold=true, italic=true } )  --2 domain
             vim.api.nvim_set_hl(0, "Lf_hl_stlNameOnlyMode", { bg="#e1e2e7", fg="#838ba7" } )                      --3 domain
             vim.api.nvim_set_hl(0, "Lf_hl_stlCwd",          { bg="#e1e2e7", fg="#de6d78" } )                              --4 domain
         end
     else
-        if vim.fn.exists('&bg') and vim.fn.eval('&bg') == 'dark' then
+        if vim.o.background == "dark" then
             vim.api.nvim_set_hl(0, "Lf_hl_stlCategory",     { bg=nil, fg="#429940", bold=true, italic=true } ) --2 domain
             vim.api.nvim_set_hl(0, "Lf_hl_stlNameOnlyMode", { bg=nil, fg="#737994" } )                      --3 domain
             vim.api.nvim_set_hl(0, "Lf_hl_stlCwd",          { bg=nil, fg="#b09a6f" } )                              --4 domain
-        elseif vim.fn.exists('&bg') and vim.fn.eval('&bg') == 'light' then
+        elseif vim.o.background == 'light' then
             vim.api.nvim_set_hl(0, "Lf_hl_stlCategory",     { bg=nil, fg="#8839ef", bold=true, italic=true } ) --2 domain
             vim.api.nvim_set_hl(0, "Lf_hl_stlNameOnlyMode", { bg=nil, fg="#838ba7" } )                      --3 domain
             vim.api.nvim_set_hl(0, "Lf_hl_stlCwd",          { bg=nil, fg="#de6d78" } )                              --4 domain
@@ -1267,29 +1290,42 @@ require("lazy").setup({
         -- ============================================================
         -- Luatab colors - Catppuccin Frappe
         -- ============================================================
+        local function luatab_palette()
+            if vim.o.background == "dark" then
+                return {
+                    active_fg       = "#f2d5cf",
+                    active_bg       = "#6f4a78",
+                    active_index    = "#babbf1",
+                    inactive_fg     = "#838ba7",
+                    inactive_bg     = "#303446",
+                    inactive_index  = "#949cbb",
+                    mod_active      = "#ef9f76",
+                    mod_inactive    = "#e5c890",
+                    fill_bg         = "#303446",
+                }
+            end
+            return {
+                active_fg       = "#4c4f69",
+                active_bg       = "#d6c6ef",  -- 淡 mauve
+                active_index    = "#8839ef",
+                inactive_fg     = "#7c7f93",
+                inactive_bg     = "#e1e2e7",
+                inactive_index  = "#6c6f85",
+                mod_active      = "#b0102f",
+                mod_inactive    = "#df8e1d",
+                fill_bg         = "#e1e2e7",
+            }
+        end
+
         local function set_luatab_highlights()
-            -- 当前 Tab
-            vim.api.nvim_set_hl(0, "LuatabActive", { fg = "#f2d5cf", bg = "#6f4a78", bold = true, })
-
-            -- 当前 Tab 序号
-            vim.api.nvim_set_hl(0, "LuatabActiveIndex", { fg = "#babbf1", bg = "#6f4a78", bold = true, })
-
-            -- 非当前 Tab
-            vim.api.nvim_set_hl(0, "LuatabInactive", { fg = "#838ba7", bg = "#303446", })
-
-            -- 非当前 Tab 序号
-            vim.api.nvim_set_hl(0, "LuatabInactiveIndex", { fg = "#949cbb", bg = "#303446", })
-
-            -- 当前 Tab 已修改
-            vim.api.nvim_set_hl(0, "LuatabModifiedActive", { fg = "#ef9f76", bg = "#6f4a78", bold = true, })
-
-            -- 非当前 Tab 已修改
-            vim.api.nvim_set_hl(0, "LuatabModifiedInactive", { fg = "#e5c890", bg = "#303446", })
-
-            -- Tabline 剩余区域
-            vim.api.nvim_set_hl(0, "TabLineFill", { bg = "#303446", })
-
-            -- colorscheme 重载后需要重新生成 icon 高亮
+            local p = luatab_palette()
+            vim.api.nvim_set_hl(0, "LuatabActive",           { fg = p.active_fg,      bg = p.active_bg,   bold = true })
+            vim.api.nvim_set_hl(0, "LuatabActiveIndex",      { fg = p.active_index,   bg = p.active_bg,   bold = true })
+            vim.api.nvim_set_hl(0, "LuatabInactive",         { fg = p.inactive_fg,    bg = p.inactive_bg })
+            vim.api.nvim_set_hl(0, "LuatabInactiveIndex",    { fg = p.inactive_index, bg = p.inactive_bg })
+            vim.api.nvim_set_hl(0, "LuatabModifiedActive",   { fg = p.mod_active,     bg = p.active_bg,   bold = true })
+            vim.api.nvim_set_hl(0, "LuatabModifiedInactive", { fg = p.mod_inactive,   bg = p.inactive_bg })
+            vim.api.nvim_set_hl(0, "TabLineFill",            { bg = p.fill_bg })
             icon_hl_cache = {}
         end
 
@@ -1327,12 +1363,14 @@ require("lazy").setup({
                 return ""
             end
 
-            local bg = is_selected
-                and "#6f4a78"
-                or "#303446"
+            -- local bg = is_selected and "#6f4a78" or "#303446"
+
+            local p = luatab_palette()
+            local bg = is_selected and p.active_bg or p.inactive_bg
 
             -- 每种 icon 颜色分别创建 Active / Inactive 高亮
             local hl = "LuatabIcon_"
+                .. vim.o.background .. "_"
                 .. (is_selected and "Active_" or "Inactive_")
                 .. color:gsub("#", "")
 
@@ -1722,9 +1760,19 @@ require("lazy").setup({
         { "]\\", "<Cmd>ScrollViewLast<cr>",  mode = { "n" }, desc = "Last sign" },
     },
     config = function()
+    -- Scrollview colors
+    if vim.o.background == "light" then
+        vim.api.nvim_set_hl(0, "ScrollView", { bg = "#9399ad" })
+        vim.api.nvim_set_hl(0, "ScrollViewCursor", { fg = "#b45f06", bg = nil, })
+        vim.api.nvim_set_hl(0, "ScrollViewSearch", { fg = "#b42345", bg = nil, })
+        vim.api.nvim_set_hl(0, "ScrollViewHover", { bg = "#6c6f85", })
+    else
+        vim.api.nvim_set_hl(0, "ScrollViewHover", { bg = "#949cbb", })
+    end
     require("scrollview").setup {
       excluded_filetypes = { 'snacks_dashboard', 'neo-tree','mason','floaterm' },
       winblend = 50,
+      -- winblend_gui = 0,
       -- signs_on_startup = {'all'},
       signs_on_startup = {
           "conflicts",
@@ -1764,7 +1812,6 @@ require("lazy").setup({
       -- change_symbol = '│',
       -- delete_symbol = '_',
     }
-    vim.api.nvim_set_hl(0, "ScrollViewHover", { link = "Search" })
     end,
   },
 -- }}}
@@ -1806,10 +1853,10 @@ require("lazy").setup({
     -- vim.cmd[[nnoremap <leader>/ /\<<C-R>=expand("<cword>")<CR>\><left><left>]]
     neomap('n', "<leader>/", [[:/\<<C-R>=expand("<cword>")<CR>\><left><left>]], { desc = 'Search <Pattern>' })
     --color
-    if vim.fn.exists('&bg') and vim.fn.eval('&bg') == 'dark' then
+    if vim.o.background == "dark" then
         vim.api.nvim_set_hl(0, "IncSearch", { fg = "#000000", bg = "#d73a4a", bold = true })
         vim.api.nvim_set_hl(0, "CurSearch", { fg = "#000000", bg = "#d73a4a", bold = true }) -- set hlslens color
-    elseif vim.fn.exists('&bg') and vim.fn.eval('&bg') == 'light' then
+    elseif vim.o.background == 'light' then
         vim.api.nvim_set_hl(0, "IncSearch", { fg = "#000000", bg = "#e78284", bold = true })
         vim.api.nvim_set_hl(0, "CurSearch", { fg = "#000000", bg = "#e78284", bold = true }) -- set hlslens color
     end
@@ -2194,10 +2241,13 @@ require("lazy").setup({
             vim.cmd("language time C")
         end
 
+        local is_light = vim.o.background == 'light'
+
         local orgmode = require('orgmode')
         local org_dir = vim.fn.has("unix") == 1
             and vim.fn.expand("~/dotfiles_wsl/.config/nvim/support/Org")
             or "D:/Dotfiles/nvim/nvim/support/Org"
+
         orgmode.setup({
            org_agenda_files = org_dir .. '/**/*',
            org_default_notes_file = org_dir .. '/index.org',
@@ -2208,7 +2258,13 @@ require("lazy").setup({
            org_startup_indented = true,                          -- 虚拟缩进
            org_indent_mode_turns_off_org_adapt_indentation = false,
            org_todo_keywords = { 'TODO(t)', 'WAITING', 'IN-PROGRESS', '|', 'DONE(d)', 'CANCELLED' },
-           org_todo_keyword_faces = {
+           org_todo_keyword_faces = is_light and {
+               ['TODO']        = ':foreground #d20f39 :background #f3d3d8 :weight bold',
+               ['WAITING']     = ':foreground #a8650a :background #f6e6c8 :weight bold',
+               ['IN-PROGRESS'] = ':foreground #5b6bd6 :background #dfe1f7 :weight bold',
+               ['DONE']        = ':foreground #2f7d1f :background #d5ecc9 :weight bold',
+               ['CANCELLED']   = ':foreground #7c7f93 :background #d4d6de :weight bold',
+           } or {
                ['TODO']        = ':foreground #e06c75 :background #4a3038 :weight bold',
                ['WAITING']     = ':foreground #d9b26f :background #4a4332 :weight bold',
                ['IN-PROGRESS'] = ':foreground #a9a1e1 :background #403d52 :weight bold',
@@ -2321,42 +2377,60 @@ require("lazy").setup({
         end, { desc = "[p]rivate" })
 
         -- color
-        -- Planning keywords: SCHEDULED / DEADLINE / CLOSED
-        vim.api.nvim_set_hl(0, "@org.plan", { fg = "#73797e" })
 
-        -- Priority: A / B / C
-        vim.api.nvim_set_hl(0, "@org.priority.highest", { fg = "#e06c75", bg = "#4a3038", bold = true, })
-        vim.api.nvim_set_hl(0, "@org.priority.default", { fg = "#d9b26f", bg = "#4a4332", bold = true, })
-        vim.api.nvim_set_hl(0, "@org.priority.lowest", { fg = "#a9b4c2", bg = "#3d4652", bold = true, })
+        if vim.o.background == 'dark' then
+            -- Planning keywords: SCHEDULED / DEADLINE / CLOSED
+            vim.api.nvim_set_hl(0, "@org.plan", { fg = "#73797e" })
 
-        -- Checkbox
-        vim.api.nvim_set_hl(0, "@org.checkbox",             { fg = "#f23f42" })
-        vim.api.nvim_set_hl(0, "@org.checkbox.halfchecked", { fg = "#0AC40A" })
-        vim.api.nvim_set_hl(0, "@org.checkbox.checked",     { fg = "#0AC40A" })
+            -- Priority: A / B / C
+            vim.api.nvim_set_hl(0, "@org.priority.highest", { fg = "#e06c75", bg = "#4a3038", bold = true, })
+            vim.api.nvim_set_hl(0, "@org.priority.default", { fg = "#d9b26f", bg = "#4a4332", bold = true, })
+            vim.api.nvim_set_hl(0, "@org.priority.lowest", { fg = "#a9b4c2", bg = "#3d4652", bold = true, })
 
-        -- Tags
-        vim.api.nvim_set_hl(0, "@org.tag", { fg = "#73797e", italic = true, })
+            -- Checkbox
+            vim.api.nvim_set_hl(0, "@org.checkbox",             { fg = "#f23f42" })
+            vim.api.nvim_set_hl(0, "@org.checkbox.halfchecked", { fg = "#0AC40A" })
+            vim.api.nvim_set_hl(0, "@org.checkbox.checked",     { fg = "#0AC40A" })
 
-        -- org-colors-doom-soft
-        vim.api.nvim_set_hl(0, "@org.headline.level1", { fg = "#d16d9e" })
-        vim.api.nvim_set_hl(0, "@org.headline.level2", { fg = "#c9824f" })
-        vim.api.nvim_set_hl(0, "@org.headline.level3", { fg = "#51afef" })
-        vim.api.nvim_set_hl(0, "@org.headline.level4", { fg = "#7faa68" })
-        vim.api.nvim_set_hl(0, "@org.headline.level5", { fg = "#e29abc" })
-        vim.api.nvim_set_hl(0, "@org.headline.level6", { fg = "#edc5a0" })
-        vim.api.nvim_set_hl(0, "@org.headline.level7", { fg = "#8dcef6" })
-        vim.api.nvim_set_hl(0, "@org.headline.level8", { fg = "#b9d7a5" })
+            -- Tags
+            vim.api.nvim_set_hl(0, "@org.tag", { fg = "#73797e", italic = true, })
 
-        -- Org headline colors: Doom Emacs / doom-one
-        -- vim.api.nvim_set_hl(0, "@org.headline.level1", { fg = "#51afef" })
-        -- vim.api.nvim_set_hl(0, "@org.headline.level2", { fg = "#c678dd" })
-        -- vim.api.nvim_set_hl(0, "@org.headline.level3", { fg = "#a9a1e1" })
-        -- vim.api.nvim_set_hl(0, "@org.headline.level4", { fg = "#7cc3f3" })
-        -- vim.api.nvim_set_hl(0, "@org.headline.level5", { fg = "#d499e5" })
-        -- vim.api.nvim_set_hl(0, "@org.headline.level6", { fg = "#a8d7f7" })
-        -- vim.api.nvim_set_hl(0, "@org.headline.level7", { fg = "#e2bbee" })
-        -- vim.api.nvim_set_hl(0, "@org.headline.level8", { fg = "#dceffb" })
+            -- org-colors-doom-soft
+            vim.api.nvim_set_hl(0, "@org.headline.level1", { fg = "#d16d9e" })
+            vim.api.nvim_set_hl(0, "@org.headline.level2", { fg = "#c9824f" })
+            vim.api.nvim_set_hl(0, "@org.headline.level3", { fg = "#51afef" })
+            vim.api.nvim_set_hl(0, "@org.headline.level4", { fg = "#7faa68" })
+            vim.api.nvim_set_hl(0, "@org.headline.level5", { fg = "#e29abc" })
+            vim.api.nvim_set_hl(0, "@org.headline.level6", { fg = "#edc5a0" })
+            vim.api.nvim_set_hl(0, "@org.headline.level7", { fg = "#8dcef6" })
+            vim.api.nvim_set_hl(0, "@org.headline.level8", { fg = "#b9d7a5" })
+        else
+            -- Planning keywords: SCHEDULED / DEADLINE / CLOSED
+            vim.api.nvim_set_hl(0, "@org.plan", { fg = "#7c7f93" })
 
+            -- Priority
+            vim.api.nvim_set_hl(0, "@org.priority.highest", { fg = "#d20f39", bg = "#f3d3d8", bold = true })
+            vim.api.nvim_set_hl(0, "@org.priority.default", { fg = "#a8650a", bg = "#f6e6c8", bold = true })
+            vim.api.nvim_set_hl(0, "@org.priority.lowest",  { fg = "#5c5f77", bg = "#d4d6de", bold = true })
+
+            -- Checkbox
+            vim.api.nvim_set_hl(0, "@org.checkbox",             { fg = "#d20f39" })
+            vim.api.nvim_set_hl(0, "@org.checkbox.halfchecked", { fg = "#40a02b" })
+            vim.api.nvim_set_hl(0, "@org.checkbox.checked",     { fg = "#40a02b" })
+
+            -- Tags
+            vim.api.nvim_set_hl(0, "@org.tag", { fg = "#7c7f93", italic = true })
+
+            -- Headlines (doom-soft 的浅色版: 同色相, 压暗以保证对比度)
+            vim.api.nvim_set_hl(0, "@org.headline.level1", { fg = "#b83f80" })
+            vim.api.nvim_set_hl(0, "@org.headline.level2", { fg = "#c25f0b" })
+            vim.api.nvim_set_hl(0, "@org.headline.level3", { fg = "#1e66f5" })
+            vim.api.nvim_set_hl(0, "@org.headline.level4", { fg = "#40a02b" })
+            vim.api.nvim_set_hl(0, "@org.headline.level5", { fg = "#b14f9c" })
+            vim.api.nvim_set_hl(0, "@org.headline.level6", { fg = "#b9783b" })
+            vim.api.nvim_set_hl(0, "@org.headline.level7", { fg = "#2a8bbf" })
+            vim.api.nvim_set_hl(0, "@org.headline.level8", { fg = "#5a9a3f" })
+        end
     end,
     init = function()
         vim.cmd([[au FileType org setlocal nofoldenable]])
@@ -3057,20 +3131,28 @@ require("lazy").setup({
 			},
 			attach_to_untracked = false,
 		})
-    -- signs color
         if vim.o.background == 'dark' then
-            vim.api.nvim_set_hl(0, "GitSignsAdd",    { fg = "#a6d189", bg = "None" })
-            vim.api.nvim_set_hl(0, "GitSignsDelete", { fg = "#e78284", bg = "None" })
-            vim.api.nvim_set_hl(0, "GitSignsChange", { fg = "#26deff", bg = "None" })
+        -- signs color
+            vim.api.nvim_set_hl(0, "GitSignsAdd",    { fg = "#7ee787", bg = "NONE" })
+            vim.api.nvim_set_hl(0, "GitSignsChange", { fg = "#ffd866", bg = "NONE" })
+            vim.api.nvim_set_hl(0, "GitSignsDelete", { fg = "#ff6b9a", bg = "NONE" })
+
+        -- word_diff color
+            vim.api.nvim_set_hl(0, "GitSignsAddInline",    { fg = "#00cc00", bg = "#005500" })
+            vim.api.nvim_set_hl(0, "GitSignsDeleteInline", { fg = "#cc0000", bg = "#550000" })
+            vim.api.nvim_set_hl(0, "GitSignsChangeInline", { fg = "#00cc00", bg = "#005500" })
+
         elseif vim.o.background == 'light' then
-            vim.api.nvim_set_hl(0, "GitSignsAdd",    { fg = "#40a02b", bg = "None" })
-            vim.api.nvim_set_hl(0, "GitSignsDelete", { fg = "#d20f39", bg = "None" })
-            vim.api.nvim_set_hl(0, "GitSignsChange", { fg = "#04a5e5", bg = "None" })
+        -- signs color
+            vim.api.nvim_set_hl(0, "GitSignsAdd",    { fg = "#229447", bg = "NONE" })
+            vim.api.nvim_set_hl(0, "GitSignsChange", { fg = "#c58d00", bg = "NONE" })
+            vim.api.nvim_set_hl(0, "GitSignsDelete", { fg = "#d81b60", bg = "NONE" })
+
+        -- word_diff color
+            vim.api.nvim_set_hl(0, "GitSignsAddInline",    { fg = "#2d7a1e", bg = "#cfe8c4" })
+            vim.api.nvim_set_hl(0, "GitSignsDeleteInline", { fg = "#d20f39", bg = "#f4c9d0" })
+            vim.api.nvim_set_hl(0, "GitSignsChangeInline", { fg = "#1e66f5", bg = "#cfe0fb" })
         end
-    -- word_diff color
-    vim.api.nvim_set_hl(0, "GitSignsAddInline",    { fg = "#00cc00", bg = "#005500" })
-    vim.api.nvim_set_hl(0, "GitSignsDeleteInline", { fg = "#cc0000", bg = "#550000" })
-    vim.api.nvim_set_hl(0, "GitSignsChangeInline", { fg = "#00cc00", bg = "#005500" })
 	end,
   },
 -- }}}
@@ -3237,8 +3319,8 @@ local term_sign = vim.uv.os_getenv("MYSIGN")
 
 if vim.fn.has('gui_running') == 1 then
     local colorscheme_list = {
-        'catppuccin-frappe',
-        -- 'catppuccin-latte',
+        -- 'catppuccin-frappe',
+        'catppuccin-latte',
     }
     local randomIndex_CS = math.random(1,#colorscheme_list)
     vim.cmd('colorscheme ' .. colorscheme_list[randomIndex_CS])
@@ -3257,120 +3339,217 @@ end
 -- }}}
 
 -- {{{ highlihgt (origin neovim & plugins)
+vim.api.nvim_set_hl(0, "Pmenu",    { fg = "#5b678f", bg = nil}) -- cmp documentation font color
+
+if vim.o.background == "dark" then
 -- folded color
-vim.api.nvim_set_hl(0, "Folded", { fg = "#c9a0a9", bg = "#403940", bold = true, italic = true })
+    vim.api.nvim_set_hl(0, "Folded", { fg = "#c9a0a9", bg = "#403940", bold = true, italic = true })
 
 -- blink border
-vim.api.nvim_set_hl(0, "BlinkCmpMenuBorder", { fg = "#8b949e", })
-vim.api.nvim_set_hl(0, "BlinkCmpDocBorder", { fg = "#8b949e", })
+    vim.api.nvim_set_hl(0, "BlinkCmpMenuBorder", { fg = "#8b949e", })
+    vim.api.nvim_set_hl(0, "BlinkCmpDocBorder", { fg = "#8b949e", })
 
--- cmp color
-local fgdark = "#2E3440"
-vim.api.nvim_set_hl(0, "Pmenu",    { fg = "#5b678f", bg = nil}) -- cmp documentation font color
-if vim.fn.exists('&bg') and vim.fn.eval('&bg') == 'dark' then
-    vim.api.nvim_set_hl(0, "CmpItemAbbrMatch",      { fg = "#82AAFF", bg = nil, bold = true })  -- #9CDCFE
-    vim.api.nvim_set_hl(0, "CmpItemAbbrMatchFuzzy", { fg = "#b5585f", bg = nil, bold = true })
+-- blink color
+    vim.api.nvim_set_hl(0, "BlinkCmpLabelMatch",      { fg = "#82AAFF", bg = nil, bold = true })  -- #9CDCFE
     vim.api.nvim_set_hl(0, "PmenuSel", { fg = nil, bg = "#3c4452"}) -- cmp 选中行背景颜色
-    vim.api.nvim_set_hl(0, "CmpItemKindVariable", { fg = fgdark, bg = "#7E8294" }) -- #9CDCFE
-    vim.api.nvim_set_hl(0, "CmpItemKindFile",     { fg = fgdark, bg = "#93a9ed" })  -- #9CDCFE
-elseif vim.fn.exists('&bg') and vim.fn.eval('&bg') == 'light' then
-    vim.api.nvim_set_hl(0, "CmpItemAbbrMatch",      { fg = "#2E3440", bg = nil, bold = true })
-    vim.api.nvim_set_hl(0, "CmpItemAbbrMatchFuzzy", { fg = "#d73a4a", bg = nil, bold = true })
-    vim.api.nvim_set_hl(0, "PmenuSel", { fg = nil, bg = "#ccd0da"}) -- cmp 选中行背景颜色
-    vim.api.nvim_set_hl(0, "CmpItemKindVariable", { fg = fgdark, bg = "#acb0be" }) -- #9CDCFE
-    vim.api.nvim_set_hl(0, "CmpItemKindFile",     { fg = fgdark, bg = "#acb0be" })  -- #9CDCFE
+
+    vim.api.nvim_set_hl(0, "BlinkCmpLabel",           { fg = "#949cbb", bg = nil })  -- #abb2bf
+    vim.api.nvim_set_hl(0, "BlinkCmpLabelDeprecated", { fg = "#7E8294", bg = nil, strikethrough = true })
+    vim.api.nvim_set_hl(0, "BlinkCmpSource",           { fg = "#C792EA", bg = nil, italic = true })  -- #ef9f76
+
+elseif vim.o.background == 'light' then
+-- folded color
+    vim.api.nvim_set_hl(0, "Folded", { fg = "#9c4a67", bg = "#d9d3dc", bold = true, italic = true })
+
+-- blink border
+    vim.api.nvim_set_hl(0, "BlinkCmpMenuBorder", { fg = "#7c7f93", })
+    vim.api.nvim_set_hl(0, "BlinkCmpDocBorder", { fg = "#7c7f93", })
+
+-- blink 菜单文字
+    vim.api.nvim_set_hl(0, "Pmenu", { fg = "#6c6f85", bg = nil })
+    vim.api.nvim_set_hl(0, "BlinkCmpLabel", { fg = "#5c5f77", bg = nil })
+    vim.api.nvim_set_hl(0, "BlinkCmpLabelDeprecated", { fg = "#9ca0b0", bg = nil, strikethrough = true })
+    vim.api.nvim_set_hl(0, "BlinkCmpSource", { fg = "#8839ef", bg = nil, italic = true })
+
+    vim.api.nvim_set_hl(0, "BlinkCmpLabelMatch",      { fg = "#c04a50", bg = nil, bold = true })
+    vim.api.nvim_set_hl(0, "PmenuSel", { fg = nil, bg = "#ccd0da"}) -- blink 选中行背景颜色
 end
 
-vim.api.nvim_set_hl(0, "CmpItemAbbr",           { fg = "#949cbb", bg = nil })  -- #abb2bf
-vim.api.nvim_set_hl(0, "CmpItemAbbrDeprecated", { fg = "#7E8294", bg = nil, strikethrough = true })
-vim.api.nvim_set_hl(0, "CmpItemMenu",           { fg = "#C792EA", bg = nil, italic = true })  -- #ef9f76
+-- cmp / blink completion item kinds
+local kind_colors
 
-vim.api.nvim_set_hl(0, "CmpItemKindField",    { fg = fgdark, bg = "#B5585F" })
-vim.api.nvim_set_hl(0, "CmpItemKindProperty", { fg = fgdark, bg = "#B5585F" })
-vim.api.nvim_set_hl(0, "CmpItemKindEvent",    { fg = fgdark, bg = "#B5585F" })
+if vim.o.background == "dark" then
+    -- Catppuccin Frappe: 保留原有深色配色
+    kind_colors = {
+        Variable      = "#ef9f76",
+        File          = "#8caaee",
 
-vim.api.nvim_set_hl(0, "CmpItemKindText",    { fg = fgdark, bg = "#9FBD73" })
-vim.api.nvim_set_hl(0, "CmpItemKindEnum",    { fg = fgdark, bg = "#9FBD73" })
-vim.api.nvim_set_hl(0, "CmpItemKindKeyword", { fg = fgdark, bg = "#9FBD73" })
+        Field         = "#B5585F",
+        Property      = "#93a9ed",
+        Event         = "#B5585F",
 
-vim.api.nvim_set_hl(0, "CmpItemKindConstant",    { fg = fgdark, bg = "#D4BB6C" })
-vim.api.nvim_set_hl(0, "CmpItemKindConstructor", { fg = fgdark, bg = "#D4BB6C" })
-vim.api.nvim_set_hl(0, "CmpItemKindReference",   { fg = fgdark, bg = "#D4BB6C" })
+        Text          = "#9FBD73",
+        Enum          = "#9FBD73",
+        Keyword       = "#ca9ee6",
 
-vim.api.nvim_set_hl(0, "CmpItemKindFunction", { fg = fgdark, bg = "#A377BF" })
-vim.api.nvim_set_hl(0, "CmpItemKindStruct",   { fg = fgdark, bg = "#A377BF" })
-vim.api.nvim_set_hl(0, "CmpItemKindClass",    { fg = fgdark, bg = "#A377BF" })
-vim.api.nvim_set_hl(0, "CmpItemKindModule",   { fg = fgdark, bg = "#A377BF" })
-vim.api.nvim_set_hl(0, "CmpItemKindOperator", { fg = fgdark, bg = "#A377BF" })
+        Constant      = "#D4BB6C",
+        Constructor   = "#D4BB6C",
+        Reference     = "#D4BB6C",
 
-vim.api.nvim_set_hl(0, "CmpItemKindUnit",    { fg = fgdark, bg = "#D4A959" })
-vim.api.nvim_set_hl(0, "CmpItemKindSnippet", { fg = fgdark, bg = "#D4A959" })
-vim.api.nvim_set_hl(0, "CmpItemKindFolder",  { fg = fgdark, bg = "#8ec07c" })
+        Function      = "#A377BF",
+        Struct        = "#A377BF",
+        Class         = "#A377BF",
+        Module        = "#A377BF",
+        Operator      = "#A377BF",
 
-vim.api.nvim_set_hl(0, "CmpItemKindMethod",     { fg = fgdark, bg = "#6C8ED4" })
-vim.api.nvim_set_hl(0, "CmpItemKindValue",      { fg = fgdark, bg = "#6C8ED4" })
-vim.api.nvim_set_hl(0, "CmpItemKindEnumMember", { fg = fgdark, bg = "#6C8ED4" })
+        Unit          = "#D4A959",
+        Snippet       = "#D4A959",
+        Folder        = "#8ec07c",
 
-vim.api.nvim_set_hl(0, "CmpItemKindInterface",     { fg = fgdark, bg = "#58B5A8" })
-vim.api.nvim_set_hl(0, "CmpItemKindColor",         { fg = fgdark, bg = "#58B5A8" })
-vim.api.nvim_set_hl(0, "CmpItemKindTypeParameter", { fg = fgdark, bg = "#58B5A8" })
+        Method        = "#6C8ED4",
+        Value         = "#6C8ED4",
+        EnumMember    = "#6C8ED4",
+
+        Interface     = "#58B5A8",
+        Color         = "#58B5A8",
+        TypeParameter = "#58B5A8",
+    }
+
+else
+    -- Catppuccin Latte: 高对比度浅色配色
+    kind_colors = {
+        Variable      = "#b45f06",
+        File          = "#1e66f5",
+
+        Field         = "#b42345",
+        Property      = "#1e66f5",
+        Event         = "#b42345",
+
+        Text          = "#287a20",
+        Enum          = "#287a20",
+        Keyword       = "#6941a5",
+
+        Constant      = "#9a6700",
+        Constructor   = "#9a6700",
+        Reference     = "#9a6700",
+
+        Function      = "#8839ef",
+        Struct        = "#8839ef",
+        Class         = "#8839ef",
+        Module        = "#8839ef",
+        Operator      = "#8839ef",
+
+        Unit          = "#a8650a",
+        Snippet       = "#a8650a",
+        Folder        = "#347d26",
+
+        Method        = "#1e66f5",
+        Value         = "#1e66f5",
+        EnumMember    = "#1e66f5",
+
+        Interface     = "#087f8c",
+        Color         = "#087f8c",
+        TypeParameter = "#087f8c",
+    }
+end
+
+-- 统一设置补全类型高亮
+for kind, color in pairs(kind_colors) do
+    vim.api.nvim_set_hl(0, "BlinkCmpKind" .. kind, {
+        fg = color,
+        bg = "NONE",
+    })
+end
 
 -- Diagnostics Highlights
-vim.api.nvim_set_hl(0, "DiagnosticError", { fg = "#ff3939" })
-vim.api.nvim_set_hl(0, "DiagnosticWarn",  { fg = "#ffa500" })
-vim.api.nvim_set_hl(0, "DiagnosticHint",  { fg = "#1d6a70" })
-vim.api.nvim_set_hl(0, "DiagnosticInfo",  { fg = "#FFCC66" })
+if vim.o.background == "dark" then
+    vim.api.nvim_set_hl(0, "DiagnosticError", { fg = "#ff3939" })
+    vim.api.nvim_set_hl(0, "DiagnosticWarn",  { fg = "#ffa500" })
+    vim.api.nvim_set_hl(0, "DiagnosticHint",  { fg = "#1d6a70" })
+    vim.api.nvim_set_hl(0, "DiagnosticInfo",  { fg = "#FFCC66" })
 
-vim.api.nvim_set_hl(0, "DiagnosticsDefaultError",    { bg = nil })
-vim.api.nvim_set_hl(0, "DiagnosticVirtualTextError", { fg = "#ff3939", bg = nil, italic = true })
-vim.api.nvim_set_hl(0, "DiagnosticVirtualTextWarn",  { fg = "#ffa500", bg = nil, italic = true })
-vim.api.nvim_set_hl(0, "DiagnosticVirtualTextHint",  { fg = "#1d6a70", bg = nil, italic = true })
-vim.api.nvim_set_hl(0, "DiagnosticVirtualTextInfo",  { fg = "#FFCC66", bg = nil, italic = true })
+    vim.api.nvim_set_hl(0, "DiagnosticsDefaultError",    { bg = nil })
+    vim.api.nvim_set_hl(0, "DiagnosticVirtualTextError", { fg = "#ff3939", bg = nil, italic = true })
+    vim.api.nvim_set_hl(0, "DiagnosticVirtualTextWarn",  { fg = "#ffa500", bg = nil, italic = true })
+    vim.api.nvim_set_hl(0, "DiagnosticVirtualTextHint",  { fg = "#1d6a70", bg = nil, italic = true })
+    vim.api.nvim_set_hl(0, "DiagnosticVirtualTextInfo",  { fg = "#FFCC66", bg = nil, italic = true })
 
-vim.api.nvim_set_hl(0, "DiagnosticFloatingError", { fg = "#ff3939", bg = nil, italic = true })
-vim.api.nvim_set_hl(0, "DiagnosticFloatingWarn",  { fg = "#ffa500", bg = nil, italic = true })
-vim.api.nvim_set_hl(0, "DiagnosticFloatingHint",  { fg = "#1d6a70", bg = nil, italic = true })
-vim.api.nvim_set_hl(0, "DiagnosticFloatingInfo",  { fg = "#FFCC66", bg = nil, italic = true })
+    vim.api.nvim_set_hl(0, "DiagnosticFloatingError", { fg = "#ff3939", bg = nil, italic = true })
+    vim.api.nvim_set_hl(0, "DiagnosticFloatingWarn",  { fg = "#ffa500", bg = nil, italic = true })
+    vim.api.nvim_set_hl(0, "DiagnosticFloatingHint",  { fg = "#1d6a70", bg = nil, italic = true })
+    vim.api.nvim_set_hl(0, "DiagnosticFloatingInfo",  { fg = "#FFCC66", bg = nil, italic = true })
 
-vim.api.nvim_set_hl(0, "DiagnosticSignError", { fg = "#ff3939" })
-vim.api.nvim_set_hl(0, "DiagnosticSignWarn",  { fg = "#ffa500" })
-vim.api.nvim_set_hl(0, "DiagnosticSignHint",  { fg = "#1d6a70" })
-vim.api.nvim_set_hl(0, "DiagnosticSignInfo",  { fg = "#FFCC66" })
+    vim.api.nvim_set_hl(0, "DiagnosticSignError", { fg = "#ff3939" })
+    vim.api.nvim_set_hl(0, "DiagnosticSignWarn",  { fg = "#ffa500" })
+    vim.api.nvim_set_hl(0, "DiagnosticSignHint",  { fg = "#1d6a70" })
+    vim.api.nvim_set_hl(0, "DiagnosticSignInfo",  { fg = "#FFCC66" })
+else
+    vim.api.nvim_set_hl(0, "DiagnosticError", { fg = "#d20f39" })
+    vim.api.nvim_set_hl(0, "DiagnosticWarn",  { fg = "#a8650a" })
+    vim.api.nvim_set_hl(0, "DiagnosticHint",  { fg = "#179299" })
+    vim.api.nvim_set_hl(0, "DiagnosticInfo",  { fg = "#1e66f5" })
+
+    vim.api.nvim_set_hl(0, "DiagnosticsDefaultError",    { bg = nil })
+    vim.api.nvim_set_hl(0, "DiagnosticVirtualTextError", { fg = "#d20f39", bg = nil, italic = true })
+    vim.api.nvim_set_hl(0, "DiagnosticVirtualTextWarn",  { fg = "#a8650a", bg = nil, italic = true })
+    vim.api.nvim_set_hl(0, "DiagnosticVirtualTextHint",  { fg = "#179299", bg = nil, italic = true })
+    vim.api.nvim_set_hl(0, "DiagnosticVirtualTextInfo",  { fg = "#1e66f5", bg = nil, italic = true })
+
+    vim.api.nvim_set_hl(0, "DiagnosticFloatingError", { fg = "#d20f39", bg = nil, italic = true })
+    vim.api.nvim_set_hl(0, "DiagnosticFloatingWarn",  { fg = "#a8650a", bg = nil, italic = true })
+    vim.api.nvim_set_hl(0, "DiagnosticFloatingHint",  { fg = "#179299", bg = nil, italic = true })
+    vim.api.nvim_set_hl(0, "DiagnosticFloatingInfo",  { fg = "#1e66f5", bg = nil, italic = true })
+
+    vim.api.nvim_set_hl(0, "DiagnosticSignError", { fg = "#d20f39" })
+    vim.api.nvim_set_hl(0, "DiagnosticSignWarn",  { fg = "#a8650a" })
+    vim.api.nvim_set_hl(0, "DiagnosticSignHint",  { fg = "#179299" })
+    vim.api.nvim_set_hl(0, "DiagnosticSignInfo",  { fg = "#1e66f5" })
+end
 
 -- snacks.picker
 vim.api.nvim_set_hl(0, "SnacksPickerMatch", { fg = "#d3366f", bold = true })
 
 -- dark & light colorscheme
-if vim.fn.exists('&bg') and vim.fn.eval('&bg') == 'dark' then
+if vim.o.background == "dark" then
     -- search color
     vim.api.nvim_set_hl(0, "Search", { fg = "#ccd0da", bg = "#228b22" })
     -- cuc cul color
     vim.api.nvim_set_hl(0, "CursorLine",   { bg = "#3C4452" })
     vim.api.nvim_set_hl(0, "Cursorcolumn", { bg = "#3C4452" })
-elseif vim.fn.exists('&bg') and vim.fn.eval('&bg') == 'light' then
+    -- diff color (original neovim)
+    vim.api.nvim_set_hl(0, "DiffAdd",    { fg = "#00cc00", bg = "#005500" })
+    vim.api.nvim_set_hl(0, "DiffDelete", { fg = "#cc0000", bg = "#550000" })
+    vim.api.nvim_set_hl(0, "DiffChange", { fg = "#000000", bg = "#7A7A7A" })
+    vim.api.nvim_set_hl(0, "DiffText",   { fg = "#00cc00", bg = "#005500" })
+elseif vim.o.background == 'light' then
     -- search color
     vim.api.nvim_set_hl(0, "Search", { fg = "#e1e2e7", bg = "#40a02b" })
     -- cuc cul color
     vim.api.nvim_set_hl(0, "CursorLine",   { bg = "#c6cbd9" })
     vim.api.nvim_set_hl(0, "Cursorcolumn", { bg = "#c6cbd9" })
+    -- diff color
+    vim.api.nvim_set_hl(0, "DiffAdd",    { bg = "#cfe8c4" })
+    vim.api.nvim_set_hl(0, "DiffDelete", { fg = "#d20f39", bg = "#f4c9d0" })
+    vim.api.nvim_set_hl(0, "DiffChange", { bg = "#d3dcf2" })
+    vim.api.nvim_set_hl(0, "DiffText",   { bg = "#aebff0", bold = true })
 end
--- diff color (original neovim)
-vim.api.nvim_set_hl(0, "DiffAdd",    { fg = "#00cc00", bg = "#005500" })
-vim.api.nvim_set_hl(0, "DiffDelete", { fg = "#cc0000", bg = "#550000" })
-vim.api.nvim_set_hl(0, "DiffChange", { fg = "#000000", bg = "#7A7A7A" })
-vim.api.nvim_set_hl(0, "DiffText",   { fg = "#00cc00", bg = "#005500" })
+
 -- lsp_signature.nvim color
 vim.api.nvim_set_hl(0, "lsp_signature_highlight", { fg = "#000000", bg = "#f68e26" })
 -- mg979/vim-visual-multi theme
-if vim.fn.exists('&bg') and vim.fn.eval('&bg') == 'dark' then
+if vim.o.background == "dark" then
     vim.g.VM_theme = 'iceblue'
-elseif vim.fn.exists('&bg') and vim.fn.eval('&bg') == 'light' then
+elseif vim.o.background == 'light' then
     vim.g.VM_theme = 'lightblue2'
 end
 -- }}}
 
 -- {{{ GUI&TERM
 if vim.g.neovide then -- Neovide
+
+    -- 阴影效果
+    vim.g.neovide_floating_shadow = true
+
     -- ============================================================
     -- Cursor VFX：光标粒子特效
     -- ============================================================
@@ -3412,6 +3591,24 @@ if vim.g.neovide then -- Neovide
     -- Neovide 窗口失去焦点时，block cursor 显示为空心框
     vim.g.neovide_cursor_unfocused_outline_width = 0.125
 
+   -- 设置光标颜色
+    vim.opt.guicursor = "n-v-c:block-Cursor,i-ci:ver25-Cursor,r-cr:hor20-Cursor"
+    if vim.o.background == "dark" then
+        -- Frappe
+        vim.api.nvim_set_hl(0, "Cursor", {
+            fg = "#303446",
+            bg = "#f2d5cf",
+            reverse = false,
+        })
+    else
+        -- Latte
+        vim.api.nvim_set_hl(0, "Cursor", {
+            fg = "#e1e2e7",
+            bg = "#9c6f78",
+            reverse = false,
+        })
+    end
+
     -- ============================================================
     -- Scroll animation：滚动动画
     -- ============================================================
@@ -3420,7 +3617,8 @@ if vim.g.neovide then -- Neovide
     -- ============================================================
     -- Windows appearance：Windows 窗口外观
     -- ============================================================
-    vim.g.neovide_opacity = 0.99
+    -- vim.g.neovide_opacity = 0.99
+    vim.g.neovide_opacity = 1.0
 
     -- ============================================================
     -- Window behavior：窗口行为
