@@ -4,10 +4,12 @@
     // "workbench.colorTheme": "One Dark Pro Mix",
 
     // Font
-    // "editor.fontFamily": "'Delugia Mono', 'LXGW WenKai Mono', monospace",
     // "editor.fontFamily": "'Delugia Mono', '宋体', monospace",
+    // "editor.fontFamily": "'Delugia Mono', 'LXGW WenKai Mono', monospace",
     // "editor.fontFamily": "'Delugia Mono', 'InconsolataGo QiHei NF', monospace",
-    "editor.fontFamily": "'Delugia Mono', 'Zhuque Fangsong (technical preview) Regular', monospace",
+    // "editor.fontFamily": "'Delugia Mono', '朱雀仿宋（预览测试版）', monospace",
+    // "editor.fontFamily": "'Delugia Mono', '霞鹜新致宋 屏幕阅读版 补全', monospace",
+    "editor.fontFamily": "'Delugia Mono', '霞鹜新致宋＋', monospace",
     "editor.fontSize": 19,
     "editor.lineHeight": 32,
     // "editor.fontWeight":"500",
