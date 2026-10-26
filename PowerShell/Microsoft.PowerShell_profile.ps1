@@ -68,6 +68,17 @@ Set-PSReadLineKeyHandler -Chord "Ctrl+k" -Function HistorySearchBackward
 Set-PSReadLineKeyHandler -Chord "Ctrl+u" -Function BackwardDeleteLine
 # }}}
 
+# {{{ scoop-completion scoop-search
+# scoop Tab键补全插件: scoop-completion
+# scoop 加速搜索插件: scoop-search
+# 需要在pwsh中安装 scoop install scoop-completion scoop-search
+
+# scoop-completion
+Import-Module "$($(Get-Item $(Get-Command scoop.ps1).Path).Directory.Parent.FullName)\modules\scoop-completion"
+# scoop-search, scoop search XXX  ----> scoop-search XXX
+. ([ScriptBlock]::Create((& scoop-search --hook | Out-String)))
+# }}}
+
 # {{{ Alias
 Set-Alias v nvim
 Set-Alias gg LazyGit
