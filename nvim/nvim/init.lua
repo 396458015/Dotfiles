@@ -3606,7 +3606,7 @@ if vim.g.neovide then -- Neovide
         -- Latte
         vim.api.nvim_set_hl(0, "Cursor", {
             fg = "#e1e2e7",
-            bg = "#9c6f78",
+            bg = "#cf7d7a",
             reverse = false,
         })
     end
