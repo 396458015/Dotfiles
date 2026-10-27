@@ -392,7 +392,6 @@ require('vim._core.ui2').enable({
 -- }}}
 
 -- {{{ autocmds
-
 -- 文件类型设置
 -- 设置高亮: norg --> org, rpy --> python
 vim.filetype.add({
@@ -1516,119 +1515,120 @@ require("lazy").setup({
     priority = 1000,
     lazy = false,
     init = function()
-      -- snacks_dashboard color
-      vim.api.nvim_set_hl(0, 'NeovimDashboardLogo1', { fg = '#5b3cc4' })
-      vim.api.nvim_set_hl(0, 'NeovimDashboardLogo2', { fg = '#7b4fd6' })
-      vim.api.nvim_set_hl(0, 'NeovimDashboardLogo3', { fg = '#9d6ff0' })
-      vim.api.nvim_set_hl(0, 'NeovimDashboardLogo4', { fg = '#c77dff' })
-      vim.api.nvim_set_hl(0, 'NeovimDashboardLogo5', { fg = '#e38fff' })
+        -- snacks_dashboard color
+        vim.api.nvim_set_hl(0, 'NeovimDashboardLogo1', { fg = '#5b3cc4' })
+        vim.api.nvim_set_hl(0, 'NeovimDashboardLogo2', { fg = '#7b4fd6' })
+        vim.api.nvim_set_hl(0, 'NeovimDashboardLogo3', { fg = '#9d6ff0' })
+        vim.api.nvim_set_hl(0, 'NeovimDashboardLogo4', { fg = '#c77dff' })
+        vim.api.nvim_set_hl(0, 'NeovimDashboardLogo5', { fg = '#e38fff' })
 
-      -- 软链接icon颜色
-      vim.api.nvim_set_hl(0, "SnacksPickerSymlink", { fg = "#99d1db" })
+        -- 软链接icon颜色
+        vim.api.nvim_set_hl(0, "SnacksPickerSymlink", { fg = "#99d1db" })
     end,
     opts = {
         picker = {
             enabled = true,
-        sources = {
-            files = {
-                hidden = true, -- 文件搜索包含隐藏文件/目录
-                exclude = {
-                  -- Local cache / runtime data
-                  ".cache",
-                  ".local/share",
-                  ".local/state",
-                  ".local/lib",
+            layout = { preset = "default" },
+            sources = {
+                files = {
+                    hidden = true, -- 文件搜索包含隐藏文件/目录
+                    exclude = {
+                        -- Local cache / runtime data
+                        ".cache",
+                        ".local/share",
+                        ".local/state",
+                        ".local/lib",
 
-                  -- Development environments / toolchains
-                  ".npm",
-                  ".nvm",
-                  ".cargo",
-                  ".rustup",
-                  ".vscode-server",
+                        -- Development environments / toolchains
+                        ".npm",
+                        ".nvm",
+                        ".cargo",
+                        ".rustup",
+                        ".vscode-server",
 
-                  -- SDK / system tools
-                  ".texlive2024",
-                  ".dotnet",
-                  ".landscape",
+                        -- SDK / system tools
+                        ".texlive2024",
+                        ".dotnet",
+                        ".landscape",
 
-                  -- Project dependencies / environments
-                  "node_modules",
-                  "__pycache__",
-                  ".venv",
-                  "venv",
+                        -- Project dependencies / environments
+                        "node_modules",
+                        "__pycache__",
+                        ".venv",
+                        "venv",
 
-                  -- Git / build artifacts
-                  ".git",
-                  "target",
-                  "build",
-                  "dist",
+                        -- Git / build artifacts
+                        ".git",
+                        "target",
+                        "build",
+                        "dist",
+                    },
+                    -- 文件搜索中显示软连接icon
+                    format = function(item, picker)
+                        local ret = Snacks.picker.format.file(item, picker)
+
+                        local path = Snacks.picker.util.path(item)
+                        local stat = path and vim.uv.fs_lstat(path)
+
+                        if stat and stat.type == "link" then
+                            table.insert(ret, 1, { " ", "SnacksPickerSymlink", })
+                        end
+                        return ret
+                    end,
+
+                    -- Oil 采用懒加载，Snacks 直接打开目录时 Oil 尚未加载，因此手动交给 Oil 处理
+                    confirm = function(picker, item, action)
+                        local path = Snacks.picker.util.path(item)
+                        local stat = path and vim.uv.fs_stat(path)
+
+                        if stat and stat.type == "directory" then
+                            picker:close()
+
+                            vim.schedule(function()
+                                vim.cmd("Oil " .. vim.fn.fnameescape(path))
+                            end)
+
+                            return
+                        end
+                        Snacks.picker.actions.jump(picker, item, action)
+                    end,
+
                 },
-                -- 文件搜索中显示软连接icon
-                format = function(item, picker)
-                    local ret = Snacks.picker.format.file(item, picker)
+                grep = {
+                    hidden = true, -- 全文搜索包含隐藏文件/目录
+                    exclude = {
+                        -- Local cache / runtime data
+                        ".cache",
+                        ".local/share",
+                        ".local/state",
+                        ".local/lib",
 
-                    local path = Snacks.picker.util.path(item)
-                    local stat = path and vim.uv.fs_lstat(path)
+                        -- Development environments / toolchains
+                        ".npm",
+                        ".nvm",
+                        ".cargo",
+                        ".rustup",
+                        ".vscode-server",
 
-                    if stat and stat.type == "link" then
-                        table.insert(ret, 1, { " ", "SnacksPickerSymlink", })
-                    end
-                    return ret
-                end,
+                        -- SDK / system tools
+                        ".texlive2024",
+                        ".dotnet",
+                        ".landscape",
 
-                -- Oil 采用懒加载，Snacks 直接打开目录时 Oil 尚未加载，因此手动交给 Oil 处理
-                confirm = function(picker, item, action)
-                    local path = Snacks.picker.util.path(item)
-                    local stat = path and vim.uv.fs_stat(path)
+                        -- Project dependencies / environments
+                        "node_modules",
+                        "__pycache__",
+                        ".venv",
+                        "venv",
 
-                    if stat and stat.type == "directory" then
-                        picker:close()
-
-                        vim.schedule(function()
-                            vim.cmd("Oil " .. vim.fn.fnameescape(path))
-                        end)
-
-                        return
-                    end
-                    Snacks.picker.actions.jump(picker, item, action)
-                end,
-
-            },
-            grep = {
-                hidden = true, -- 全文搜索包含隐藏文件/目录
-                exclude = {
-                  -- Local cache / runtime data
-                  ".cache",
-                  ".local/share",
-                  ".local/state",
-                  ".local/lib",
-
-                  -- Development environments / toolchains
-                  ".npm",
-                  ".nvm",
-                  ".cargo",
-                  ".rustup",
-                  ".vscode-server",
-
-                  -- SDK / system tools
-                  ".texlive2024",
-                  ".dotnet",
-                  ".landscape",
-
-                  -- Project dependencies / environments
-                  "node_modules",
-                  "__pycache__",
-                  ".venv",
-                  "venv",
-
-                  -- Git / build artifacts
-                  ".git",
-                  "target",
-                  "build",
-                  "dist",
+                        -- Git / build artifacts
+                        ".git",
+                        "target",
+                        "build",
+                        "dist",
+                    },
                 },
             },
-        },
             win = {
                 input = {
                     keys = {
@@ -1638,7 +1638,7 @@ require("lazy").setup({
                     },
                 },
             },
-            },
+        },
         bigfile = { enabled = true },
         quickfile = { enabled = true },
         indent = {
@@ -1664,9 +1664,9 @@ require("lazy").setup({
             },
         },
         dashboard = {
-                enabled = true,
-                preset = {
-                  keys = {
+            enabled = true,
+            preset = {
+                keys = {
                     { icon = "  ", key = "i", desc = "New File", action = ":ene | startinsert" },
                     -- { icon = "  ", key = "f", desc = "Find File", action = ":Leaderf file" },
                     { icon = "  ", key = "f", desc = "Find File", action = ":lua Snacks.dashboard.pick('files')" },
@@ -1686,20 +1686,20 @@ require("lazy").setup({
                         end,
                     },
                     { icon = "  ", key = "q", desc = "Quit", action = ":qa" },  --  
-                  },
                 },
-                sections = {
-                  { text = { [[     ▄████▄              ▒▒▒▒▒       ▒▒▒▒▒       ]], hl = 'NeovimDashboardLogo1' }, align = 'center' }, ---@diagnostic disable-line
-                  { text = { [[    ███▄█▀              ▒ ▄▒ ▄▒     ▒ ▄▒ ▄▒      ]], hl = 'NeovimDashboardLogo2' }, align = 'center' }, ---@diagnostic disable-line
-                  { text = { [[   ▐████     █  █  █   ▒▒▒▒▒▒▒▒▒   ▒▒▒▒▒▒▒▒▒     ]], hl = 'NeovimDashboardLogo3' }, align = 'center' }, ---@diagnostic disable-line
-                  { text = { [[    █████▄             ▒▒▒▒▒▒▒▒▒   ▒▒▒▒▒▒▒▒▒     ]], hl = 'NeovimDashboardLogo4' }, align = 'center' }, ---@diagnostic disable-line
-                  { text = { [[     ▀████▀            ▒ ▒ ▒ ▒ ▒   ▒ ▒ ▒ ▒ ▒    ]], hl = 'NeovimDashboardLogo5' }, align = 'center' }, ---@diagnostic disable-line
-                  { text = { [[                                                 ]], hl = 'NeovimDashboardLogo1' }, align = 'center' }, ---@diagnostic disable-line
-                  { padding = 1 },
-                  -- { section = "header" },
-                  { section = 'keys', gap = 1, padding = 1 },
-                  { section = 'startup' },
-                },
+            },
+            sections = {
+                { text = { [[     ▄████▄              ▒▒▒▒▒       ▒▒▒▒▒       ]], hl = 'NeovimDashboardLogo1' }, align = 'center' }, ---@diagnostic disable-line
+                { text = { [[    ███▄█▀              ▒ ▄▒ ▄▒     ▒ ▄▒ ▄▒      ]], hl = 'NeovimDashboardLogo2' }, align = 'center' }, ---@diagnostic disable-line
+                { text = { [[   ▐████     █  █  █   ▒▒▒▒▒▒▒▒▒   ▒▒▒▒▒▒▒▒▒     ]], hl = 'NeovimDashboardLogo3' }, align = 'center' }, ---@diagnostic disable-line
+                { text = { [[    █████▄             ▒▒▒▒▒▒▒▒▒   ▒▒▒▒▒▒▒▒▒     ]], hl = 'NeovimDashboardLogo4' }, align = 'center' }, ---@diagnostic disable-line
+                { text = { [[     ▀████▀            ▒ ▒ ▒ ▒ ▒   ▒ ▒ ▒ ▒ ▒    ]], hl = 'NeovimDashboardLogo5' }, align = 'center' }, ---@diagnostic disable-line
+                { text = { [[                                                 ]], hl = 'NeovimDashboardLogo1' }, align = 'center' }, ---@diagnostic disable-line
+                { padding = 1 },
+                -- { section = "header" },
+                { section = 'keys', gap = 1, padding = 1 },
+                { section = 'startup' },
+            },
         },
     },
     keys = {
@@ -1787,9 +1787,7 @@ require("lazy").setup({
           -- "textwidth",
           -- "trail",
       },
-
       -- cursor_symbol = "•",
-
       diagnostics_error_symbol = '',  --󰨓
       diagnostics_warn_symbol  = '',  --󰨓
       diagnostics_hint_symbol  = '',  --󰨓
