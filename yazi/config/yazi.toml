@@ -110,6 +110,10 @@ prepend_fetchers = [
   { url = "*/", run = "git", group = "git" },
 ]
 
+prepend_previewers = [
+  { mime = "application/{*zip,tar,bzip2,7z*,rar,xz,zstd,java-archive}", run  = "ouch" }
+]
+
 preloaders = [
 	# Image
 	{ mime = "image/{avif,hei?,jxl}", run = "magick" },
