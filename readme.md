@@ -33,3 +33,6 @@ My personal dotfiles: neovim, powershell, alacritty, wezterm, vscode, etc.
 ### windows-terminal
 `mklink /D C:\Users\ThinkPad\scoop\apps\windows-terminal\current\settings D:\Dotfiles\windows-terminal\settings`  
 `mklink /D C:\Users\ThinkPad\scoop\persist\windows-terminal\settings D:\Dotfiles\windows-terminal\settings`
+
+### noctty
+`mklink C:\Users\ThinkPad\AppData\Local\noctty\config.ghostty D:\Dotfiles\noctty\config.ghostty`

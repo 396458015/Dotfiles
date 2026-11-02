@@ -1,0 +1,274 @@
+# {{{ 1. 默认终端与语言
+command = pwsh.exe
+language = zh_CN.UTF-8
+
+# Shell 集成；不允许 Shell 集成修改光标样式
+shell-integration-features = title,sudo,ssh-terminfo,ssh-env,no-cursor
+# }}}
+
+# {{{ 2. 字体与行高
+# 英文主字体与中文回退字体
+font-family = Delugia Mono
+font-family = Sarasa Term SC Nerd
+
+font-size = 14
+font-thicken = true
+font-thicken-strength = 128
+
+# 新终端继承字号
+window-inherit-font-size = true
+
+# 在字体默认行高基础上增加 20%
+adjust-cell-height = 20%
+# }}}
+
+# {{{ 3. 窗口与布局
+# 初始窗口大小：120 列、34 行
+window-width = 120
+window-height = 34
+
+# 内边距与剩余空间平衡
+window-padding-x = 0
+window-padding-y = 0
+window-padding-balance = true
+
+# 始终隐藏标签栏，多个标签页时也不显示
+window-show-tab-bar = never
+
+# 窗口使用深色外观
+window-theme = dark
+
+# 标签栏不跟随 Windows 强调色
+accent-follow-system = false
+
+# 不透明度：0 完全透明，1 完全不透明
+background-opacity = 0.99
+
+# 分屏分隔线颜色
+split-divider-color = #4280F2
+
+# 非焦点窗格的混合底色与不透明度
+unfocused-split-fill = #2A2A2A
+unfocused-split-opacity = 0.875
+# }}}
+
+# {{{ 4. 终端配色：colors_normal
+background = #1F1F28
+foreground = #C6D0F5
+
+# 选区颜色
+selection-background = #626880
+selection-foreground = #C6D0F5
+
+# ANSI 普通色
+palette = 0=#0C0C0C
+palette = 1=#C50F1F
+palette = 2=#13A10E
+palette = 3=#C19C00
+palette = 4=#0037DA
+palette = 5=#B4009E
+palette = 6=#3A96DD
+palette = 7=#CCCCCC
+
+# ANSI 高亮色
+palette = 8=#767676
+palette = 9=#E74856
+palette = 10=#16C60C
+palette = 11=#F9F1A5
+palette = 12=#3B78FF
+palette = 13=#B4009E
+palette = 14=#61D6D6
+palette = 15=#F2F2F2
+# }}}
+
+# {{{ 5. 光标
+# 方块光标，不闪烁
+cursor-style = block
+cursor-style-blink = false
+cursor-color = #F2D5CF
+# }}}
+
+# {{{ 6. 鼠标、链接与提示
+# 鼠标移动到窗格时切换焦点
+focus-follows-mouse = true
+
+# 精确滚动设备的滚动倍率
+mouse-scroll-multiplier = "precision:5"
+
+# 链接识别与 OSC 8 链接预览
+link-url = true
+link-previews = osc8
+
+# 鼠标选中文字后不自动复制
+copy-on-select = false
+
+# 关闭指定的响铃提示方式
+bell-features = no-system,no-attention,no-border
+# }}}
+
+# {{{ 快捷键
+# 清除默认绑定；所有自定义绑定放在此行之后
+keybind = clear
+
+
+# 7. 字体缩放
+# 每次增大或缩小 1 pt
+keybind = ctrl+equal=increase_font_size:1
+keybind = ctrl+minus=decrease_font_size:1
+
+# 恢复配置中的默认字号
+keybind = ctrl+0=reset_font_size
+
+
+# 8. 复制与粘贴
+# 有可复制选区时复制，否则交给终端程序处理
+keybind = performable:ctrl+c=copy_to_clipboard:plain
+keybind = ctrl+v=paste_from_clipboard
+
+# 备用复制、粘贴
+keybind = ctrl+shift+c=copy_to_clipboard:plain
+keybind = ctrl+shift+v=paste_from_clipboard
+
+
+# 9. 方向键替代
+# Alt+H/J/K/L 向终端程序发送左、下、上、右方向键
+keybind = alt+h=csi:D
+keybind = alt+j=csi:B
+keybind = alt+k=csi:A
+keybind = alt+l=csi:C
+
+
+# 10. 标签页
+# 新建标签页
+keybind = alt+n=new_tab
+
+# 切换到第 1～8 个标签页
+keybind = alt+1=goto_tab:1
+keybind = alt+2=goto_tab:2
+keybind = alt+3=goto_tab:3
+keybind = alt+4=goto_tab:4
+keybind = alt+5=goto_tab:5
+keybind = alt+6=goto_tab:6
+keybind = alt+7=goto_tab:7
+keybind = alt+8=goto_tab:8
+
+
+# 11. 全屏/分屏
+# 全屏
+keybind = alt+enter=toggle_fullscreen
+
+# 自动选择分屏方向
+keybind = alt+backslash=new_split:auto
+
+# 顺序组合键：先按 Ctrl+S，松开后再按后续按键
+# Ctrl+S → Ctrl+J：向下分屏
+# Ctrl+S → Ctrl+L：向右分屏
+# Ctrl+S → Space：均衡分屏尺寸
+# Ctrl+S → Z：切换当前窗格放大
+keybind = ctrl+s>ctrl+j=new_split:down
+keybind = ctrl+s>ctrl+l=new_split:right
+keybind = ctrl+s>space=equalize_splits
+keybind = ctrl+s>z=toggle_split_zoom
+
+# 切换分屏焦点
+keybind = ctrl+shift+h=goto_split:left
+keybind = ctrl+shift+j=goto_split:down
+keybind = ctrl+shift+k=goto_split:up
+keybind = ctrl+shift+l=goto_split:right
+
+# 调整分屏尺寸，每次 10 像素
+keybind = alt+left=resize_split:left,10
+keybind = alt+down=resize_split:down,10
+keybind = alt+up=resize_split:up,10
+keybind = alt+right=resize_split:right,10
+
+# 显式解除 Super/Win+D、Super/Win+Shift+D 的终端绑定
+# 不会解除 Windows 系统自身的快捷键
+keybind = cmd+d=unbind
+keybind = cmd+shift+d=unbind
+
+
+# 12. 滚动与搜索
+# 历史输出逐行滚动
+keybind = ctrl+shift+i=scroll_page_lines:-1
+keybind = ctrl+shift+u=scroll_page_lines:1
+
+# 搜索终端输出
+keybind = ctrl+shift+f=start_search
+
+
+# 13. 命令面板与配置
+# 打开命令面板；输入 wsl 可查找 WSL 配置
+keybind = ctrl+shift+p=toggle_command_palette
+
+# 重新加载配置
+keybind = ctrl+shift+comma=reload_config
+
+# 打开配置入口
+keybind = ctrl+comma=open_config
+
+
+# 14. Vim 按键模式：进入与初始化
+# Alt+; 进入终端浏览按键模式
+# 此模式不是 Vim 编辑器，也不等同于完整的可视选择模式
+keybind = alt+semicolon=activate_key_table:vim
+
+# 初始化 vim 按键表
+keybind = vim/
+
+
+# 15. Vim 按键模式：滚动
+# 逐行滚动
+keybind = vim/j=scroll_page_lines:1
+keybind = vim/k=scroll_page_lines:-1
+
+# 整页滚动：这里 Ctrl+D/U 也按整页滚动
+keybind = vim/ctrl+d=scroll_page_down
+keybind = vim/ctrl+u=scroll_page_up
+keybind = vim/ctrl+f=scroll_page_down
+keybind = vim/ctrl+b=scroll_page_up
+keybind = vim/shift+j=scroll_page_down
+keybind = vim/shift+k=scroll_page_up
+
+# gg：滚动到顶部；Shift+G：滚动到底部
+keybind = vim/g>g=scroll_to_top
+keybind = vim/shift+g=scroll_to_bottom
+
+# 跳转 Shell 提示符，需要 Shell 集成支持
+keybind = vim/p=jump_to_prompt:1
+keybind = vim/shift+p=jump_to_prompt:-1
+
+
+# 16. Vim 按键模式：搜索、复制与命令
+# / 开始搜索，n/N 切换搜索结果
+keybind = vim/slash=start_search
+keybind = vim/n=navigate_search:next
+keybind = vim/shift+n=navigate_search:previous
+
+# 复制已有选区；不会自动创建选区
+keybind = vim/v=copy_to_clipboard
+keybind = vim/y=copy_to_clipboard
+
+# 导出历史输出为纯文本，并通过默认程序打开
+keybind = vim/e=write_scrollback_file:open,plain
+
+# Shift+;（英文键盘上的冒号）打开命令面板
+keybind = vim/shift+semicolon=toggle_command_palette
+
+
+# 17. Vim 按键模式：退出与兜底
+# Escape、Q、I 退出该按键模式
+keybind = vim/escape=deactivate_key_table
+keybind = vim/q=deactivate_key_table
+keybind = vim/i=deactivate_key_table
+
+# 忽略该模式中未定义的按键，避免传给 Shell
+keybind = vim/catch_all=ignore
+# }}}
+
+
+
+
+
+
+
