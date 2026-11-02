@@ -263,15 +263,24 @@ function lgconfig { nvim 'C:\Users\ThinkPad\AppData\Roaming\lazygit\config.yml' 
 # 设置yazi环境
 $Env:YAZI_FILE_ONE = "D:\Program Files\Git\usr\bin\file.exe"
 
-# Changing working directory when exiting Yazi
 function yzcd {
-	$tmp = (New-TemporaryFile).FullName
-	yazi.exe $args --cwd-file="$tmp"
-	$cwd = Get-Content -Path $tmp -Encoding UTF8
-	if ($cwd -and $cwd -ne $PWD.Path -and (Test-Path -LiteralPath $cwd -PathType Container)) {
-		Set-Location -LiteralPath (Resolve-Path -LiteralPath $cwd).Path
-	}
-	Remove-Item -Path $tmp
+    $tmp = (New-TemporaryFile).FullName
+    try {
+        # 显式从 PowerShell 当前目录启动 Yazi
+        yazi.exe "$($PWD.ProviderPath)" @args --cwd-file="$tmp"
+        # 退出后进入 Yazi 最后所在的目录
+        $cwd = Get-Content -LiteralPath $tmp -Encoding UTF8
+        if (
+            $cwd -and
+            $cwd -ne $PWD.Path -and
+            (Test-Path -LiteralPath $cwd -PathType Container)
+        ) {
+            Set-Location -LiteralPath $cwd
+        }
+    }
+    finally {
+        Remove-Item -LiteralPath $tmp -ErrorAction SilentlyContinue
+    }
 }
 
 Set-PSReadLineKeyHandler -Chord Alt+f -ScriptBlock {
