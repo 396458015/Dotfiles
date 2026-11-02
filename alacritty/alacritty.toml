@@ -38,7 +38,7 @@ COLORTERM = "truecolor"
 MYSIGN = "alacritty_sign"
 
 [terminal.shell]
-# program = 'C:\Program Files\PowerShell\7\pwsh.exe'
+# program = 'C:\Users\ThinkPad\scoop\apps\pwsh\current\pwsh.exe'
 program= "ubuntu"
 
 [window]
