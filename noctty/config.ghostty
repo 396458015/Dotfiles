@@ -28,8 +28,8 @@ window-width = 120
 window-height = 34
 
 # 内边距与剩余空间平衡
-window-padding-x = 0
-window-padding-y = 0
+window-padding-x = 5
+window-padding-y = 5
 window-padding-balance = true
 
 # 始终隐藏标签栏，多个标签页时也不显示
@@ -102,6 +102,8 @@ copy-on-select = false
 
 # 关闭指定的响铃提示方式
 bell-features = no-system,no-attention,no-border
+# 关闭重载和复制提示
+app-notifications = no-config-reload,no-clipboard-copy
 # }}}
 
 # {{{ 快捷键
