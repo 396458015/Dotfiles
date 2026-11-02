@@ -35,50 +35,48 @@ window-padding-balance = true
 # 始终隐藏标签栏，多个标签页时也不显示
 window-show-tab-bar = never
 
-# 窗口使用深色外观
-window-theme = dark
-
 # 标签栏不跟随 Windows 强调色
 accent-follow-system = false
 
 # 不透明度：0 完全透明，1 完全不透明
 background-opacity = 0.99
 
-# 分屏分隔线颜色
-split-divider-color = #4280F2
-
-# 非焦点窗格的混合底色与不透明度
-unfocused-split-fill = #2A2A2A
+# 非焦点窗格的不透明度
 unfocused-split-opacity = 0.875
 # }}}
 
 # {{{ 4. 终端配色：colors_normal
-background = #1F1F28
-foreground = #C6D0F5
+# 窗口使用深色外观
+window-theme = dark
+theme = D:\Dotfiles\noctty\themes\catppuccin-frappe.conf
+# theme = D:\Dotfiles\noctty\themes\catppuccin-latte.conf
+
+# background = #1F1F28
+# foreground = #C6D0F5
 
 # 选区颜色
-selection-background = #626880
-selection-foreground = #C6D0F5
+# selection-background = #626880
+# selection-foreground = #C6D0F5
 
 # ANSI 普通色
-palette = 0=#0C0C0C
-palette = 1=#C50F1F
-palette = 2=#13A10E
-palette = 3=#C19C00
-palette = 4=#0037DA
-palette = 5=#B4009E
-palette = 6=#3A96DD
-palette = 7=#CCCCCC
+# palette = 0=#0C0C0C
+# palette = 1=#C50F1F
+# palette = 2=#13A10E
+# palette = 3=#C19C00
+# palette = 4=#0037DA
+# palette = 5=#B4009E
+# palette = 6=#3A96DD
+# palette = 7=#CCCCCC
 
 # ANSI 高亮色
-palette = 8=#767676
-palette = 9=#E74856
-palette = 10=#16C60C
-palette = 11=#F9F1A5
-palette = 12=#3B78FF
-palette = 13=#B4009E
-palette = 14=#61D6D6
-palette = 15=#F2F2F2
+# palette = 8=#767676
+# palette = 9=#E74856
+# palette = 10=#16C60C
+# palette = 11=#F9F1A5
+# palette = 12=#3B78FF
+# palette = 13=#B4009E
+# palette = 14=#61D6D6
+# palette = 15=#F2F2F2
 # }}}
 
 # {{{ 5. 光标
