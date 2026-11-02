@@ -6,11 +6,11 @@ local options = {
 }
 
 if platform.is_win then
-   options.default_prog = { 'C:\\Program Files\\PowerShell\\7\\pwsh.exe', '-NoLogo' }
+   options.default_prog = { 'C:\\Users\\ThinkPad\\scoop\\apps\\pwsh\\current\\pwsh.exe', '-NoLogo' }
    -- options.default_prog = { 'wsl.exe', '-d', 'Ubuntu' }
    options.launch_menu = {
       { label = 'Ubuntu (WSL2)', args = { 'wsl.exe', '-d', 'Ubuntu' } },
-      { label = 'pwsh7', args = { 'C:\\Program Files\\PowerShell\\7\\pwsh.exe' } },
+      { label = 'pwsh7', args = { 'C:\\Users\\ThinkPad\\scoop\\apps\\pwsh\\current\\pwsh.exe' } },
       { label = 'Git Bash', args = { 'D:\\Program Files\\Git\\bin\\bash.exe' } },
       { label = 'CMD', args = { 'cmd' } },
       -- { label = 'PowerShell', args = { 'powershell' } },
