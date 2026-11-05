@@ -1253,47 +1253,25 @@ require("lazy").setup({
         end,
     },
     -- }}}
-    -- {{{ Mr-LLLLL/interestingwords.nvim
+    -- {{{ lfv89/vim-interestingwords
     {
-        "Mr-LLLLL/interestingwords.nvim",
+        "lfv89/vim-interestingwords",
         keys = {
-            { "<leader>k", mode = { "n", "x" }, desc = "Toggle Word Color" },
-            { "<leader>K", mode = "n", desc = "Clear Word Colors" },
+            { "<leader>k", ":call InterestingWords('n')<cr>", mode = { "n" }, desc = 'Toggle Color Word(n)' },
+            { "<leader>k", ":call InterestingWords('v')<cr>", mode = { "v" }, desc = 'Toggle Color Word(v)' },
+            { "<leader>K", ":call UncolorAllWords()<cr>", mode = { "n" }, desc = 'Uncolor all Word' },
         },
         config = function()
-            local words = require("interestingwords")
-            words.setup({
-                colors = {
-                    '#78d3cc', '#f0c53f', '#ff8784', '#c5c7f1',
-                    '#c2d735', '#72b5e4', '#ea8336', '#e43542',
-                    '#ebab35', '#ebe735', '#aadd32', '#dcca6b',
-                    '#219286', '#2f569c', '#ffb577', '#5282a4',
-                    '#edfccf', '#67064c', '#f5bca7', '#95c474',
-                    '#dece83', '#de9783', '#f2e700', '#e9e9e9',
-                    '#69636d', '#626b98', '#f5f5a7', '#dcca6b',
-                    '#b72a83', '#6f2b9d', '#69636d', '#5f569c',
-                },
-                search_count = true,
-                navigation = true,
-                scroll_center = false,
-                search_key = false,
-                cancel_search_key = false,
-                color_key = "<leader>k",
-                cancel_color_key = "<leader>K",
-                select_mode = "loop",
-            })
-
-            -- 必须紧跟 setup，阻止首次加载时立即清除计数
-            words.search_count_timer:stop()
-
-            -- 必须放在 setup() 后，覆盖插件创建的清除映射
-            vim.keymap.set("n", "<leader>K", function()
-                words.UncolorAllWords()
-                words.next = 1
-            end, {
-                    silent = true,
-                    desc = "Clear Word Colors and Reset",
-                })
+            vim.g.interestingWordsGUIColors = {
+                '#78d3cc', '#f0c53f', '#ff8784', '#c5c7f1',
+                '#c2d735', '#72b5e4', '#ea8336', '#e43542',
+                '#ebab35', '#ebe735', '#aadd32', '#dcca6b',
+                '#219286', '#2f569c', '#ffb577', '#5282a4',
+                '#edfccf', '#67064c', '#f5bca7', '#95c474',
+                '#dece83', '#de9783', '#f2e700', '#e9e9e9',
+                '#69636d', '#626b98', '#f5f5a7', '#dcca6b',
+                '#b72a83', '#6f2b9d', '#69636d', '#5f569c',
+            }
         end,
     },
     -- }}}
