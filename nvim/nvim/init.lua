@@ -8,8 +8,8 @@
 -- |_|  |_| |_|      \/__/    \/_/\/_/\/_/\/_/|_| \_\\____|
 -- ========================================================
 
--- {{{ windows编译treesitter和网络代理配置
--- ThinkBook
+-- -- {{{ ThinkBook
+-- -- windows编译treesitter和网络代理配置
 -- if vim.fn.has("win32") == 1 then
 --     -- MinGW 编译器
 --     local mingw_bin = "D:/Scoop/apps/mingw-winlibs-llvm-msvcrt/current/bin"
@@ -21,12 +21,14 @@
 --     vim.env.HTTP_PROXY = proxy
 --     vim.env.HTTPS_PROXY = proxy
 -- end
--- }}}
 
--- {{{ Python 环境
-local is_win = vim.fn.has("win32") == 1
+-- -- terminal
+-- local pwsh_exe = "D:/scoop/apps/pwsh/current/pwsh.exe"
 
--- ENV-ThinkBook
+-- -- Python 环境
+-- local is_win = vim.fn.has("win32") == 1
+
+-- -- ENV-ThinkBook
 -- local python_envs = is_win and {
 --     general = "D:/Py_Envs/general/Scripts/python.exe",
 --     nvim    = "D:/Py_Envs/nvim/Scripts/python.exe",
@@ -35,7 +37,18 @@ local is_win = vim.fn.has("win32") == 1
 --     nvim    = vim.fn.expand("~/miniforge3/envs/nvim/bin/python"),
 -- }
 
--- ENV-ThinkPad
+-- vim.g.python3_host_prog = python_envs.nvim
+-- local python_exe = python_envs.general
+-- vim.cmd([[ let $PYTHONUNBUFFERED=1 ]]) -- 禁用python stdout缓冲 ]
+-- -- }}}
+
+-- {{{ ThinkPad
+-- terminal
+local pwsh_exe = "C:/Users/ThinkPad/scoop/apps/pwsh/current/pwsh.exe"
+
+-- Python 环境
+local is_win = vim.fn.has("win32") == 1
+
 local python_envs = is_win and {
     general = "C:/Python/Python311/python.exe",
     nvim    = "C:/Python/Python311/python.exe",
@@ -947,7 +960,7 @@ require("lazy").setup({
             vim.g.floaterm_keymap_next = '<leader>tn'
             vim.g.floaterm_shell = vim.fn.has("unix") == 1
             and "/bin/bash"
-            or "C:/PROGRA~1/PowerShell/7/pwsh.exe"
+            or pwsh_exe
             -- 从':terminal '中打开外部nvim中的文件的命令。
             vim.g.floaterm_opener = 'edit'  -- 'edit', 'split', 'vsplit', 'tabe', 'drop'
             neomap("n","<leader>to",":FloatermNew --position=center --width=0.9 --height=0.9<CR>", { desc = 'New Term' })
@@ -1033,13 +1046,6 @@ require("lazy").setup({
 
             vim.cmd[[
             augroup END
-            ]]
-
-            -- Git commands(这些原本在 augroup 外面,保持独立)
-            vim.cmd[[
-            command! Push execute "FloatermNew!git add init.lua<CR>git commit --allow-empty-message -m \"\"<CR>git push<CR>"
-            command! Pull execute "FloatermNew!git fetch --all<CR>git reset --hard origin/main<CR>"
-            command! Gitlog execute "FloatermNew!git log --all --oneline --graph<CR>"
             ]]
         end,
     },
@@ -1234,7 +1240,6 @@ require("lazy").setup({
                 mode = "n", desc = "[d]elete WhiteSpace" },
         },
         config = function()
-            -- vim.api.nvim_set_hl(0, "ExtraWhitespace", { bg = "#FF0000", ctermbg = "red", })
             vim.api.nvim_set_hl(0, "ExtraWhitespace", { bg = "#E06C75", ctermbg = "red", })
             require("whitespace-nvim").setup({
                 highlight = "ExtraWhitespace",
@@ -1248,25 +1253,47 @@ require("lazy").setup({
         end,
     },
     -- }}}
-    -- {{{ lfv89/vim-interestingwords
+    -- {{{ Mr-LLLLL/interestingwords.nvim
     {
-        "lfv89/vim-interestingwords",
+        "Mr-LLLLL/interestingwords.nvim",
         keys = {
-            { "<leader>k", ":call InterestingWords('n')<cr>", mode = { "n" }, desc = 'Toggle Color Word(n)' },
-            { "<leader>k", ":call InterestingWords('v')<cr>", mode = { "v" }, desc = 'Toggle Color Word(v)' },
-            { "<leader>K", ":call UncolorAllWords()<cr>", mode = { "n" }, desc = 'Uncolor all Word' },
+            { "<leader>k", mode = { "n", "x" }, desc = "Toggle Word Color" },
+            { "<leader>K", mode = "n", desc = "Clear Word Colors" },
         },
         config = function()
-            vim.g.interestingWordsGUIColors = {
-                '#78d3cc', '#f0c53f', '#ff8784', '#c5c7f1',
-                '#c2d735', '#72b5e4', '#ea8336', '#e43542',
-                '#ebab35', '#ebe735', '#aadd32', '#dcca6b',
-                '#219286', '#2f569c', '#ffb577', '#5282a4',
-                '#edfccf', '#67064c', '#f5bca7', '#95c474',
-                '#dece83', '#de9783', '#f2e700', '#e9e9e9',
-                '#69636d', '#626b98', '#f5f5a7', '#dcca6b',
-                '#b72a83', '#6f2b9d', '#69636d', '#5f569c',
-            }
+            local words = require("interestingwords")
+            words.setup({
+                colors = {
+                    '#78d3cc', '#f0c53f', '#ff8784', '#c5c7f1',
+                    '#c2d735', '#72b5e4', '#ea8336', '#e43542',
+                    '#ebab35', '#ebe735', '#aadd32', '#dcca6b',
+                    '#219286', '#2f569c', '#ffb577', '#5282a4',
+                    '#edfccf', '#67064c', '#f5bca7', '#95c474',
+                    '#dece83', '#de9783', '#f2e700', '#e9e9e9',
+                    '#69636d', '#626b98', '#f5f5a7', '#dcca6b',
+                    '#b72a83', '#6f2b9d', '#69636d', '#5f569c',
+                },
+                search_count = true,
+                navigation = true,
+                scroll_center = false,
+                search_key = false,
+                cancel_search_key = false,
+                color_key = "<leader>k",
+                cancel_color_key = "<leader>K",
+                select_mode = "loop",
+            })
+
+            -- 必须紧跟 setup，阻止首次加载时立即清除计数
+            words.search_count_timer:stop()
+
+            -- 必须放在 setup() 后，覆盖插件创建的清除映射
+            vim.keymap.set("n", "<leader>K", function()
+                words.UncolorAllWords()
+                words.next = 1
+            end, {
+                    silent = true,
+                    desc = "Clear Word Colors and Reset",
+                })
         end,
     },
     -- }}}
@@ -1896,7 +1923,7 @@ require("lazy").setup({
         end,
     },
     -- }}}
-    -- {{{ kyazdani42/nvim-web-devicons
+    -- {{{ nvim-tree/nvim-web-devicons
     {
         "nvim-tree/nvim-web-devicons",
         branch = "master",
@@ -1946,7 +1973,7 @@ require("lazy").setup({
         cmd = "Oil",
         opts = {},
         dependencies = {
-            { "kyazdani42/nvim-web-devicons" },
+            { "nvim-tree/nvim-web-devicons" },
             { "refractalize/oil-git-status.nvim" },
         },
         -- lazy = false,
@@ -2834,9 +2861,6 @@ require("lazy").setup({
 
                 ['<C-l>'] = { 'snippet_forward', 'fallback' },
                 ['<C-h>'] = { 'snippet_backward', 'fallback' },
-
-                ['<C-f>'] = { 'select_prev', 'fallback' },
-                ['<C-b>'] = { 'select_next', 'fallback' },
 
                 ['<C-b>'] = { 'scroll_documentation_up', 'fallback' },
                 ['<C-f>'] = { 'scroll_documentation_down', 'fallback' },
