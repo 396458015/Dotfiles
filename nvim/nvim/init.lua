@@ -212,9 +212,9 @@ neomap('c', '<C-k>', '<up>', key_opts_n)
 neomap('c', '<C-V>', '<C-R>+', key_opts_n)
 -- -------------------- function --------------------
 -- 删除空行
-neomap('n', '<leader>dd', '<cmd>g/^$/d<CR>', { desc = '[D]elete empty lines' })
+neomap('n', '<leader>dd', '<cmd>g/^$/d<CR>', { desc = '[d]elete empty lines' })
 -- diff this
-neomap('n', '<leader>dt', ':windo diffthis<CR>', { desc = '[D]iff [T]his' })
+neomap('n', '<leader>dt', ':windo diffthis<CR>', { desc = '[d]iff [t]his' })
 -- vimrc
 neomap('n', '<leader>rc', function()
     local path = vim.fn.resolve(vim.fn.expand("$MYVIMRC"))
@@ -827,8 +827,8 @@ require("lazy").setup({
             -- { "<leader>fh", mode = { "n" }, "<cmd>Leaderf searchHistory<cr>", desc = "Search [H]istory" },
             { "<localleader>T", mode = { "n" }, "<cmd>Leaderf bufTag<cr>", desc = "[T]ag" },
             { "<localleader>F", mode = { "n" }, "<cmd>Leaderf function<cr>", desc = "[F]unction" },
-            { "<leader>fr", mode = { "n" }, "<cmd>Leaderf mru<cr>", desc = "[R]ecently Files" },
-            { "<localleader>r", mode = { "n" }, "<cmd>Leaderf mru<cr>", desc = "[R]ecently Files" },
+            { "<leader>fr", mode = { "n" }, "<cmd>Leaderf mru<cr>", desc = "[r]ecently Files" },
+            { "<localleader>r", mode = { "n" }, "<cmd>Leaderf mru<cr>", desc = "[r]ecently Files" },
             -- { "<leader>fb", mode = { "n" }, "<cmd>Leaderf buffer<cr>", desc = "[B]uffer" },
             -- { "<leader>fq", mode = { "n" }, "<cmd>Leaderf quickfix<cr>", desc = "[Q]uickfix list" },
         },
@@ -1225,18 +1225,26 @@ require("lazy").setup({
     -- {{{ chrisbra/csv.vim
     { "chrisbra/csv.vim", ft = "csv" },
     -- }}}
-    -- {{{ ntpeters/vim-better-whitespace
+    -- {{{ johnfrankmorgan/whitespace.nvim
     {
-        "ntpeters/vim-better-whitespace",
-        event = "InsertEnter",
-        keys = { { "<leader>di", mode = { "n" }, ":StripWhitespace<CR>", desc = "[D]elete WhiteSpace" } },
+        "johnfrankmorgan/whitespace.nvim",
+        event = { "BufReadPre", "BufNewFile" },
+        keys = {
+            { "<leader>di", function() require("whitespace-nvim").trim() end,
+                mode = "n", desc = "[d]elete WhiteSpace" },
+        },
         config = function()
-            vim.g.better_whitespace_guicolor='red'
-            vim.g.strip_whitespace_on_save=0
-            vim.g.better_whitespace_filetypes_blacklist = {
-                'diff', 'git', 'gitcommit', 'unite', 'qf', 'help', 'markdown',
-                'startify', 'snacks_dashboard'
-            }
+            -- vim.api.nvim_set_hl(0, "ExtraWhitespace", { bg = "#FF0000", ctermbg = "red", })
+            vim.api.nvim_set_hl(0, "ExtraWhitespace", { bg = "#E06C75", ctermbg = "red", })
+            require("whitespace-nvim").setup({
+                highlight = "ExtraWhitespace",
+                ignored_filetypes = {
+                    "diff", "git", "gitcommit", "unite", "qf", "help", "markdown",
+                    "startify", "snacks_dashboard","snacks_picker_input","Trouble",
+                },
+                ignore_terminal = true,
+                return_cursor = true,
+            })
         end,
     },
     -- }}}
@@ -2187,11 +2195,11 @@ require("lazy").setup({
         end,
     },
     -- }}}
-    -- {{{ norcalli/nvim-colorizer.lua
+    -- {{{ catgoose/nvim-colorizer.lua
     {
-        "norcalli/nvim-colorizer.lua",
+        "catgoose/nvim-colorizer.lua",
         keys = { { "<leader>co", mode = { "n" }, "<cmd>ColorizerToggle<cr>", desc = "Toggle Colorizer" } },
-        config = function() require'colorizer'.setup() end,
+        opts = {},
     },
     -- }}}
     -- {{{ nvim-orgmode/orgmode
@@ -3211,24 +3219,24 @@ require("lazy").setup({
                 },
             },
             spec = {
-                { "<leader>c",      desc = "[C]omment",            icon = { icon = "", color = "red" } },
-                { "<leader>d",      desc = "[D]iff",               icon = { icon = "", color = "orange" } },
-                { "<leader>f",      desc = "Leader[F]",            icon = { icon = "", color = "cyan" } },
-                { "<leader>fr",     desc = "[R]ecently Files",     icon = { icon = "", color = "green" } },
-                { "<leader>g",      desc = "[G]it",                icon = { icon = "", color = "orange" } },
-                { "<leader>s",      desc = "[S]pell",              icon = { icon = "", color = "red" } },
-                { "<leader>o",      desc = "[O]rg",                icon = { icon = "", color = "green" } },
-                { "<leader>l",      desc = "[L]SP",                icon = { icon = "ﲳ", color = "orange" } },
+                { "<leader>c",      desc = "[c]omment",            icon = { icon = "", color = "red" } },
+                { "<leader>d",      desc = "[d]iff",               icon = { icon = "", color = "orange" } },
+                { "<leader>f",      desc = "Leader[f]",            icon = { icon = "", color = "cyan" } },
+                { "<leader>fr",     desc = "[r]ecently Files",     icon = { icon = "", color = "green" } },
+                { "<leader>g",      desc = "[g]it",                icon = { icon = "", color = "orange" } },
+                { "<leader>s",      desc = "[s]pell",              icon = { icon = "", color = "red" } },
+                { "<leader>o",      desc = "[o]rg",                icon = { icon = "", color = "green" } },
+                { "<leader>l",      desc = "[l]SP",                icon = { icon = "ﲳ", color = "orange" } },
 
-                { "<leader>r",      desc = "VIM[R]C & [S]nippets", icon = { icon = "", color = "green" } },
-                { "<leader>rs",     desc = "[S]nippets",           icon = { icon = "", color = "yellow" } },
+                { "<leader>r",      desc = "VIM[r]C & [s]nippets", icon = { icon = "", color = "green" } },
+                { "<leader>rs",     desc = "[s]nippets",           icon = { icon = "", color = "yellow" } },
 
-                { "<leader>t",      desc = "[T]erminal",           icon = { icon = "", color = "grey" } },
-                { "<leader>tn",     desc = "Term [N]ext",          icon = { icon = "", color = "grey" } },
-                { "<leader>tp",     desc = "I[P]yhon",             icon = { icon = "", color = "yellow" } },
-                { "<leader>ta",     desc = "Term([A]dmin)",        icon = { icon = "", color = "yellow" } },
+                { "<leader>t",      desc = "[t]erminal",           icon = { icon = "", color = "grey" } },
+                { "<leader>tn",     desc = "Term [n]ext",          icon = { icon = "", color = "grey" } },
+                { "<leader>tp",     desc = "I[p]yhon",             icon = { icon = "", color = "yellow" } },
+                { "<leader>ta",     desc = "Term([a]dmin)",        icon = { icon = "", color = "yellow" } },
 
-                { "<localleader>w", desc = "Count Chinese [W]ords",   icon = { icon = "", color = "blue" }, mode = { "n", "v" } }, -- 
+                { "<localleader>w", desc = "Count Chinese [w]ords",   icon = { icon = "", color = "blue" }, mode = { "n", "v" } }, -- 
 
                 -- set function icon
                 { "<leader> ",      desc = "Calculator",   icon = { icon = "", color = "cyan" } }, -- bug
@@ -3236,29 +3244,29 @@ require("lazy").setup({
                 { "<leader>\\",     desc = "Smart split",  icon = { icon = "", color = "yellow" } },
                 { "<leader>z",      desc = "Replace Word", icon = { icon = "", color = "red" } },
                 { "<leader>b",      desc = "Columns Num",  icon = { icon = "", color = "cyan" } },
-                { "<leader>q",      desc = "[Q]uit/Kill Buffer",  icon = { icon = "", color = "purple" } },
-                { "<leader>y",      desc = "[Y]ank Path (file)",  icon = { icon = "", color = "cyan" } },
+                { "<leader>q",      desc = "[q]uit/Kill Buffer",  icon = { icon = "", color = "purple" } },
+                { "<leader>y",      desc = "[y]ank Path (file)",  icon = { icon = "", color = "cyan" } },
                 { "<leader><Tab>",  desc = "[Tab]new",  icon = { icon = "󰓩", color = "yellow" } },
 
                 { "<localleader>T",  desc = "[T]ag",  icon = { icon = "ﰠ", color = "purple" } },
                 { "<localleader>F",  desc = "[F]unction",  icon = { icon = "", color = "cyan" } },
-                { "<localleader>r",  desc = "[R]ecently Files",  icon = { icon = "", color = "green" } },
+                { "<localleader>r",  desc = "[r]ecently Files",  icon = { icon = "", color = "green" } },
 
                 { "<leader>d",  mode = "x", desc = "Diff",      icon = { icon = "", color = "orange" } },
-                { "<leader>dl",  mode = "x", desc = "Diff [L]ine",      icon = { icon = "", color = "orange" } },
-                { "<leader>d",  desc = "[D]elete & Diff",      icon = { icon = "󰆴", color = "orange" } },
-                { "<leader>dd", desc = "[D]elete Empty Lines", icon = { icon = "󰆴", color = "red" } },
-                { "<leader>di", desc = "Delete Wh[I]tespace",  icon = { icon = "󰃢", color = "red" } },
-                { "<leader>dl", desc = "Diff [L]ine",           icon = { icon = "", color = "orange" } },
-                { "<leader>dt", desc = "Diff [T]his",           icon = { icon = "", color = "orange" } },
+                { "<leader>dl",  mode = "x", desc = "Diff [l]ine",      icon = { icon = "", color = "orange" } },
+                { "<leader>d",  desc = "[d]elete & Diff",      icon = { icon = "󰆴", color = "orange" } },
+                { "<leader>dd", desc = "[d]elete Empty Lines", icon = { icon = "󰆴", color = "red" } },
+                { "<leader>di", desc = "Delete Wh[i]tespace",  icon = { icon = "󰃢", color = "red" } },
+                { "<leader>dl", desc = "Diff [l]ine",           icon = { icon = "", color = "orange" } },
+                { "<leader>dt", desc = "Diff [t]his",           icon = { icon = "", color = "orange" } },
 
-                { "<leader>a", mode = "x", desc = "[A]lign",             icon = { icon = "", color = "cyan" } },
+                { "<leader>a", mode = "x", desc = "[a]lign",             icon = { icon = "", color = "cyan" } },
                 { "<leader>A", mode = "x", desc = "Interactive [A]lign", icon = { icon = "", color = "cyan" } },
 
                 { "<leader>z", mode = "x", desc = "Replace Word",        icon = { icon = "󰛔", color = "orange" } },
 
                 -- Marker
-                { "<leader>m",  desc = "[M]arker",             icon = { icon = "", color = "yellow" } },
+                { "<leader>m",  desc = "[m]arker",             icon = { icon = "", color = "yellow" } },
                 { "<leader>mc", desc = "Clear Local Marks",    icon = { icon = "󰆴", color = "grey" } },
                 { "<leader>mC", desc = "Clear Global Marks",   icon = { icon = "󰆴", color = "red" } },
                 { "<leader>mi", desc = "Delete Fold Marker",   icon = { icon = "", color = "orange" } },
@@ -3266,26 +3274,26 @@ require("lazy").setup({
                 { "<leader>mm", mode = "x", desc = "Add Fold Marker", icon = { icon = "", color = "green" } },
 
                 -- Comment
-                { "<leader>c",  desc = "[C]omment", icon = { icon = "󰅺", color = "cyan" } },
-                { "<leader>cc", desc = "[C]omment", icon = { icon = "󰆈", color = "green" } },
+                { "<leader>c",  desc = "[c]omment", icon = { icon = "󰅺", color = "cyan" } },
+                { "<leader>cc", desc = "[c]omment", icon = { icon = "󰆈", color = "green" } },
                 { "<leader>ci", desc = "Uncomment", icon = { icon = "󰅙", color = "red" } },
-                { "<leader>c",  mode = "x", desc = "[C]omment", icon = { icon = "󰅺", color = "cyan" } },
-                { "<leader>cc", mode = "x", desc = "[C]omment", icon = { icon = "󰆈", color = "green" } },
+                { "<leader>c",  mode = "x", desc = "[c]omment", icon = { icon = "󰅺", color = "cyan" } },
+                { "<leader>cc", mode = "x", desc = "[c]omment", icon = { icon = "󰆈", color = "green" } },
                 { "<leader>ci", mode = "x", desc = "Uncomment", icon = { icon = "󰅙", color = "red" } },
 
                 -- LaTeX
-                { "<localleader>l", group = "[L]atex", icon = { icon = "ﭨ", color = "green" } },
+                { "<localleader>l", group = "[l]atex", icon = { icon = "ﭨ", color = "green" } },
 
                 -- Org
-                { "<leader>o",      group = "[O]rg",               icon = { icon = "", color = "green" } },
+                { "<leader>o",      group = "[o]rg",               icon = { icon = "", color = "green" } },
                 -- Open
                 { "<leader>oO",     desc = '[O]rg Directories',    icon = { icon = "󰙅", color = "orange" } },
                 -- Date / Time
                 { "<leader>od",     desc = "[d]eadline",           icon = { icon = "", color = "red" } },
                 { "<leader>oD",     desc = "Change [D]ate",        icon = { icon = "", color = "yellow" } },
                 { "<leader>os",     desc = "[s]chedule",           icon = { icon = "", color = "blue" } },
-                { "<leader>oi",     desc = "Timestamp",            icon = { icon = "", color = "green" } },
-                { "<leader>oI",     desc = "Timestamp (Inactive)", icon = { icon = "", color = "grey" } },
+                { "<leader>oi",     desc = "T[i]mestamp",            icon = { icon = "", color = "green" } },
+                { "<leader>oI",     desc = "Timestamp ([I]nactive)", icon = { icon = "", color = "grey" } },
                 { "<leader>ox",     desc = "Toggle Timestamp",     icon = { icon = "", color = "yellow" } },
                 -- Task
                 { "<leader>ot",     desc = "[t]odo State",         icon = { icon = "", color = "green" } },
