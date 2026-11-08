@@ -22,13 +22,12 @@
 --     vim.env.HTTPS_PROXY = proxy
 -- end
 
--- -- terminal
+-- -- Floaterm(plugin) terminal
 -- local pwsh_exe = "D:/scoop/apps/pwsh/current/pwsh.exe"
 
 -- -- Python 环境
 -- local is_win = vim.fn.has("win32") == 1
 
--- -- ENV-ThinkBook
 -- local python_envs = is_win and {
 --     general = "D:/Py_Envs/general/Scripts/python.exe",
 --     nvim    = "D:/Py_Envs/nvim/Scripts/python.exe",
@@ -43,7 +42,7 @@
 -- -- }}}
 
 -- {{{ ThinkPad
--- terminal
+-- Floaterm(plugin) terminal
 local pwsh_exe = "C:/Users/ThinkPad/scoop/apps/pwsh/current/pwsh.exe"
 
 -- Python 环境
@@ -297,7 +296,6 @@ neomap({ "n", "i" }, "<C-ScrollWheelDown>", function() adjust_font_size(-1) end,
 
 -- {{{ options
 vim.g.have_nerd_font = true
-vim.opt.autochdir = false  -- 设定文件浏览器目录为当前目录  --wenti
 vim.opt.autoindent = true  -- 自动对齐
 vim.opt.autoread = true  -- 自动读取
 vim.opt.backspace = "indent,eol,start"
@@ -351,7 +349,6 @@ vim.opt.startofline = false
 vim.opt.swapfile = false
 vim.opt.tabstop = 4  -- 设置tab键的宽度
 vim.opt.termguicolors = true
--- vim.opt.ttimeoutlen = 0  --wenti
 vim.opt.breakindent = true
 vim.opt.timeout = true
 vim.opt.updatetime = 250
@@ -460,26 +457,23 @@ nvim_create_augroups({
     },
 })
 
--- 当 Neovim 重新获得焦点、进入 buffer 或停留时，检测文件是否被外部修改
-vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "CursorHold" }, {
-    pattern = "*",
+-- 检查文件是否被外部修改
+local checkfile_group = vim.api.nvim_create_augroup("CheckFileChange", {
+    clear = true,
+})
+
+vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter" }, {
+    group = checkfile_group,
     callback = function(args)
-        -- 跳过 q: / q/ / q? 等 command-line window
-        if vim.fn.getcmdwintype() ~= "" then
-            return
+        if vim.bo[args.buf].buftype == "" then
+            vim.cmd("checktime")
         end
-
-        -- 跳过 terminal、help、quickfix、插件窗口等特殊 buffer
-        if vim.bo[args.buf].buftype ~= "" then
-            return
-        end
-
-        vim.cmd("checktime")
     end,
 })
--- 当文件被外部更改后，提示代码已修改
+
+-- 文件被外部修改后显示提示
 vim.api.nvim_create_autocmd("FileChangedShellPost", {
-    pattern = "*",
+    group = checkfile_group,
     callback = function()
         vim.fn.confirm(" File changed on disk!", "OK", 1)
     end,
@@ -828,7 +822,6 @@ require("lazy").setup({
     {
         "Yggdroot/LeaderF",
         -- build = ":LeaderfInstallCExtension",
-        event = { "BufReadPre", "BufNewFile" },
         cmd = { "Leaderf" },
         keys = {
             -- { "<leader>fs", mode = { "n" }, ":LeaderfFile :/<left><left>", desc = "File by Path" },
@@ -976,27 +969,36 @@ require("lazy").setup({
             neomap("n","<leader>tj",":FloatermNext<CR>", { desc = 'Next Term' } )
             neomap("n","<leader>tk",":FloatermPrev<CR>", { desc = 'Prev Term' } )
 
-            vim.cmd[[
-            augroup Compiler_code
-            au!
-            ]]
+            vim.cmd([[
+                augroup Compiler_code
+                au!
 
-            vim.cmd([[au FileType floaterm nnoremap <buffer> <Esc> :q<CR>]])
+                au FileType floaterm nnoremap <buffer> <Esc> :q<CR>
 
-            -- Python
-            -- Ctrl + Enter：运行当前 Python 文件
-            vim.cmd(
-                [[au FileType python nnoremap <silent><C-CR> :FloatermNew --width=0.8 --height=1.0 "]]
+                " Python：Ctrl + Enter 运行当前文件
+                au FileType python nnoremap <silent><buffer><C-CR> :FloatermNew --width=0.8 --height=1.0 "]]
                 .. python_exe ..
-                [[" "%:p"<CR>]]
-            )
+                [[" "%:p"<CR>
 
-            -- Python REPL (IPython)
-            vim.cmd(
-                [[nnoremap <leader>tp :FloatermNew --width=0.5 --wintype=vsplit --name=repl --position=rightbelow ]]
+                " Python REPL (IPython)
+                nnoremap <leader>tp :FloatermNew --width=0.5 --wintype=vsplit --name=repl --position=rightbelow ]]
                 .. python_exe ..
-                [[ -m IPython<CR>]]
-            )
+                [[ -m IPython<CR>
+
+                " Matlab
+                au FileType matlab nnoremap <silent><buffer><C-CR> :w<CR>:!matlab -nosplash -nodesktop -r "run('%:p')"<CR><CR>
+
+                " Fortran
+                au FileType fortran nnoremap <silent><buffer><C-CR> :FloatermNew<CR>compilervars.bat intel64<CR>ifort<Space>
+
+                " Typst
+                au BufRead,BufNewFile *.typ setlocal filetype=typst
+                " au FileType typst nnoremap <silent><buffer><C-CR> :FloatermNew --height=1.0 typst watch %:p<CR>
+                au FileType typst nnoremap <silent><buffer><C-CR> :FloatermNew --height=1.0 typst watch "%:p"<CR>
+                au FileType typst nnoremap <silent> <M-v> :call jobstart(['sumatrapdf', expand('%:r') . '.pdf'], {'detach': v:true})<CR>
+
+                augroup END
+            ]])
 
             -- 发送代码到 IPython
             local function send_to_repl(code, multiline)
@@ -1032,21 +1034,6 @@ require("lazy").setup({
                 )
                 send_to_repl(table.concat(lines, "\n"), true)
             end, { silent = true })
-
-            -- Matlab
-            vim.cmd([[au FileType matlab nnoremap <silent><C-CR> :w<CR>:!matlab -nosplash -nodesktop -r "run('%:p')"<CR><CR>]])
-
-            -- Fortran
-            vim.cmd([[au FileType fortran nnoremap <silent><C-CR> :FloatermNew<CR>compilervars.bat intel64<CR>ifort<Space>]])
-
-            -- Typst
-            vim.cmd([[au BufRead,BufNewFile *.typ setlocal filetype=typst]])
-            vim.cmd([[au FileType typst nnoremap <silent><C-CR> :FloatermNew --height=1.0 typst watch %:p<CR>]])
-            vim.cmd([[au FileType typst nnoremap <silent> <M-v> :call jobstart(['sumatrapdf', expand('%:r') . '.pdf'], {'detach': v:true})<CR>]])
-
-            vim.cmd[[
-            augroup END
-            ]]
         end,
     },
     -- }}}
@@ -2549,12 +2536,10 @@ require("lazy").setup({
 
                 callback = function(event)
                     local map = function(mode, keys, func, desc)
-                        vim.keymap.set(
-                            mode,
-                            keys,
-                            func,
-                            { buf = event.buf, desc = "LSP: " .. desc }
-                        )
+                        vim.keymap.set(mode, keys, func, {
+                            buffer = event.buf,
+                            desc = "LSP: " .. desc,
+                        })
                     end
 
                     map("n", "gd", vim.lsp.buf.definition, "[G]oto [D]efinition")
@@ -2586,7 +2571,13 @@ require("lazy").setup({
             -- LSP Servers
             -- ============================================================
             local servers = {
-                pyright = {},
+                pyright = {
+                    settings = {
+                        python = {
+                            pythonPath = python_exe,
+                        },
+                    },
+                },
 
                 tinymist = {
                     single_file_support = true,
@@ -3337,8 +3328,8 @@ local term_sign = vim.uv.os_getenv("MYSIGN")
 
 if vim.fn.has('gui_running') == 1 then
     local colorscheme_list = {
-        -- 'catppuccin-frappe',
-        'catppuccin-latte',
+        'catppuccin-frappe',
+        -- 'catppuccin-latte',
     }
     local randomIndex_CS = math.random(1,#colorscheme_list)
     vim.cmd('colorscheme ' .. colorscheme_list[randomIndex_CS])
