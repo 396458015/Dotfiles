@@ -822,6 +822,7 @@ require("lazy").setup({
     {
         "Yggdroot/LeaderF",
         -- build = ":LeaderfInstallCExtension",
+        event = { "BufReadPre", "BufNewFile" },
         cmd = { "Leaderf" },
         keys = {
             -- { "<leader>fs", mode = { "n" }, ":LeaderfFile :/<left><left>", desc = "File by Path" },
