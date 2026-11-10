@@ -130,9 +130,8 @@ neomap('n', '<leader>s?', 'z=', { desc = 'Word Candidate' })
 neomap('n', '<leader>z', [[:%s/\<<C-R>=expand("<cword>")<CR>\>/<C-R>=expand("<cword>")<CR>/g<left><left>]], { desc = 'Replace Word' })
 neomap('v', '<leader>z', [[:s///g<left><left><left>]], { desc = 'Replace Word' })
 neomap('n', '<leader>Z', [[:<C-u>%s///g<left><left><left>]], { desc = 'Replace Word (whole file)' })
--- 统计中文字数
-neomap('n', '<localleader>w', [[:s/\v[\u4E00-\u9FFF\u3000-\u303F\uFF00-\uFFEF]//gn<CR>]])
-neomap('v', '<localleader>w', [[:s/\v[\u4E00-\u9FFF\u3000-\u303F\uFF00-\uFFEF]//gn<CR>]])
+-- 统计选中的字符
+neomap('v', '<localleader>w', [[:s/\%V[\u4E00-\u9FFF\u3000-\u303F\uFF00-\uFFEF]//gn<CR>]])
 -- 创建列表
 neomap('n', '<leader>b', [[:put =range(,,1)<left><left><left><left>]], { desc = 'Columns Num' })
 -------------------- 分屏 --------------------
