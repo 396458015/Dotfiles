@@ -1,6 +1,5 @@
-# {{{ 1. 默认终端与语言
+# {{{ 1. 默认终端
 command = pwsh.exe
-language = zh_CN.UTF-8
 
 # Shell 集成；不允许 Shell 集成修改光标样式
 shell-integration-features = title,sudo,ssh-terminfo,ssh-env,no-cursor
@@ -14,9 +13,6 @@ font-family = Sarasa Term SC Nerd
 font-size = 13
 font-thicken = true
 font-thicken-strength = 128
-
-# 新终端继承字号
-window-inherit-font-size = true
 
 # 在字体默认行高基础上增加 20%
 adjust-cell-height = 20%
@@ -57,15 +53,11 @@ cursor-color = #F2D5CF
 # }}}
 
 # {{{ 6. 鼠标、链接与提示
-# 鼠标移动到窗格时切换焦点
-focus-follows-mouse = true
-
 # 精确滚动设备的滚动倍率
 mouse-scroll-multiplier = "precision:5"
 
-# 链接识别与 OSC 8 链接预览
+# 链接识别
 link-url = true
-link-previews = osc8
 
 # 鼠标选中文字后不自动复制
 copy-on-select = false
@@ -179,13 +171,12 @@ keybind = ctrl+comma=open_config
 
 
 # 14. Vim 按键模式：进入与初始化
-# Alt+; 进入终端浏览按键模式
+# ctrl+shift+; 进入终端浏览按键模式
 # 此模式不是 Vim 编辑器，也不等同于完整的可视选择模式
 keybind = ctrl+shift+semicolon=activate_key_table:vim
 
 # 初始化 vim 按键表
 keybind = vim/
-
 
 # 15. Vim 按键模式：滚动
 # 逐行滚动
