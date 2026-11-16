@@ -3357,7 +3357,7 @@ if vim.o.background == "dark" then
     vim.api.nvim_set_hl(0, "Cursorcolumn", { bg = "#3C4452" })
 
     -- folded color
-    vim.api.nvim_set_hl(0, "Folded", { fg = "#c9a0a9", bg = "#403940", bold = true, italic = true })
+    vim.api.nvim_set_hl(0, "Folded", { fg = "#9a9cc9", bg = "#414559", bold = true, italic = true })
 
     -- blink border
     vim.api.nvim_set_hl(0, "BlinkCmpMenuBorder", { fg = "#8b949e", })
